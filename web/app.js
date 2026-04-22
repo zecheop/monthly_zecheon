@@ -7,7 +7,6 @@ const state = {
   hasLoadedReport: false,
 };
 
-const siteHeaderEl = document.getElementById('site-header');
 const openReportPickerEl = document.getElementById('open-report-picker');
 const heroIssueEl = document.getElementById('hero-issue');
 const reportPickerEl = document.getElementById('report-picker');
@@ -74,10 +73,6 @@ function setReportUpdating(isUpdating) {
   reportRootEl.classList.toggle('is-updating', !!isUpdating);
 }
 
-function updateHeaderState() {
-  siteHeaderEl.classList.toggle('is-scrolled', window.scrollY > 36);
-}
-
 function openReportPicker() {
   reportPickerEl.classList.remove('hidden');
   requestAnimationFrame(() => {
@@ -96,7 +91,7 @@ function updateHeroIssue(report) {
     heroIssueEl.classList.add('hidden');
     return;
   }
-  heroIssueEl.textContent = `${Number(match[2])}월호`;
+  heroIssueEl.textContent = `${match[1]}.${match[2]}`;
   heroIssueEl.classList.remove('hidden');
 }
 
@@ -132,9 +127,9 @@ function renderRankedRows(rows, emptyText) {
             if (showGroupedTitle) {
               metaParts.push(row.tokenTitle);
             }
-            return `
+          return `
               <article class="rank-row">
-                <div class="rank-badge">TOP ${index}</div>
+                <div class="rank-badge ${index === 1 ? 'is-gold' : ''}${index === 2 ? ' is-silver' : ''}${index === 3 ? ' is-bronze' : ''}">${index}</div>
                 <div class="rank-main">
                   <div class="token-title" title="${escapeHtml(row.tokenTitle || displayLabel)}">
                     ${row.imageUrl ? `<img src="${escapeHtml(row.imageUrl)}" alt="${escapeHtml(displayLabel)}">` : ''}
@@ -307,7 +302,6 @@ function renderReport(report) {
   reportRootEl.innerHTML = `
     <div class="report-shell">
       <section class="report-intro">
-        <p class="eyebrow">Monthly Report</p>
         <div class="report-intro-head">
           <h2>${escapeHtml(report.label)}</h2>
           <p class="report-subtitle">${escapeHtml(report.subtitle)} · 방송 ${escapeHtml(formatNumber(overview.videoCount))}개</p>
@@ -317,7 +311,6 @@ function renderReport(report) {
       <section class="panel-grid">
         <article class="panel-card">
           <div class="section-head">
-            <p class="section-kicker">Top 20 Words</p>
             <h3>TOP20 단어</h3>
           </div>
           ${renderRankedRows(report.topWords, '상위 단어 데이터가 아직 없습니다.')}
@@ -325,7 +318,6 @@ function renderReport(report) {
 
         <article class="panel-card">
           <div class="section-head">
-            <p class="section-kicker">Top 20 Emotes</p>
             <h3>TOP20 이모티콘</h3>
           </div>
           ${renderRankedRows(report.topEmotes, '상위 이모티콘 데이터가 아직 없습니다.')}
@@ -334,7 +326,6 @@ function renderReport(report) {
 
       <article class="panel-card">
         <div class="section-head">
-          <p class="section-kicker">Top 5 Moments</p>
           <h3>Top5 Moments</h3>
         </div>
         ${renderTopMomentClips(report)}
@@ -342,7 +333,6 @@ function renderReport(report) {
 
       <article class="panel-card">
         <div class="section-head">
-          <p class="section-kicker">Word Search</p>
           <h3>단어 검색기</h3>
         </div>
         ${renderWordSearch(report)}
@@ -511,8 +501,6 @@ async function loadReport(reportId) {
 }
 
 async function bootstrap() {
-  updateHeaderState();
-  window.addEventListener('scroll', updateHeaderState, { passive: true });
   openReportPickerEl?.addEventListener('click', openReportPicker);
 
   try {

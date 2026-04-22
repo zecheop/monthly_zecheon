@@ -31,7 +31,7 @@ body {
   min-height: 100%;
   background: var(--bg);
   color: var(--text);
-  font-family: "Noto Sans KR", "Apple SD Gothic Neo", "Malgun Gothic", sans-serif;
+  font-family: "Noto Sans", "Apple SD Gothic Neo", "Malgun Gothic", sans-serif;
 }
 
 body {
@@ -57,61 +57,13 @@ button {
   display: none !important;
 }
 
-.floating-header {
-  position: fixed;
-  inset: 0 0 auto;
-  z-index: 40;
-  padding: 18px clamp(16px, 3vw, 36px);
-  pointer-events: none;
-}
-
-.header-inner {
-  max-width: 1420px;
-  margin: 0 auto;
-  padding: 0;
-  border: 1px solid transparent;
-  border-radius: 999px;
-  background: transparent;
-  transition:
-    background 220ms ease,
-    border-color 220ms ease,
-    padding 220ms ease,
-    box-shadow 220ms ease;
-  pointer-events: auto;
-}
-
-.floating-header.is-scrolled .header-inner {
-  padding: 12px 14px;
-  background: rgba(10, 10, 10, 0.72);
-  border-color: var(--line);
-  box-shadow: var(--shadow);
-  backdrop-filter: blur(24px);
-  -webkit-backdrop-filter: blur(24px);
-}
-
-.brand-mark {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  width: 76px;
-  min-width: 76px;
-}
-
-.brand-mark img {
-  display: block;
-  width: 100%;
-  height: auto;
-  object-fit: contain;
-  filter: drop-shadow(0 8px 18px rgba(0, 0, 0, 0.24));
-}
-
 .hero {
   position: relative;
   display: flex;
   align-items: center;
   justify-content: center;
   min-height: 100svh;
-  padding: 132px clamp(20px, 5vw, 52px) 54px;
+  padding: 54px clamp(20px, 5vw, 52px);
   overflow: hidden;
 }
 
@@ -145,7 +97,7 @@ button {
 
 .hero h1 {
   margin: 0;
-  font-family: "Gugi", "Noto Sans KR", sans-serif;
+  font-family: "Gugi", "Noto Sans", sans-serif;
   font-size: clamp(72px, 12vw, 170px);
   font-weight: 400;
   line-height: 0.9;
@@ -155,8 +107,10 @@ button {
 .hero-issue {
   margin: 18px 0 0;
   color: var(--muted);
-  font-size: 18px;
-  font-weight: 600;
+  font-family: "Gugi", "Noto Sans", sans-serif;
+  font-size: clamp(18px, 2vw, 24px);
+  font-weight: 400;
+  letter-spacing: 0.04em;
 }
 
 .hero-link {
@@ -378,9 +332,24 @@ button {
   border-radius: 16px;
   background: rgba(255, 255, 255, 0.05);
   color: var(--accent);
-  font-size: 11px;
+  font-size: 18px;
   font-weight: 800;
-  letter-spacing: 0.08em;
+  letter-spacing: -0.03em;
+}
+
+.rank-badge.is-gold {
+  background: rgba(226, 180, 64, 0.18);
+  color: #e7bd57;
+}
+
+.rank-badge.is-silver {
+  background: rgba(192, 198, 207, 0.18);
+  color: #c3cad4;
+}
+
+.rank-badge.is-bronze {
+  background: rgba(194, 126, 83, 0.2);
+  color: #cd8758;
 }
 
 .rank-main {
@@ -730,21 +699,8 @@ button {
 }
 
 @media (max-width: 720px) {
-  .floating-header {
-    padding: 14px 14px 0;
-  }
-
-  .floating-header.is-scrolled .header-inner {
-    padding: 10px 12px;
-  }
-
-  .brand-mark {
-    width: 64px;
-    min-width: 64px;
-  }
-
   .hero {
-    padding: 110px 16px 36px;
+    padding: 36px 16px;
   }
 
   .content-shell {
