@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>월간 재첩</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Gugi&family=Noto+Sans+KR:wght@400;500;700;900&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="./styles.css">
+</head>
+<body>
+  <header class="floating-header" id="site-header">
+    <div class="header-inner">
+      <a class="brand-mark" href="#top" aria-label="월간 재첩 첫 화면">
+        <img src="./assets/img/sign.webp" alt="월간 재첩 로고">
+      </a>
+    </div>
+  </header>
+
+  <main>
+    <section class="hero" id="top">
+      <video class="hero-video" autoplay muted loop playsinline>
+        <source src="./assets/video/video1.mp4" type="video/mp4">
+      </video>
+      <div class="hero-scrim"></div>
+      <div class="hero-content">
+        <h1>월간 재첩</h1>
+        <p class="hero-issue hidden" id="hero-issue"></p>
+        <button class="hero-link" id="open-report-picker" type="button">월간 리포트 보기</button>
+      </div>
+    </section>
+
+    <section class="content-shell" id="content">
+      <section class="report-picker hidden" id="report-picker">
+        <div class="report-picker-head">
+          <p class="eyebrow">Archives</p>
+          <h2>월간 로그 선택</h2>
+        </div>
+        <div class="archive-strip" id="archive-list"></div>
+      </section>
+
+      <div class="status-stack">
+        <div class="loading-panel" id="loading-panel">리포트를 준비하는 중입니다...</div>
+        <div class="error-panel hidden" id="error-panel"></div>
+      </div>
+
+      <div class="report-root hidden" id="report-root"></div>
+    </section>
+  </main>
+
+  <script src="./app.js"></script>
+</body>
+</html>
