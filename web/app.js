@@ -741,8 +741,14 @@ function renderGameControls(session) {
   }
   return `
     <div class="game-button-stack">
-      <button class="game-guess-button" type="button" data-game-guess="higher">더 많이</button>
-      <button class="game-guess-button" type="button" data-game-guess="lower">더 적게</button>
+      <button class="game-guess-button" type="button" data-game-guess="higher">
+        <span class="game-button-label">더 많이</span>
+        <span class="game-button-icon game-button-icon-up" aria-hidden="true"></span>
+      </button>
+      <button class="game-guess-button" type="button" data-game-guess="lower">
+        <span class="game-button-label">더 적게</span>
+        <span class="game-button-icon game-button-icon-down" aria-hidden="true"></span>
+      </button>
     </div>
   `;
 }
