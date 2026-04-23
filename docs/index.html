@@ -10,6 +10,13 @@
   <link rel="stylesheet" href="./styles.css">
 </head>
 <body>
+  <header class="site-nav" id="site-nav">
+    <div class="site-nav-inner">
+      <button class="nav-link active" id="nav-stats" type="button" data-view-tab="stats">통계</button>
+      <button class="nav-link" id="nav-game" type="button" data-view-tab="game">게임</button>
+    </div>
+  </header>
+
   <main>
     <section class="hero" id="top">
       <video class="hero-video" autoplay muted loop playsinline>
@@ -26,7 +33,7 @@
     <section class="content-shell" id="content">
       <section class="report-picker hidden" id="report-picker">
         <div class="report-picker-head">
-          <p class="eyebrow">Archives</p>
+          <p class="eyebrow">월간 로그</p>
           <h2>월간 로그 선택</h2>
         </div>
         <div class="archive-strip" id="archive-list"></div>
@@ -38,6 +45,7 @@
       </div>
 
       <div class="report-root hidden" id="report-root"></div>
+      <div class="game-root hidden" id="game-root"></div>
     </section>
   </main>
 

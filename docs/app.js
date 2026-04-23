@@ -3,8 +3,15 @@ const state = {
   currentReportId: '',
   currentReport: null,
   currentAudio: null,
+  currentView: 'stats',
+  reportPickerOpen: false,
   searchCache: new Map(),
   hasLoadedReport: false,
+  gameFile: '',
+  gameData: null,
+  gameError: '',
+  gameSession: null,
+  gameBestScore: 0,
 };
 
 const openReportPickerEl = document.getElementById('open-report-picker');
@@ -14,6 +21,8 @@ const archiveListEl = document.getElementById('archive-list');
 const loadingPanelEl = document.getElementById('loading-panel');
 const errorPanelEl = document.getElementById('error-panel');
 const reportRootEl = document.getElementById('report-root');
+const gameRootEl = document.getElementById('game-root');
+const navTabEls = Array.from(document.querySelectorAll('[data-view-tab]'));
 
 function escapeHtml(value) {
   return String(value ?? '')
@@ -70,29 +79,64 @@ function setReportVisible(visible) {
   reportRootEl.classList.toggle('hidden', !visible);
 }
 
+function setGameVisible(visible) {
+  gameRootEl.classList.toggle('hidden', !visible);
+}
+
 function setReportUpdating(isUpdating) {
   reportRootEl.classList.toggle('is-updating', !!isUpdating);
 }
 
-function openReportPicker() {
-  reportPickerEl.classList.remove('hidden');
-  requestAnimationFrame(() => {
-    reportPickerEl.scrollIntoView({ behavior: 'smooth', block: 'start' });
-  });
+function updateScrollState() {
+  document.body.classList.toggle('is-scrolled', window.scrollY > 20);
 }
 
-function updateHeroIssue(report) {
-  if (!heroIssueEl) {
-    return;
-  }
-  const sourceText = `${report?.label || ''} ${report?.subtitle || ''}`;
-  const match = sourceText.match(/(\d{4})-(\d{2})/);
+function formatIssueTag(sourceText) {
+  const match = String(sourceText || '').match(/(\d{4})-(\d{2})/);
   if (!match) {
+    return '';
+  }
+  return `${match[1]}.${match[2]}`;
+}
+
+function parseLocationState() {
+  const rawHash = window.location.hash.replace(/^#/, '').trim();
+  if (!rawHash) {
+    return { view: 'stats', reportId: '' };
+  }
+  try {
+    const decoded = decodeURIComponent(rawHash);
+    if (decoded === 'game') {
+      return { view: 'game', reportId: '' };
+    }
+    return { view: 'stats', reportId: decoded };
+  } catch {
+    if (rawHash === 'game') {
+      return { view: 'game', reportId: '' };
+    }
+    return { view: 'stats', reportId: rawHash };
+  }
+}
+
+function syncLocationHash() {
+  const nextHash = state.currentView === 'game'
+    ? '#game'
+    : (state.currentReportId ? `#${encodeURIComponent(state.currentReportId)}` : '');
+  if (window.location.hash !== nextHash) {
+    history.replaceState(null, '', nextHash || window.location.pathname);
+  }
+}
+
+function updateHeroIssue() {
+  const nextText = state.currentView === 'game'
+    ? String(state.gameData?.issueLabel || '').trim()
+    : formatIssueTag(`${state.currentReport?.label || ''} ${state.currentReport?.subtitle || ''}`);
+  if (!nextText) {
     heroIssueEl.textContent = '';
     heroIssueEl.classList.add('hidden');
     return;
   }
-  heroIssueEl.textContent = `${match[1]}.${match[2]}`;
+  heroIssueEl.textContent = nextText;
   heroIssueEl.classList.remove('hidden');
 }
 
@@ -109,44 +153,106 @@ function renderArchiveList() {
   `).join('');
 }
 
-function renderRankedRows(rows, emptyText) {
-  if (!rows || !rows.length) {
-    return `<p class="item-meta">${escapeHtml(emptyText)}</p>`;
+function renderReportPickerVisibility() {
+  reportPickerEl.classList.toggle('hidden', !(state.currentView === 'stats' && state.reportPickerOpen));
+}
+
+function updateNavState() {
+  navTabEls.forEach((element) => {
+    const targetView = element.getAttribute('data-view-tab') || 'stats';
+    element.classList.toggle('active', targetView === state.currentView);
+  });
+}
+
+function setCurrentView(view, options = {}) {
+  const { syncHash = true, scrollToContent = false } = options;
+  state.currentView = view === 'game' ? 'game' : 'stats';
+  updateNavState();
+  renderReportPickerVisibility();
+  setReportVisible(state.currentView === 'stats' && !!state.currentReport);
+  setGameVisible(state.currentView === 'game');
+  updateHeroIssue();
+  if (state.currentView === 'game') {
+    renderGame();
   }
+  if (syncHash) {
+    syncLocationHash();
+  }
+  if (scrollToContent) {
+    document.getElementById('content')?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+  }
+}
+
+function openReportPicker() {
+  state.reportPickerOpen = true;
+  setCurrentView('stats', { syncHash: true });
+  renderReportPickerVisibility();
+  requestAnimationFrame(() => {
+    reportPickerEl.scrollIntoView({ behavior: 'smooth', block: 'start' });
+  });
+}
+
+function splitRows(rows) {
   const splitIndex = Math.ceil(rows.length / 2);
-  const columns = [rows.slice(0, splitIndex), rows.slice(splitIndex)];
-  return `
-    <div class="rank-list">
-      ${columns.map((columnRows, columnIndex) => `
-        <div class="rank-column">
-          ${columnRows.map((row, rowIndex) => {
-            const index = rowIndex + 1 + (columnIndex * splitIndex);
-            const displayLabel = row.displayToken || row.token;
-            const showGroupedTitle =
-              row.tokenTitle && normalizeComparableText(row.tokenTitle) !== normalizeComparableText(displayLabel);
-            const metaParts = [formatRatio(row.ratio)];
-            if (showGroupedTitle) {
-              metaParts.push(row.tokenTitle);
-            }
-          return `
-              <article class="rank-row">
-                <div class="rank-badge ${index === 1 ? 'is-gold' : ''}${index === 2 ? ' is-silver' : ''}${index === 3 ? ' is-bronze' : ''}">${index}</div>
-                <div class="rank-main">
-                  <div class="token-title" title="${escapeHtml(row.tokenTitle || displayLabel)}">
-                    ${row.imageUrl ? `<img src="${escapeHtml(row.imageUrl)}" alt="${escapeHtml(displayLabel)}">` : ''}
-                    <span>${escapeHtml(displayLabel)}</span>
-                  </div>
-                  <div class="item-meta">${escapeHtml(metaParts.join(' · '))}</div>
-                </div>
-                <div class="item-value">
-                  <strong>${escapeHtml(formatNumber(row.count))}</strong>
-                </div>
-              </article>
-            `;
-          }).join('')}
+  return [rows.slice(0, splitIndex), rows.slice(splitIndex)];
+}
+
+function buildSignalWidth(rowRatio, maxRatio) {
+  const ratio = Number(rowRatio || 0);
+  const topRatio = Math.max(Number(maxRatio || 0), 0.0001);
+  const normalized = Math.min(1, Math.max(0, ratio / topRatio));
+  return Math.round(18 + (Math.pow(normalized, 0.6) * 82));
+}
+
+function renderSignalSection(title, rows, kind, emptyText) {
+  if (!rows || !rows.length) {
+    return `
+      <article class="panel-card signal-stage signal-stage-${kind}">
+        <div class="section-head">
+          <h3>${escapeHtml(title)}</h3>
         </div>
-      `).join('')}
-    </div>
+        <p class="item-meta">${escapeHtml(emptyText)}</p>
+      </article>
+    `;
+  }
+
+  const maxRatio = rows.reduce((best, row) => Math.max(best, Number(row?.ratio || 0)), 0);
+  const columns = splitRows(rows);
+
+  return `
+    <article class="panel-card signal-stage signal-stage-${kind}">
+      <div class="section-head">
+        <h3>${escapeHtml(title)}</h3>
+      </div>
+      <div class="signal-list">
+        ${columns.map((columnRows) => `
+          <div class="signal-column">
+            ${columnRows.map((row, rowIndex) => {
+              const index = rows.indexOf(row) + 1;
+              const displayLabel = row.displayToken || row.token;
+              const isGrouped = row.tokenTitle && normalizeComparableText(row.tokenTitle) !== normalizeComparableText(displayLabel);
+              const fill = buildSignalWidth(row.ratio, maxRatio);
+              return `
+                <article class="signal-row signal-row-${kind}" style="--fill:${fill}%;">
+                  <div class="signal-row-fill"></div>
+                  <div class="rank-badge ${index === 1 ? 'is-gold' : ''}${index === 2 ? ' is-silver' : ''}${index === 3 ? ' is-bronze' : ''}">${index}</div>
+                  <div class="rank-main">
+                    <div class="token-title" title="${escapeHtml(row.tokenTitle || displayLabel)}">
+                      ${row.imageUrl ? `<img src="${escapeHtml(row.imageUrl)}" alt="${escapeHtml(displayLabel)}">` : ''}
+                      <span>${escapeHtml(displayLabel)}</span>
+                    </div>
+                    <div class="item-meta">${escapeHtml(formatRatio(row.ratio))}${isGrouped ? ` · ${escapeHtml(row.tokenTitle)}` : ''}</div>
+                  </div>
+                  <div class="item-value">
+                    <strong>${escapeHtml(formatNumber(row.count))}</strong>
+                  </div>
+                </article>
+              `;
+            }).join('')}
+          </div>
+        `).join('')}
+      </div>
+    </article>
   `;
 }
 
@@ -309,23 +415,10 @@ function renderReport(report) {
         </div>
       </section>
 
-      <section class="panel-grid">
-        <article class="panel-card">
-          <div class="section-head">
-            <h3>TOP20 단어</h3>
-          </div>
-          ${renderRankedRows(report.topWords, '상위 단어 데이터가 아직 없습니다.')}
-        </article>
+      ${renderSignalSection('TOP20 단어', report.topWords, 'word', '상위 단어 데이터가 아직 없습니다.')}
+      ${renderSignalSection('TOP20 이모티콘', report.topEmotes, 'emote', '상위 이모티콘 데이터가 아직 없습니다.')}
 
-        <article class="panel-card">
-          <div class="section-head">
-            <h3>TOP20 이모티콘</h3>
-          </div>
-          ${renderRankedRows(report.topEmotes, '상위 이모티콘 데이터가 아직 없습니다.')}
-        </article>
-      </section>
-
-      <p class="public-filter-note">※ TOP20 단어는 일반 연결어와 지시어 일부를 제외해 공개용으로 정제했습니다.</p>
+      <p class="public-filter-note">※ TOP20 단어는 접속어, 지시어, 시점 표현, 상황 설명용 일반어처럼 밈성보다 맥락 소비가 큰 표현을 일부 제외해 정제했습니다.</p>
 
       <article class="panel-card">
         <div class="section-head">
@@ -441,26 +534,259 @@ function bindWordSearch(report) {
   });
 }
 
-function updateLocationHash(reportId) {
-  const nextHash = reportId ? `#${encodeURIComponent(reportId)}` : '';
-  if (window.location.hash !== nextHash) {
-    history.replaceState(null, '', nextHash || window.location.pathname);
+function renderGameBreakdown(item) {
+  const rows = Array.isArray(item?.monthBreakdown) ? item.monthBreakdown : [];
+  if (!rows.length) {
+    return '<div class="guess-breakdown"><span class="guess-breakdown-chip">월간 집계 없음</span></div>';
   }
+  return `
+    <div class="guess-breakdown">
+      ${rows.map((row) => `
+        <span class="guess-breakdown-chip">${escapeHtml(row.label)} · ${escapeHtml(formatNumber(row.count))}회</span>
+      `).join('')}
+    </div>
+  `;
 }
 
-function getInitialReportId() {
-  const hash = window.location.hash.replace(/^#/, '').trim();
-  if (!hash) {
+function renderGameCard(item, options = {}) {
+  const {
+    revealed = true,
+    accent = 'anchor',
+  } = options;
+  if (!item) {
     return '';
   }
-  try {
-    return decodeURIComponent(hash);
-  } catch {
-    return hash;
-  }
+  const showGrouped = item.tokenTitle && normalizeComparableText(item.tokenTitle) !== normalizeComparableText(item.displayToken);
+  return `
+    <article class="guess-card guess-card-${escapeHtml(accent)} ${revealed ? 'is-revealed' : 'is-hidden'}">
+      <div class="guess-card-topline">
+        <span class="guess-rank">전체 ${escapeHtml(formatNumber(item.rank || 0))}위</span>
+      </div>
+      <div class="guess-word-wrap">
+        <h3>${escapeHtml(item.displayToken)}</h3>
+        ${showGrouped ? `<p class="guess-token-title">${escapeHtml(item.tokenTitle)}</p>` : '<p class="guess-token-title hidden"></p>'}
+      </div>
+      <div class="guess-count">
+        <strong>${revealed ? escapeHtml(formatNumber(item.count)) : '???'}</strong>
+        <span>회</span>
+      </div>
+      <div class="guess-ratio">${escapeHtml(formatRatio(item.ratio))}</div>
+      ${renderGameBreakdown(item)}
+    </article>
+  `;
 }
 
-async function loadReport(reportId) {
+function pickRandomGameItem(excludedIds = new Set(), referenceItem = null) {
+  if (!Array.isArray(state.gameData?.items) || !state.gameData.items.length) {
+    return null;
+  }
+  const sameCount = Number(referenceItem?.count || -1);
+  let pool = state.gameData.items.filter((item) => !excludedIds.has(item.id));
+  if (referenceItem) {
+    pool = pool.filter((item) => Number(item.count) !== sameCount);
+  }
+  if (!pool.length) {
+    pool = state.gameData.items.filter((item) => item.id !== referenceItem?.id);
+  }
+  if (!pool.length) {
+    return null;
+  }
+  return pool[Math.floor(Math.random() * Math.min(pool.length, 100))];
+}
+
+function startGameSession() {
+  const items = Array.isArray(state.gameData?.items) ? state.gameData.items : [];
+  if (items.length < 2) {
+    state.gameSession = null;
+    return;
+  }
+  const seedPool = items.slice(0, Math.min(items.length, 24));
+  const leftItem = seedPool[Math.floor(Math.random() * seedPool.length)] || items[0];
+  const usedIds = new Set([leftItem.id]);
+  const rightItem = pickRandomGameItem(usedIds, leftItem);
+  if (!rightItem) {
+    state.gameSession = null;
+    return;
+  }
+  usedIds.add(rightItem.id);
+  state.gameSession = {
+    score: 0,
+    revealed: false,
+    correct: null,
+    leftItem,
+    rightItem,
+    usedIds,
+  };
+}
+
+function advanceGameSession() {
+  if (!state.gameSession?.rightItem) {
+    startGameSession();
+    renderGame();
+    return;
+  }
+  const carriedLeft = state.gameSession.rightItem;
+  let usedIds = state.gameSession.usedIds instanceof Set
+    ? new Set(state.gameSession.usedIds)
+    : new Set();
+  usedIds.add(carriedLeft.id);
+  let nextRight = pickRandomGameItem(usedIds, carriedLeft);
+  if (!nextRight) {
+    usedIds = new Set([carriedLeft.id]);
+    nextRight = pickRandomGameItem(usedIds, carriedLeft);
+  }
+  if (!nextRight) {
+    startGameSession();
+    renderGame();
+    return;
+  }
+  usedIds.add(nextRight.id);
+  state.gameSession = {
+    ...state.gameSession,
+    revealed: false,
+    correct: null,
+    leftItem: carriedLeft,
+    rightItem: nextRight,
+    usedIds,
+  };
+  renderGame();
+}
+
+function handleGameGuess(guess) {
+  if (!state.gameSession || state.gameSession.revealed) {
+    return;
+  }
+  const leftCount = Number(state.gameSession.leftItem?.count || 0);
+  const rightCount = Number(state.gameSession.rightItem?.count || 0);
+  const relation = rightCount > leftCount ? 'higher' : 'lower';
+  const correct = guess === relation;
+  const nextScore = correct ? Number(state.gameSession.score || 0) + 1 : Number(state.gameSession.score || 0);
+  state.gameBestScore = Math.max(state.gameBestScore, nextScore);
+  state.gameSession = {
+    ...state.gameSession,
+    score: nextScore,
+    revealed: true,
+    correct,
+  };
+  renderGame();
+}
+
+function renderGame() {
+  if (state.currentView !== 'game' && gameRootEl.classList.contains('hidden')) {
+    return;
+  }
+
+  if (state.gameError) {
+    gameRootEl.innerHTML = `
+      <div class="report-shell">
+        <article class="panel-card">
+          <div class="section-head">
+            <h3>게임</h3>
+          </div>
+          <p class="item-meta">${escapeHtml(state.gameError)}</p>
+        </article>
+      </div>
+    `;
+    return;
+  }
+
+  if (!state.gameData) {
+    gameRootEl.innerHTML = `
+      <div class="report-shell">
+        <article class="panel-card">
+          <div class="section-head">
+            <h3>게임</h3>
+          </div>
+          <p class="item-meta">게임 데이터를 준비하는 중입니다.</p>
+        </article>
+      </div>
+    `;
+    return;
+  }
+
+  if (!state.gameSession) {
+    startGameSession();
+  }
+
+  if (!state.gameSession) {
+    gameRootEl.innerHTML = `
+      <div class="report-shell">
+        <article class="panel-card">
+          <div class="section-head">
+            <h3>게임</h3>
+          </div>
+          <p class="item-meta">게임으로 보여줄 단어 데이터가 아직 부족합니다.</p>
+        </article>
+      </div>
+    `;
+    return;
+  }
+
+  const session = state.gameSession;
+  const rightCountHigher = Number(session.rightItem?.count || 0) > Number(session.leftItem?.count || 0);
+  const resultText = !session.revealed
+    ? '오른쪽 단어가 왼쪽보다 더 많이 쓰였을지 골라보세요.'
+    : session.correct
+      ? `${session.rightItem.displayToken}은 ${formatNumber(session.rightItem.count)}회로 ${rightCountHigher ? '더 많이' : '더 적게'} 등장했습니다.`
+      : `${session.rightItem.displayToken}은 ${formatNumber(session.rightItem.count)}회였습니다. 이번 판은 여기까지예요.`;
+
+  gameRootEl.innerHTML = `
+    <div class="report-shell">
+      <article class="panel-card game-shell">
+        <div class="game-shell-head">
+          <div>
+            <p class="eyebrow">게임</p>
+            <h2>${escapeHtml(state.gameData.title || '더 많이 더 적게')}</h2>
+            <p class="game-subtitle">${escapeHtml(state.gameData.issueLabel || '')} 채팅 로그 기준</p>
+          </div>
+          <div class="game-scoreboard">
+            <span class="game-score-label">현재 점수</span>
+            <strong>${escapeHtml(formatNumber(session.score || 0))}</strong>
+            <span class="game-score-sub">최고 ${escapeHtml(formatNumber(state.gameBestScore || 0))}</span>
+          </div>
+        </div>
+
+        <div class="game-stage">
+          ${renderGameCard(session.leftItem, { revealed: true, accent: 'anchor' })}
+
+          <div class="game-control-column">
+            <span class="game-versus">VS</span>
+            <button class="game-guess-button" type="button" data-game-guess="higher" ${session.revealed ? 'disabled' : ''}>더 많이</button>
+            <button class="game-guess-button" type="button" data-game-guess="lower" ${session.revealed ? 'disabled' : ''}>더 적게</button>
+            <p class="game-feedback ${session.revealed ? (session.correct ? 'is-good' : 'is-bad') : ''}">${escapeHtml(resultText)}</p>
+            ${session.revealed
+              ? `<button class="game-next-button" type="button" data-game-next>${session.correct ? '다음 단어' : '다시 시작'}</button>`
+              : '<p class="game-helper">왼쪽 단어와 비교해 오른쪽 단어의 사용량을 맞혀보세요.</p>'}
+          </div>
+
+          ${renderGameCard(session.rightItem, { revealed: session.revealed, accent: 'challenger' })}
+        </div>
+      </article>
+    </div>
+  `;
+}
+
+function bindGameControls() {
+  gameRootEl.addEventListener('click', (event) => {
+    const guessButton = event.target.closest('[data-game-guess]');
+    if (guessButton) {
+      handleGameGuess(guessButton.getAttribute('data-game-guess') || '');
+      return;
+    }
+    const nextButton = event.target.closest('[data-game-next]');
+    if (nextButton) {
+      if (state.gameSession?.correct) {
+        advanceGameSession();
+      } else {
+        startGameSession();
+        renderGame();
+      }
+    }
+  });
+}
+
+async function loadReport(reportId, options = {}) {
+  const { syncHash = true } = options;
   const reportMeta = state.reports.find((report) => report.id === reportId);
   if (!reportMeta) {
     throw new Error('선택한 리포트를 찾지 못했습니다.');
@@ -475,7 +801,7 @@ async function loadReport(reportId) {
     setLoading(true, '월간 리포트를 불러오는 중입니다...');
   } else {
     setLoading(false);
-    setReportVisible(true);
+    setReportVisible(state.currentView === 'stats');
     setReportUpdating(true);
   }
 
@@ -486,25 +812,74 @@ async function loadReport(reportId) {
     }
     state.currentReport = report;
     renderReport(report);
-    updateHeroIssue(report);
     bindClipPlayers();
     bindWordSearch(report);
-    updateLocationHash(reportId);
-    void getSearchItems(report);
     state.hasLoadedReport = true;
     setReportUpdating(false);
     setLoading(false);
-    setReportVisible(true);
+    setReportVisible(state.currentView === 'stats');
+    updateHeroIssue();
+    if (syncHash && state.currentView === 'stats') {
+      syncLocationHash();
+    }
+    void getSearchItems(report);
   } catch (error) {
     setReportUpdating(false);
     setLoading(false);
-    setReportVisible(Boolean(state.currentReport));
+    setReportVisible(Boolean(state.currentReport) && state.currentView === 'stats');
     setError(error instanceof Error ? error.message : '리포트를 불러오지 못했습니다.');
   }
 }
 
+async function loadGameData(gameFile) {
+  if (!gameFile) {
+    state.gameData = null;
+    state.gameError = '게임 데이터를 찾지 못했습니다.';
+    renderGame();
+    return;
+  }
+  try {
+    state.gameFile = gameFile;
+    state.gameData = await fetchJson(`${gameFile}?v=${Date.now()}`);
+    state.gameError = '';
+    state.gameSession = null;
+    updateHeroIssue();
+    renderGame();
+  } catch (error) {
+    state.gameData = null;
+    state.gameError = error instanceof Error ? error.message : '게임 데이터를 불러오지 못했습니다.';
+    renderGame();
+  }
+}
+
 async function bootstrap() {
+  updateScrollState();
+  window.addEventListener('scroll', updateScrollState, { passive: true });
+
   openReportPickerEl?.addEventListener('click', openReportPicker);
+  archiveListEl.addEventListener('click', (event) => {
+    const button = event.target.closest('[data-report-id]');
+    if (!button) {
+      return;
+    }
+    const reportId = button.getAttribute('data-report-id') || '';
+    if (!reportId || reportId === state.currentReportId) {
+      return;
+    }
+    state.reportPickerOpen = false;
+    renderReportPickerVisibility();
+    void loadReport(reportId, { syncHash: state.currentView === 'stats' });
+  });
+  navTabEls.forEach((element) => {
+    element.addEventListener('click', () => {
+      const targetView = element.getAttribute('data-view-tab') || 'stats';
+      setCurrentView(targetView, { syncHash: true, scrollToContent: true });
+      if (targetView === 'game') {
+        renderGame();
+      }
+    });
+  });
+  bindGameControls();
 
   try {
     const data = await fetchJson(`./data/reports.json?v=${Date.now()}`);
@@ -516,30 +891,29 @@ async function bootstrap() {
       return;
     }
 
-    archiveListEl.addEventListener('click', (event) => {
-      const button = event.target.closest('[data-report-id]');
-      if (!button) {
-        return;
-      }
-      const reportId = button.getAttribute('data-report-id') || '';
-      if (!reportId || reportId === state.currentReportId) {
-        return;
-      }
-      void loadReport(reportId);
-    });
+    await loadGameData(data.gameFile || '');
+
+    const initialLocation = parseLocationState();
+    const initialReport =
+      state.reports.find((report) => report.id === initialLocation.reportId)
+      || state.reports[0];
+    await loadReport(initialReport.id, { syncHash: false });
+    setCurrentView(initialLocation.view, { syncHash: false });
 
     window.addEventListener('hashchange', () => {
-      const reportId = getInitialReportId();
-      if (!reportId || reportId === state.currentReportId) {
+      const nextLocation = parseLocationState();
+      if (nextLocation.view === 'game') {
+        setCurrentView('game', { syncHash: false });
+        renderGame();
         return;
       }
-      void loadReport(reportId);
+      setCurrentView('stats', { syncHash: false });
+      if (nextLocation.reportId && nextLocation.reportId !== state.currentReportId) {
+        void loadReport(nextLocation.reportId, { syncHash: false });
+      } else {
+        updateHeroIssue();
+      }
     });
-
-    const initialReportId = getInitialReportId();
-    const initialReport =
-      state.reports.find((report) => report.id === initialReportId) || state.reports[0];
-    await loadReport(initialReport.id);
   } catch (error) {
     setLoading(false);
     setError(error instanceof Error ? error.message : '리포트 목록을 불러오지 못했습니다.');

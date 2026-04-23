@@ -1,0 +1,2527 @@
+{
+  "title": "더 많이 더 적게",
+  "subtitle": "전체 월간 로그 채팅 단어 게임",
+  "issueLabel": "2026.03 + 2026.04",
+  "sourceIssues": [
+    "2026.03",
+    "2026.04"
+  ],
+  "items": [
+    {
+      "id": "곤듀",
+      "displayToken": "곤듀",
+      "tokenTitle": "곤듀+곤듀가+곤듀를",
+      "count": 3545,
+      "ratio": 1.8172218292170312,
+      "monthBreakdown": [
+        {
+          "label": "2026.03",
+          "count": 905
+        },
+        {
+          "label": "2026.04",
+          "count": 2640
+        }
+      ],
+      "rank": 1
+    },
+    {
+      "id": "임재천",
+      "displayToken": "임재천",
+      "tokenTitle": "임재천+임재천님+재천+재천님+재천이",
+      "count": 1353,
+      "ratio": 0.6935687263556116,
+      "monthBreakdown": [
+        {
+          "label": "2026.03",
+          "count": 783
+        },
+        {
+          "label": "2026.04",
+          "count": 570
+        }
+      ],
+      "rank": 2
+    },
+    {
+      "id": "재하",
+      "displayToken": "재하",
+      "tokenTitle": "재하+재하재하+쟈쟈",
+      "count": 934,
+      "ratio": 0.47878284583602454,
+      "monthBreakdown": [
+        {
+          "label": "2026.03",
+          "count": 386
+        },
+        {
+          "label": "2026.04",
+          "count": 548
+        }
+      ],
+      "rank": 3
+    },
+    {
+      "id": "아무래도",
+      "displayToken": "아무래도",
+      "tokenTitle": "아무래도",
+      "count": 653,
+      "ratio": 0.3347378997119101,
+      "monthBreakdown": [
+        {
+          "label": "2026.03",
+          "count": 360
+        },
+        {
+          "label": "2026.04",
+          "count": 293
+        }
+      ],
+      "rank": 4
+    },
+    {
+      "id": "ㅔㅔ",
+      "displayToken": "ㅔㅔ",
+      "tokenTitle": "ㅔㅔ",
+      "count": 587,
+      "ratio": 0.30090527891407537,
+      "monthBreakdown": [
+        {
+          "label": "2026.03",
+          "count": 313
+        },
+        {
+          "label": "2026.04",
+          "count": 274
+        }
+      ],
+      "rank": 5
+    },
+    {
+      "id": "재바",
+      "displayToken": "재바",
+      "tokenTitle": "재바+재바재바",
+      "count": 566,
+      "ratio": 0.29014035411476435,
+      "monthBreakdown": [
+        {
+          "label": "2026.03",
+          "count": 266
+        },
+        {
+          "label": "2026.04",
+          "count": 300
+        }
+      ],
+      "rank": 6
+    },
+    {
+      "id": "ㅇㅉㄴㅇ",
+      "displayToken": "ㅇㅉㄴㅇ",
+      "tokenTitle": "ㅇㅉㄴㅇ",
+      "count": 553,
+      "ratio": 0.2834763530485242,
+      "monthBreakdown": [
+        {
+          "label": "2026.03",
+          "count": 1
+        },
+        {
+          "label": "2026.04",
+          "count": 552
+        }
+      ],
+      "rank": 7
+    },
+    {
+      "id": "재첩",
+      "displayToken": "재첩",
+      "tokenTitle": "재첩+재첩이+재첩이들",
+      "count": 429,
+      "ratio": 0.21991203518592564,
+      "monthBreakdown": [
+        {
+          "label": "2026.03",
+          "count": 140
+        },
+        {
+          "label": "2026.04",
+          "count": 289
+        }
+      ],
+      "rank": 8
+    },
+    {
+      "id": "치지직",
+      "displayToken": "치지직",
+      "tokenTitle": "치지직",
+      "count": 425,
+      "ratio": 0.21786157331939018,
+      "monthBreakdown": [
+        {
+          "label": "2026.03",
+          "count": 289
+        },
+        {
+          "label": "2026.04",
+          "count": 136
+        }
+      ],
+      "rank": 9
+    },
+    {
+      "id": "구독",
+      "displayToken": "구독",
+      "tokenTitle": "구독+구독권",
+      "count": 415,
+      "ratio": 0.2127354186530516,
+      "monthBreakdown": [
+        {
+          "label": "2026.03",
+          "count": 163
+        },
+        {
+          "label": "2026.04",
+          "count": 252
+        }
+      ],
+      "rank": 10
+    },
+    {
+      "id": "어흐",
+      "displayToken": "어흐",
+      "tokenTitle": "어흐",
+      "count": 347,
+      "ratio": 0.17787756692194917,
+      "monthBreakdown": [
+        {
+          "label": "2026.03",
+          "count": 207
+        },
+        {
+          "label": "2026.04",
+          "count": 140
+        }
+      ],
+      "rank": 11
+    },
+    {
+      "id": "155",
+      "displayToken": "155",
+      "tokenTitle": "155+155cm",
+      "count": 300,
+      "ratio": 0.1537846399901578,
+      "monthBreakdown": [
+        {
+          "label": "2026.03",
+          "count": 162
+        },
+        {
+          "label": "2026.04",
+          "count": 138
+        }
+      ],
+      "rank": 12
+    },
+    {
+      "id": "방송",
+      "displayToken": "방송",
+      "tokenTitle": "방송",
+      "count": 289,
+      "ratio": 0.14814586985718534,
+      "monthBreakdown": [
+        {
+          "label": "2026.03",
+          "count": 149
+        },
+        {
+          "label": "2026.04",
+          "count": 140
+        }
+      ],
+      "rank": 13
+    },
+    {
+      "id": "나한테",
+      "displayToken": "나한테",
+      "tokenTitle": "나한테",
+      "count": 259,
+      "ratio": 0.13276740585816954,
+      "monthBreakdown": [
+        {
+          "label": "2026.03",
+          "count": 181
+        },
+        {
+          "label": "2026.04",
+          "count": 78
+        }
+      ],
+      "rank": 14
+    },
+    {
+      "id": "재천냥이",
+      "displayToken": "재천냥이",
+      "tokenTitle": "재천냥이+재천냥",
+      "count": 254,
+      "ratio": 0.13020432852500025,
+      "monthBreakdown": [
+        {
+          "label": "2026.03",
+          "count": 116
+        },
+        {
+          "label": "2026.04",
+          "count": 138
+        }
+      ],
+      "rank": 15
+    },
+    {
+      "id": "ㄱㅇㅇ",
+      "displayToken": "ㄱㅇㅇ",
+      "tokenTitle": "ㄱㅇㅇ",
+      "count": 244,
+      "ratio": 0.12507817385866166,
+      "monthBreakdown": [
+        {
+          "label": "2026.03",
+          "count": 90
+        },
+        {
+          "label": "2026.04",
+          "count": 154
+        }
+      ],
+      "rank": 16
+    },
+    {
+      "id": "비난양파",
+      "displayToken": "비난양파",
+      "tokenTitle": "비난양파",
+      "count": 242,
+      "ratio": 0.12405294292539394,
+      "monthBreakdown": [
+        {
+          "label": "2026.03",
+          "count": 105
+        },
+        {
+          "label": "2026.04",
+          "count": 137
+        }
+      ],
+      "rank": 17
+    },
+    {
+      "id": "어우",
+      "displayToken": "어우",
+      "tokenTitle": "어우",
+      "count": 239,
+      "ratio": 0.12251509652549236,
+      "monthBreakdown": [
+        {
+          "label": "2026.03",
+          "count": 95
+        },
+        {
+          "label": "2026.04",
+          "count": 144
+        }
+      ],
+      "rank": 18
+    },
+    {
+      "id": "친구",
+      "displayToken": "친구",
+      "tokenTitle": "친구",
+      "count": 236,
+      "ratio": 0.1209772501255908,
+      "monthBreakdown": [
+        {
+          "label": "2026.03",
+          "count": 160
+        },
+        {
+          "label": "2026.04",
+          "count": 76
+        }
+      ],
+      "rank": 19
+    },
+    {
+      "id": "한번",
+      "displayToken": "한번",
+      "tokenTitle": "한번",
+      "count": 231,
+      "ratio": 0.11841417279242149,
+      "monthBreakdown": [
+        {
+          "label": "2026.03",
+          "count": 77
+        },
+        {
+          "label": "2026.04",
+          "count": 154
+        }
+      ],
+      "rank": 20
+    },
+    {
+      "id": "습박",
+      "displayToken": "습박",
+      "tokenTitle": "습박",
+      "count": 230,
+      "ratio": 0.11790155732578764,
+      "monthBreakdown": [
+        {
+          "label": "2026.03",
+          "count": 158
+        },
+        {
+          "label": "2026.04",
+          "count": 72
+        }
+      ],
+      "rank": 21
+    },
+    {
+      "id": "ㄹㅇㅋㅋ",
+      "displayToken": "ㄹㅇㅋㅋ",
+      "tokenTitle": "ㄹㅇㅋㅋ",
+      "count": 226,
+      "ratio": 0.11585109545925219,
+      "monthBreakdown": [
+        {
+          "label": "2026.03",
+          "count": 125
+        },
+        {
+          "label": "2026.04",
+          "count": 101
+        }
+      ],
+      "rank": 22
+    },
+    {
+      "id": "좋다",
+      "displayToken": "좋다",
+      "tokenTitle": "좋다",
+      "count": 226,
+      "ratio": 0.11585109545925219,
+      "monthBreakdown": [
+        {
+          "label": "2026.03",
+          "count": 96
+        },
+        {
+          "label": "2026.04",
+          "count": 130
+        }
+      ],
+      "rank": 23
+    },
+    {
+      "id": "노래",
+      "displayToken": "노래",
+      "tokenTitle": "노래",
+      "count": 217,
+      "ratio": 0.11123755625954747,
+      "monthBreakdown": [
+        {
+          "label": "2026.03",
+          "count": 66
+        },
+        {
+          "label": "2026.04",
+          "count": 151
+        }
+      ],
+      "rank": 24
+    },
+    {
+      "id": "디돈",
+      "displayToken": "디돈",
+      "tokenTitle": "디돈",
+      "count": 214,
+      "ratio": 0.10969970985964589,
+      "monthBreakdown": [
+        {
+          "label": "2026.03",
+          "count": 180
+        },
+        {
+          "label": "2026.04",
+          "count": 34
+        }
+      ],
+      "rank": 25
+    },
+    {
+      "id": "리액션",
+      "displayToken": "리액션",
+      "tokenTitle": "리액션",
+      "count": 198,
+      "ratio": 0.10149786239350414,
+      "monthBreakdown": [
+        {
+          "label": "2026.03",
+          "count": 74
+        },
+        {
+          "label": "2026.04",
+          "count": 124
+        }
+      ],
+      "rank": 26
+    },
+    {
+      "id": "스트리머",
+      "displayToken": "스트리머",
+      "tokenTitle": "스트리머",
+      "count": 193,
+      "ratio": 0.09893478506033485,
+      "monthBreakdown": [
+        {
+          "label": "2026.03",
+          "count": 126
+        },
+        {
+          "label": "2026.04",
+          "count": 67
+        }
+      ],
+      "rank": 27
+    },
+    {
+      "id": "아하",
+      "displayToken": "아하",
+      "tokenTitle": "아하",
+      "count": 193,
+      "ratio": 0.09893478506033485,
+      "monthBreakdown": [
+        {
+          "label": "2026.03",
+          "count": 95
+        },
+        {
+          "label": "2026.04",
+          "count": 98
+        }
+      ],
+      "rank": 28
+    },
+    {
+      "id": "이분",
+      "displayToken": "이분",
+      "tokenTitle": "이분",
+      "count": 192,
+      "ratio": 0.09842216959370098,
+      "monthBreakdown": [
+        {
+          "label": "2026.03",
+          "count": 126
+        },
+        {
+          "label": "2026.04",
+          "count": 66
+        }
+      ],
+      "rank": 29
+    },
+    {
+      "id": "아님",
+      "displayToken": "아님",
+      "tokenTitle": "아님",
+      "count": 190,
+      "ratio": 0.09739693866043327,
+      "monthBreakdown": [
+        {
+          "label": "2026.03",
+          "count": 89
+        },
+        {
+          "label": "2026.04",
+          "count": 101
+        }
+      ],
+      "rank": 30
+    },
+    {
+      "id": "요즘",
+      "displayToken": "요즘",
+      "tokenTitle": "요즘",
+      "count": 186,
+      "ratio": 0.09534647679389782,
+      "monthBreakdown": [
+        {
+          "label": "2026.03",
+          "count": 77
+        },
+        {
+          "label": "2026.04",
+          "count": 109
+        }
+      ],
+      "rank": 31
+    },
+    {
+      "id": "게임",
+      "displayToken": "게임",
+      "tokenTitle": "게임",
+      "count": 183,
+      "ratio": 0.09380863039399624,
+      "monthBreakdown": [
+        {
+          "label": "2026.03",
+          "count": 63
+        },
+        {
+          "label": "2026.04",
+          "count": 120
+        }
+      ],
+      "rank": 32
+    },
+    {
+      "id": "감사합니다",
+      "displayToken": "감사합니다",
+      "tokenTitle": "감사합니다",
+      "count": 181,
+      "ratio": 0.09278339946072853,
+      "monthBreakdown": [
+        {
+          "label": "2026.03",
+          "count": 46
+        },
+        {
+          "label": "2026.04",
+          "count": 135
+        }
+      ],
+      "rank": 33
+    },
+    {
+      "id": "ㄱㄱ",
+      "displayToken": "ㄱㄱ",
+      "tokenTitle": "ㄱㄱ",
+      "count": 180,
+      "ratio": 0.09227078399409466,
+      "monthBreakdown": [
+        {
+          "label": "2026.03",
+          "count": 103
+        },
+        {
+          "label": "2026.04",
+          "count": 77
+        }
+      ],
+      "rank": 34
+    },
+    {
+      "id": "공주",
+      "displayToken": "공주",
+      "tokenTitle": "공주",
+      "count": 179,
+      "ratio": 0.09175816852746081,
+      "monthBreakdown": [
+        {
+          "label": "2026.03",
+          "count": 96
+        },
+        {
+          "label": "2026.04",
+          "count": 83
+        }
+      ],
+      "rank": 35
+    },
+    {
+      "id": "저건",
+      "displayToken": "저건",
+      "tokenTitle": "저건",
+      "count": 172,
+      "ratio": 0.0881698602610238,
+      "monthBreakdown": [
+        {
+          "label": "2026.03",
+          "count": 87
+        },
+        {
+          "label": "2026.04",
+          "count": 85
+        }
+      ],
+      "rank": 36
+    },
+    {
+      "id": "좋아",
+      "displayToken": "좋아",
+      "tokenTitle": "좋아",
+      "count": 169,
+      "ratio": 0.08663201386112222,
+      "monthBreakdown": [
+        {
+          "label": "2026.03",
+          "count": 74
+        },
+        {
+          "label": "2026.04",
+          "count": 95
+        }
+      ],
+      "rank": 37
+    },
+    {
+      "id": "미안하다",
+      "displayToken": "미안하다",
+      "tokenTitle": "미안하다",
+      "count": 164,
+      "ratio": 0.08406893652795291,
+      "monthBreakdown": [
+        {
+          "label": "2026.03",
+          "count": 149
+        },
+        {
+          "label": "2026.04",
+          "count": 15
+        }
+      ],
+      "rank": 38
+    },
+    {
+      "id": "재첩국",
+      "displayToken": "재첩국",
+      "tokenTitle": "재첩국",
+      "count": 159,
+      "ratio": 0.08150585919478362,
+      "monthBreakdown": [
+        {
+          "label": "2026.03",
+          "count": 73
+        },
+        {
+          "label": "2026.04",
+          "count": 86
+        }
+      ],
+      "rank": 39
+    },
+    {
+      "id": "없다",
+      "displayToken": "없다",
+      "tokenTitle": "없다",
+      "count": 153,
+      "ratio": 0.07843016639498047,
+      "monthBreakdown": [
+        {
+          "label": "2026.03",
+          "count": 117
+        },
+        {
+          "label": "2026.04",
+          "count": 36
+        }
+      ],
+      "rank": 40
+    },
+    {
+      "id": "머리",
+      "displayToken": "머리",
+      "tokenTitle": "머리",
+      "count": 150,
+      "ratio": 0.0768923199950789,
+      "monthBreakdown": [
+        {
+          "label": "2026.03",
+          "count": 82
+        },
+        {
+          "label": "2026.04",
+          "count": 68
+        }
+      ],
+      "rank": 41
+    },
+    {
+      "id": "시간",
+      "displayToken": "시간",
+      "tokenTitle": "시간",
+      "count": 149,
+      "ratio": 0.07637970452844503,
+      "monthBreakdown": [
+        {
+          "label": "2026.03",
+          "count": 61
+        },
+        {
+          "label": "2026.04",
+          "count": 88
+        }
+      ],
+      "rank": 42
+    },
+    {
+      "id": "오케",
+      "displayToken": "오케",
+      "tokenTitle": "오케",
+      "count": 147,
+      "ratio": 0.07535447359517732,
+      "monthBreakdown": [
+        {
+          "label": "2026.03",
+          "count": 80
+        },
+        {
+          "label": "2026.04",
+          "count": 67
+        }
+      ],
+      "rank": 43
+    },
+    {
+      "id": "치즈",
+      "displayToken": "치즈",
+      "tokenTitle": "치즈",
+      "count": 145,
+      "ratio": 0.0743292426619096,
+      "monthBreakdown": [
+        {
+          "label": "2026.03",
+          "count": 57
+        },
+        {
+          "label": "2026.04",
+          "count": 88
+        }
+      ],
+      "rank": 44
+    },
+    {
+      "id": "디진다",
+      "displayToken": "디진다",
+      "tokenTitle": "디진다",
+      "count": 144,
+      "ratio": 0.07381662719527574,
+      "monthBreakdown": [
+        {
+          "label": "2026.03",
+          "count": 119
+        },
+        {
+          "label": "2026.04",
+          "count": 25
+        }
+      ],
+      "rank": 45
+    },
+    {
+      "id": "ㄹㅇ이가",
+      "displayToken": "ㄹㅇ이가",
+      "tokenTitle": "ㄹㅇ이가",
+      "count": 143,
+      "ratio": 0.07330401172864187,
+      "monthBreakdown": [
+        {
+          "label": "2026.03",
+          "count": 123
+        },
+        {
+          "label": "2026.04",
+          "count": 20
+        }
+      ],
+      "rank": 46
+    },
+    {
+      "id": "방종뽀뽀",
+      "displayToken": "방종뽀뽀",
+      "tokenTitle": "방종뽀뽀",
+      "count": 141,
+      "ratio": 0.07227878079537416,
+      "monthBreakdown": [
+        {
+          "label": "2026.03",
+          "count": 71
+        },
+        {
+          "label": "2026.04",
+          "count": 70
+        }
+      ],
+      "rank": 47
+    },
+    {
+      "id": "어어",
+      "displayToken": "어어",
+      "tokenTitle": "어어",
+      "count": 141,
+      "ratio": 0.07227878079537416,
+      "monthBreakdown": [
+        {
+          "label": "2026.03",
+          "count": 73
+        },
+        {
+          "label": "2026.04",
+          "count": 68
+        }
+      ],
+      "rank": 48
+    },
+    {
+      "id": "목소리",
+      "displayToken": "목소리",
+      "tokenTitle": "목소리",
+      "count": 140,
+      "ratio": 0.0717661653287403,
+      "monthBreakdown": [
+        {
+          "label": "2026.03",
+          "count": 48
+        },
+        {
+          "label": "2026.04",
+          "count": 92
+        }
+      ],
+      "rank": 49
+    },
+    {
+      "id": "우린",
+      "displayToken": "우린",
+      "tokenTitle": "우린",
+      "count": 140,
+      "ratio": 0.0717661653287403,
+      "monthBreakdown": [
+        {
+          "label": "2026.03",
+          "count": 57
+        },
+        {
+          "label": "2026.04",
+          "count": 83
+        }
+      ],
+      "rank": 50
+    },
+    {
+      "id": "양파",
+      "displayToken": "양파",
+      "tokenTitle": "양파",
+      "count": 133,
+      "ratio": 0.06817785706230328,
+      "monthBreakdown": [
+        {
+          "label": "2026.03",
+          "count": 43
+        },
+        {
+          "label": "2026.04",
+          "count": 90
+        }
+      ],
+      "rank": 51
+    },
+    {
+      "id": "해야지",
+      "displayToken": "해야지",
+      "tokenTitle": "해야지",
+      "count": 133,
+      "ratio": 0.06817785706230328,
+      "monthBreakdown": [
+        {
+          "label": "2026.03",
+          "count": 76
+        },
+        {
+          "label": "2026.04",
+          "count": 57
+        }
+      ],
+      "rank": 52
+    },
+    {
+      "id": "우리도",
+      "displayToken": "우리도",
+      "tokenTitle": "우리도",
+      "count": 132,
+      "ratio": 0.06766524159566942,
+      "monthBreakdown": [
+        {
+          "label": "2026.03",
+          "count": 81
+        },
+        {
+          "label": "2026.04",
+          "count": 51
+        }
+      ],
+      "rank": 53
+    },
+    {
+      "id": "ㄴㄴ",
+      "displayToken": "ㄴㄴ",
+      "tokenTitle": "ㄴㄴ",
+      "count": 131,
+      "ratio": 0.06715262612903557,
+      "monthBreakdown": [
+        {
+          "label": "2026.03",
+          "count": 93
+        },
+        {
+          "label": "2026.04",
+          "count": 38
+        }
+      ],
+      "rank": 54
+    },
+    {
+      "id": "소리",
+      "displayToken": "소리",
+      "tokenTitle": "소리",
+      "count": 131,
+      "ratio": 0.06715262612903557,
+      "monthBreakdown": [
+        {
+          "label": "2026.03",
+          "count": 24
+        },
+        {
+          "label": "2026.04",
+          "count": 107
+        }
+      ],
+      "rank": 55
+    },
+    {
+      "id": "아오",
+      "displayToken": "아오",
+      "tokenTitle": "아오",
+      "count": 131,
+      "ratio": 0.06715262612903557,
+      "monthBreakdown": [
+        {
+          "label": "2026.03",
+          "count": 62
+        },
+        {
+          "label": "2026.04",
+          "count": 69
+        }
+      ],
+      "rank": 56
+    },
+    {
+      "id": "촉슈",
+      "displayToken": "촉슈",
+      "tokenTitle": "촉슈",
+      "count": 128,
+      "ratio": 0.06561477972913399,
+      "monthBreakdown": [
+        {
+          "label": "2026.03",
+          "count": 4
+        },
+        {
+          "label": "2026.04",
+          "count": 124
+        }
+      ],
+      "rank": 57
+    },
+    {
+      "id": "명조",
+      "displayToken": "명조",
+      "tokenTitle": "명조",
+      "count": 126,
+      "ratio": 0.06458954879586627,
+      "monthBreakdown": [
+        {
+          "label": "2026.03",
+          "count": 32
+        },
+        {
+          "label": "2026.04",
+          "count": 94
+        }
+      ],
+      "rank": 58
+    },
+    {
+      "id": "둘다",
+      "displayToken": "둘다",
+      "tokenTitle": "둘다",
+      "count": 124,
+      "ratio": 0.06356431786259856,
+      "monthBreakdown": [
+        {
+          "label": "2026.03",
+          "count": 90
+        },
+        {
+          "label": "2026.04",
+          "count": 34
+        }
+      ],
+      "rank": 59
+    },
+    {
+      "id": "저런",
+      "displayToken": "저런",
+      "tokenTitle": "저런",
+      "count": 121,
+      "ratio": 0.06202647146269697,
+      "monthBreakdown": [
+        {
+          "label": "2026.03",
+          "count": 51
+        },
+        {
+          "label": "2026.04",
+          "count": 70
+        }
+      ],
+      "rank": 60
+    },
+    {
+      "id": "저게",
+      "displayToken": "저게",
+      "tokenTitle": "저게",
+      "count": 118,
+      "ratio": 0.0604886250627954,
+      "monthBreakdown": [
+        {
+          "label": "2026.03",
+          "count": 42
+        },
+        {
+          "label": "2026.04",
+          "count": 76
+        }
+      ],
+      "rank": 61
+    },
+    {
+      "id": "다이",
+      "displayToken": "다이",
+      "tokenTitle": "다이",
+      "count": 115,
+      "ratio": 0.05895077866289382,
+      "monthBreakdown": [
+        {
+          "label": "2026.04",
+          "count": 115
+        }
+      ],
+      "rank": 62
+    },
+    {
+      "id": "제발",
+      "displayToken": "제발",
+      "tokenTitle": "제발",
+      "count": 114,
+      "ratio": 0.058438163196259954,
+      "monthBreakdown": [
+        {
+          "label": "2026.03",
+          "count": 71
+        },
+        {
+          "label": "2026.04",
+          "count": 43
+        }
+      ],
+      "rank": 63
+    },
+    {
+      "id": "와우",
+      "displayToken": "와우",
+      "tokenTitle": "와우",
+      "count": 113,
+      "ratio": 0.057925547729626096,
+      "monthBreakdown": [
+        {
+          "label": "2026.03",
+          "count": 44
+        },
+        {
+          "label": "2026.04",
+          "count": 69
+        }
+      ],
+      "rank": 64
+    },
+    {
+      "id": "네이버",
+      "displayToken": "네이버",
+      "tokenTitle": "네이버",
+      "count": 112,
+      "ratio": 0.05741293226299224,
+      "monthBreakdown": [
+        {
+          "label": "2026.03",
+          "count": 65
+        },
+        {
+          "label": "2026.04",
+          "count": 47
+        }
+      ],
+      "rank": 65
+    },
+    {
+      "id": "어흐어흐",
+      "displayToken": "어흐어흐",
+      "tokenTitle": "어흐어흐",
+      "count": 112,
+      "ratio": 0.05741293226299224,
+      "monthBreakdown": [
+        {
+          "label": "2026.03",
+          "count": 63
+        },
+        {
+          "label": "2026.04",
+          "count": 49
+        }
+      ],
+      "rank": 66
+    },
+    {
+      "id": "오오",
+      "displayToken": "오오",
+      "tokenTitle": "오오",
+      "count": 112,
+      "ratio": 0.05741293226299224,
+      "monthBreakdown": [
+        {
+          "label": "2026.03",
+          "count": 34
+        },
+        {
+          "label": "2026.04",
+          "count": 78
+        }
+      ],
+      "rank": 67
+    },
+    {
+      "id": "있는데",
+      "displayToken": "있는데",
+      "tokenTitle": "있는데",
+      "count": 112,
+      "ratio": 0.05741293226299224,
+      "monthBreakdown": [
+        {
+          "label": "2026.03",
+          "count": 51
+        },
+        {
+          "label": "2026.04",
+          "count": 61
+        }
+      ],
+      "rank": 68
+    },
+    {
+      "id": "카페",
+      "displayToken": "카페",
+      "tokenTitle": "카페",
+      "count": 112,
+      "ratio": 0.05741293226299224,
+      "monthBreakdown": [
+        {
+          "label": "2026.03",
+          "count": 48
+        },
+        {
+          "label": "2026.04",
+          "count": 64
+        }
+      ],
+      "rank": 69
+    },
+    {
+      "id": "맞지",
+      "displayToken": "맞지",
+      "tokenTitle": "맞지",
+      "count": 109,
+      "ratio": 0.05587508586309066,
+      "monthBreakdown": [
+        {
+          "label": "2026.03",
+          "count": 51
+        },
+        {
+          "label": "2026.04",
+          "count": 58
+        }
+      ],
+      "rank": 70
+    },
+    {
+      "id": "있어요",
+      "displayToken": "있어요",
+      "tokenTitle": "있어요",
+      "count": 109,
+      "ratio": 0.05587508586309066,
+      "monthBreakdown": [
+        {
+          "label": "2026.03",
+          "count": 40
+        },
+        {
+          "label": "2026.04",
+          "count": 69
+        }
+      ],
+      "rank": 71
+    },
+    {
+      "id": "맞긴해",
+      "displayToken": "맞긴해",
+      "tokenTitle": "맞긴해",
+      "count": 108,
+      "ratio": 0.0553624703964568,
+      "monthBreakdown": [
+        {
+          "label": "2026.03",
+          "count": 42
+        },
+        {
+          "label": "2026.04",
+          "count": 66
+        }
+      ],
+      "rank": 72
+    },
+    {
+      "id": "없어",
+      "displayToken": "없어",
+      "tokenTitle": "없어",
+      "count": 108,
+      "ratio": 0.0553624703964568,
+      "monthBreakdown": [
+        {
+          "label": "2026.03",
+          "count": 44
+        },
+        {
+          "label": "2026.04",
+          "count": 64
+        }
+      ],
+      "rank": 73
+    },
+    {
+      "id": "이름",
+      "displayToken": "이름",
+      "tokenTitle": "이름",
+      "count": 108,
+      "ratio": 0.0553624703964568,
+      "monthBreakdown": [
+        {
+          "label": "2026.03",
+          "count": 50
+        },
+        {
+          "label": "2026.04",
+          "count": 58
+        }
+      ],
+      "rank": 74
+    },
+    {
+      "id": "우리가",
+      "displayToken": "우리가",
+      "tokenTitle": "우리가",
+      "count": 107,
+      "ratio": 0.054849854929822944,
+      "monthBreakdown": [
+        {
+          "label": "2026.03",
+          "count": 39
+        },
+        {
+          "label": "2026.04",
+          "count": 68
+        }
+      ],
+      "rank": 75
+    },
+    {
+      "id": "계속",
+      "displayToken": "계속",
+      "tokenTitle": "계속",
+      "count": 105,
+      "ratio": 0.05382462399655522,
+      "monthBreakdown": [
+        {
+          "label": "2026.03",
+          "count": 39
+        },
+        {
+          "label": "2026.04",
+          "count": 66
+        }
+      ],
+      "rank": 76
+    },
+    {
+      "id": "새벽",
+      "displayToken": "새벽",
+      "tokenTitle": "새벽",
+      "count": 105,
+      "ratio": 0.05382462399655522,
+      "monthBreakdown": [
+        {
+          "label": "2026.03",
+          "count": 79
+        },
+        {
+          "label": "2026.04",
+          "count": 26
+        }
+      ],
+      "rank": 77
+    },
+    {
+      "id": "보통",
+      "displayToken": "보통",
+      "tokenTitle": "보통",
+      "count": 104,
+      "ratio": 0.053312008529921365,
+      "monthBreakdown": [
+        {
+          "label": "2026.03",
+          "count": 49
+        },
+        {
+          "label": "2026.04",
+          "count": 55
+        }
+      ],
+      "rank": 78
+    },
+    {
+      "id": "연리",
+      "displayToken": "연리",
+      "tokenTitle": "연리",
+      "count": 104,
+      "ratio": 0.053312008529921365,
+      "monthBreakdown": [
+        {
+          "label": "2026.03",
+          "count": 86
+        },
+        {
+          "label": "2026.04",
+          "count": 18
+        }
+      ],
+      "rank": 79
+    },
+    {
+      "id": "익명",
+      "displayToken": "익명",
+      "tokenTitle": "익명",
+      "count": 104,
+      "ratio": 0.053312008529921365,
+      "monthBreakdown": [
+        {
+          "label": "2026.03",
+          "count": 48
+        },
+        {
+          "label": "2026.04",
+          "count": 56
+        }
+      ],
+      "rank": 80
+    },
+    {
+      "id": "쟈쟈쟈",
+      "displayToken": "쟈쟈쟈",
+      "tokenTitle": "쟈쟈쟈",
+      "count": 103,
+      "ratio": 0.05279939306328751,
+      "monthBreakdown": [
+        {
+          "label": "2026.03",
+          "count": 39
+        },
+        {
+          "label": "2026.04",
+          "count": 64
+        }
+      ],
+      "rank": 81
+    },
+    {
+      "id": "이짜나요",
+      "displayToken": "이짜나요",
+      "tokenTitle": "이짜나요",
+      "count": 102,
+      "ratio": 0.05228677759665365,
+      "monthBreakdown": [
+        {
+          "label": "2026.03",
+          "count": 15
+        },
+        {
+          "label": "2026.04",
+          "count": 87
+        }
+      ],
+      "rank": 82
+    },
+    {
+      "id": "ㅊㅊㅊㅊ",
+      "displayToken": "ㅊㅊㅊㅊ",
+      "tokenTitle": "ㅊㅊㅊㅊ",
+      "count": 101,
+      "ratio": 0.051774162130019785,
+      "monthBreakdown": [
+        {
+          "label": "2026.03",
+          "count": 57
+        },
+        {
+          "label": "2026.04",
+          "count": 44
+        }
+      ],
+      "rank": 83
+    },
+    {
+      "id": "돈까스",
+      "displayToken": "돈까스",
+      "tokenTitle": "돈까스",
+      "count": 100,
+      "ratio": 0.05126154666338593,
+      "monthBreakdown": [
+        {
+          "label": "2026.03",
+          "count": 86
+        },
+        {
+          "label": "2026.04",
+          "count": 14
+        }
+      ],
+      "rank": 84
+    },
+    {
+      "id": "유튜브",
+      "displayToken": "유튜브",
+      "tokenTitle": "유튜브",
+      "count": 100,
+      "ratio": 0.05126154666338593,
+      "monthBreakdown": [
+        {
+          "label": "2026.03",
+          "count": 31
+        },
+        {
+          "label": "2026.04",
+          "count": 69
+        }
+      ],
+      "rank": 85
+    },
+    {
+      "id": "보면",
+      "displayToken": "보면",
+      "tokenTitle": "보면",
+      "count": 99,
+      "ratio": 0.05074893119675207,
+      "monthBreakdown": [
+        {
+          "label": "2026.03",
+          "count": 37
+        },
+        {
+          "label": "2026.04",
+          "count": 62
+        }
+      ],
+      "rank": 86
+    },
+    {
+      "id": "봄냥",
+      "displayToken": "봄냥",
+      "tokenTitle": "봄냥",
+      "count": 99,
+      "ratio": 0.05074893119675207,
+      "monthBreakdown": [
+        {
+          "label": "2026.03",
+          "count": 68
+        },
+        {
+          "label": "2026.04",
+          "count": 31
+        }
+      ],
+      "rank": 87
+    },
+    {
+      "id": "설립자",
+      "displayToken": "설립자",
+      "tokenTitle": "설립자",
+      "count": 99,
+      "ratio": 0.05074893119675207,
+      "monthBreakdown": [
+        {
+          "label": "2026.03",
+          "count": 93
+        },
+        {
+          "label": "2026.04",
+          "count": 6
+        }
+      ],
+      "rank": 88
+    },
+    {
+      "id": "ㄲㅂ",
+      "displayToken": "ㄲㅂ",
+      "tokenTitle": "ㄲㅂ",
+      "count": 98,
+      "ratio": 0.050236315730118206,
+      "monthBreakdown": [
+        {
+          "label": "2026.03",
+          "count": 41
+        },
+        {
+          "label": "2026.04",
+          "count": 57
+        }
+      ],
+      "rank": 89
+    },
+    {
+      "id": "레전드",
+      "displayToken": "레전드",
+      "tokenTitle": "레전드",
+      "count": 98,
+      "ratio": 0.050236315730118206,
+      "monthBreakdown": [
+        {
+          "label": "2026.03",
+          "count": 46
+        },
+        {
+          "label": "2026.04",
+          "count": 52
+        }
+      ],
+      "rank": 90
+    },
+    {
+      "id": "설마",
+      "displayToken": "설마",
+      "tokenTitle": "설마",
+      "count": 98,
+      "ratio": 0.050236315730118206,
+      "monthBreakdown": [
+        {
+          "label": "2026.03",
+          "count": 52
+        },
+        {
+          "label": "2026.04",
+          "count": 46
+        }
+      ],
+      "rank": 91
+    },
+    {
+      "id": "안녕하세요",
+      "displayToken": "안녕하세요",
+      "tokenTitle": "안녕하세요",
+      "count": 98,
+      "ratio": 0.050236315730118206,
+      "monthBreakdown": [
+        {
+          "label": "2026.03",
+          "count": 36
+        },
+        {
+          "label": "2026.04",
+          "count": 62
+        }
+      ],
+      "rank": 92
+    },
+    {
+      "id": "어디",
+      "displayToken": "어디",
+      "tokenTitle": "어디",
+      "count": 98,
+      "ratio": 0.050236315730118206,
+      "monthBreakdown": [
+        {
+          "label": "2026.03",
+          "count": 40
+        },
+        {
+          "label": "2026.04",
+          "count": 58
+        }
+      ],
+      "rank": 93
+    },
+    {
+      "id": "여긴",
+      "displayToken": "여긴",
+      "tokenTitle": "여긴",
+      "count": 98,
+      "ratio": 0.050236315730118206,
+      "monthBreakdown": [
+        {
+          "label": "2026.03",
+          "count": 61
+        },
+        {
+          "label": "2026.04",
+          "count": 37
+        }
+      ],
+      "rank": 94
+    },
+    {
+      "id": "ㅊㅊㅊㅊㅊ",
+      "displayToken": "ㅊㅊㅊㅊㅊ",
+      "tokenTitle": "ㅊㅊㅊㅊㅊ",
+      "count": 96,
+      "ratio": 0.04921108479685049,
+      "monthBreakdown": [
+        {
+          "label": "2026.03",
+          "count": 56
+        },
+        {
+          "label": "2026.04",
+          "count": 40
+        }
+      ],
+      "rank": 95
+    },
+    {
+      "id": "사람이",
+      "displayToken": "사람이",
+      "tokenTitle": "사람이",
+      "count": 96,
+      "ratio": 0.04921108479685049,
+      "monthBreakdown": [
+        {
+          "label": "2026.03",
+          "count": 42
+        },
+        {
+          "label": "2026.04",
+          "count": 54
+        }
+      ],
+      "rank": 96
+    },
+    {
+      "id": "제일",
+      "displayToken": "제일",
+      "tokenTitle": "제일",
+      "count": 96,
+      "ratio": 0.04921108479685049,
+      "monthBreakdown": [
+        {
+          "label": "2026.03",
+          "count": 33
+        },
+        {
+          "label": "2026.04",
+          "count": 63
+        }
+      ],
+      "rank": 97
+    },
+    {
+      "id": "다른",
+      "displayToken": "다른",
+      "tokenTitle": "다른",
+      "count": 95,
+      "ratio": 0.04869846933021663,
+      "monthBreakdown": [
+        {
+          "label": "2026.03",
+          "count": 28
+        },
+        {
+          "label": "2026.04",
+          "count": 67
+        }
+      ],
+      "rank": 98
+    },
+    {
+      "id": "분내",
+      "displayToken": "분내",
+      "tokenTitle": "분내",
+      "count": 95,
+      "ratio": 0.04869846933021663,
+      "monthBreakdown": [
+        {
+          "label": "2026.03",
+          "count": 45
+        },
+        {
+          "label": "2026.04",
+          "count": 50
+        }
+      ],
+      "rank": 99
+    },
+    {
+      "id": "아냐",
+      "displayToken": "아냐",
+      "tokenTitle": "아냐",
+      "count": 95,
+      "ratio": 0.04869846933021663,
+      "monthBreakdown": [
+        {
+          "label": "2026.03",
+          "count": 30
+        },
+        {
+          "label": "2026.04",
+          "count": 65
+        }
+      ],
+      "rank": 100
+    },
+    {
+      "id": "다음",
+      "displayToken": "다음",
+      "tokenTitle": "다음",
+      "count": 93,
+      "ratio": 0.04767323839694891,
+      "monthBreakdown": [
+        {
+          "label": "2026.03",
+          "count": 40
+        },
+        {
+          "label": "2026.04",
+          "count": 53
+        }
+      ],
+      "rank": 101
+    },
+    {
+      "id": "드디어",
+      "displayToken": "드디어",
+      "tokenTitle": "드디어",
+      "count": 93,
+      "ratio": 0.04767323839694891,
+      "monthBreakdown": [
+        {
+          "label": "2026.03",
+          "count": 29
+        },
+        {
+          "label": "2026.04",
+          "count": 64
+        }
+      ],
+      "rank": 102
+    },
+    {
+      "id": "누구지",
+      "displayToken": "누구지",
+      "tokenTitle": "누구지",
+      "count": 92,
+      "ratio": 0.04716062293031505,
+      "monthBreakdown": [
+        {
+          "label": "2026.03",
+          "count": 78
+        },
+        {
+          "label": "2026.04",
+          "count": 14
+        }
+      ],
+      "rank": 103
+    },
+    {
+      "id": "뭐지",
+      "displayToken": "뭐지",
+      "tokenTitle": "뭐지",
+      "count": 90,
+      "ratio": 0.04613539199704733,
+      "monthBreakdown": [
+        {
+          "label": "2026.03",
+          "count": 37
+        },
+        {
+          "label": "2026.04",
+          "count": 53
+        }
+      ],
+      "rank": 104
+    },
+    {
+      "id": "슬슬",
+      "displayToken": "슬슬",
+      "tokenTitle": "슬슬",
+      "count": 90,
+      "ratio": 0.04613539199704733,
+      "monthBreakdown": [
+        {
+          "label": "2026.03",
+          "count": 35
+        },
+        {
+          "label": "2026.04",
+          "count": 55
+        }
+      ],
+      "rank": 105
+    },
+    {
+      "id": "같은",
+      "displayToken": "같은",
+      "tokenTitle": "같은",
+      "count": 89,
+      "ratio": 0.045622776530413474,
+      "monthBreakdown": [
+        {
+          "label": "2026.03",
+          "count": 34
+        },
+        {
+          "label": "2026.04",
+          "count": 55
+        }
+      ],
+      "rank": 106
+    },
+    {
+      "id": "느낌",
+      "displayToken": "느낌",
+      "tokenTitle": "느낌",
+      "count": 89,
+      "ratio": 0.045622776530413474,
+      "monthBreakdown": [
+        {
+          "label": "2026.03",
+          "count": 35
+        },
+        {
+          "label": "2026.04",
+          "count": 54
+        }
+      ],
+      "rank": 107
+    },
+    {
+      "id": "데굴",
+      "displayToken": "데굴",
+      "tokenTitle": "데굴",
+      "count": 88,
+      "ratio": 0.045110161063779616,
+      "monthBreakdown": [
+        {
+          "label": "2026.03",
+          "count": 73
+        },
+        {
+          "label": "2026.04",
+          "count": 15
+        }
+      ],
+      "rank": 108
+    },
+    {
+      "id": "영도",
+      "displayToken": "영도",
+      "tokenTitle": "영도",
+      "count": 88,
+      "ratio": 0.045110161063779616,
+      "monthBreakdown": [
+        {
+          "label": "2026.03",
+          "count": 17
+        },
+        {
+          "label": "2026.04",
+          "count": 71
+        }
+      ],
+      "rank": 109
+    },
+    {
+      "id": "이거지",
+      "displayToken": "이거지",
+      "tokenTitle": "이거지",
+      "count": 88,
+      "ratio": 0.045110161063779616,
+      "monthBreakdown": [
+        {
+          "label": "2026.03",
+          "count": 62
+        },
+        {
+          "label": "2026.04",
+          "count": 26
+        }
+      ],
+      "rank": 110
+    },
+    {
+      "id": "재미뗘",
+      "displayToken": "재미뗘",
+      "tokenTitle": "재미뗘",
+      "count": 88,
+      "ratio": 0.045110161063779616,
+      "monthBreakdown": [
+        {
+          "label": "2026.03",
+          "count": 70
+        },
+        {
+          "label": "2026.04",
+          "count": 18
+        }
+      ],
+      "rank": 111
+    },
+    {
+      "id": "좋지",
+      "displayToken": "좋지",
+      "tokenTitle": "좋지",
+      "count": 88,
+      "ratio": 0.045110161063779616,
+      "monthBreakdown": [
+        {
+          "label": "2026.03",
+          "count": 29
+        },
+        {
+          "label": "2026.04",
+          "count": 59
+        }
+      ],
+      "rank": 112
+    },
+    {
+      "id": "드가자",
+      "displayToken": "드가자",
+      "tokenTitle": "드가자",
+      "count": 87,
+      "ratio": 0.04459754559714576,
+      "monthBreakdown": [
+        {
+          "label": "2026.03",
+          "count": 45
+        },
+        {
+          "label": "2026.04",
+          "count": 42
+        }
+      ],
+      "rank": 113
+    },
+    {
+      "id": "붕스",
+      "displayToken": "붕스",
+      "tokenTitle": "붕스",
+      "count": 87,
+      "ratio": 0.04459754559714576,
+      "monthBreakdown": [
+        {
+          "label": "2026.03",
+          "count": 31
+        },
+        {
+          "label": "2026.04",
+          "count": 56
+        }
+      ],
+      "rank": 114
+    },
+    {
+      "id": "비난",
+      "displayToken": "비난",
+      "tokenTitle": "비난",
+      "count": 87,
+      "ratio": 0.04459754559714576,
+      "monthBreakdown": [
+        {
+          "label": "2026.03",
+          "count": 20
+        },
+        {
+          "label": "2026.04",
+          "count": 67
+        }
+      ],
+      "rank": 115
+    },
+    {
+      "id": "안돼",
+      "displayToken": "안돼",
+      "tokenTitle": "안돼",
+      "count": 87,
+      "ratio": 0.04459754559714576,
+      "monthBreakdown": [
+        {
+          "label": "2026.03",
+          "count": 44
+        },
+        {
+          "label": "2026.04",
+          "count": 43
+        }
+      ],
+      "rank": 116
+    },
+    {
+      "id": "아닌데",
+      "displayToken": "아닌데",
+      "tokenTitle": "아닌데",
+      "count": 86,
+      "ratio": 0.0440849301305119,
+      "monthBreakdown": [
+        {
+          "label": "2026.03",
+          "count": 35
+        },
+        {
+          "label": "2026.04",
+          "count": 51
+        }
+      ],
+      "rank": 117
+    },
+    {
+      "id": "완전",
+      "displayToken": "완전",
+      "tokenTitle": "완전",
+      "count": 86,
+      "ratio": 0.0440849301305119,
+      "monthBreakdown": [
+        {
+          "label": "2026.03",
+          "count": 18
+        },
+        {
+          "label": "2026.04",
+          "count": 68
+        }
+      ],
+      "rank": 118
+    },
+    {
+      "id": "ㄱㄴ",
+      "displayToken": "ㄱㄴ",
+      "tokenTitle": "ㄱㄴ",
+      "count": 85,
+      "ratio": 0.04357231466387804,
+      "monthBreakdown": [
+        {
+          "label": "2026.03",
+          "count": 45
+        },
+        {
+          "label": "2026.04",
+          "count": 40
+        }
+      ],
+      "rank": 119
+    },
+    {
+      "id": "어머",
+      "displayToken": "어머",
+      "tokenTitle": "어머",
+      "count": 85,
+      "ratio": 0.04357231466387804,
+      "monthBreakdown": [
+        {
+          "label": "2026.03",
+          "count": 44
+        },
+        {
+          "label": "2026.04",
+          "count": 41
+        }
+      ],
+      "rank": 120
+    },
+    {
+      "id": "처음",
+      "displayToken": "처음",
+      "tokenTitle": "처음",
+      "count": 85,
+      "ratio": 0.04357231466387804,
+      "monthBreakdown": [
+        {
+          "label": "2026.03",
+          "count": 31
+        },
+        {
+          "label": "2026.04",
+          "count": 54
+        }
+      ],
+      "rank": 121
+    },
+    {
+      "id": "오호",
+      "displayToken": "오호",
+      "tokenTitle": "오호",
+      "count": 84,
+      "ratio": 0.04305969919724418,
+      "monthBreakdown": [
+        {
+          "label": "2026.03",
+          "count": 32
+        },
+        {
+          "label": "2026.04",
+          "count": 52
+        }
+      ],
+      "rank": 122
+    },
+    {
+      "id": "캬ㅑㅑㅑㅑㅑ",
+      "displayToken": "캬ㅑㅑㅑㅑㅑ",
+      "tokenTitle": "캬ㅑㅑㅑㅑㅑ",
+      "count": 84,
+      "ratio": 0.04305969919724418,
+      "monthBreakdown": [
+        {
+          "label": "2026.03",
+          "count": 57
+        },
+        {
+          "label": "2026.04",
+          "count": 27
+        }
+      ],
+      "rank": 123
+    },
+    {
+      "id": "하죠",
+      "displayToken": "하죠",
+      "tokenTitle": "하죠",
+      "count": 84,
+      "ratio": 0.04305969919724418,
+      "monthBreakdown": [
+        {
+          "label": "2026.03",
+          "count": 26
+        },
+        {
+          "label": "2026.04",
+          "count": 58
+        }
+      ],
+      "rank": 124
+    },
+    {
+      "id": "먼저",
+      "displayToken": "먼저",
+      "tokenTitle": "먼저",
+      "count": 83,
+      "ratio": 0.04254708373061032,
+      "monthBreakdown": [
+        {
+          "label": "2026.03",
+          "count": 39
+        },
+        {
+          "label": "2026.04",
+          "count": 44
+        }
+      ],
+      "rank": 125
+    },
+    {
+      "id": "미션",
+      "displayToken": "미션",
+      "tokenTitle": "미션",
+      "count": 83,
+      "ratio": 0.04254708373061032,
+      "monthBreakdown": [
+        {
+          "label": "2026.03",
+          "count": 24
+        },
+        {
+          "label": "2026.04",
+          "count": 59
+        }
+      ],
+      "rank": 126
+    },
+    {
+      "id": "시청자",
+      "displayToken": "시청자",
+      "tokenTitle": "시청자",
+      "count": 83,
+      "ratio": 0.04254708373061032,
+      "monthBreakdown": [
+        {
+          "label": "2026.03",
+          "count": 63
+        },
+        {
+          "label": "2026.04",
+          "count": 20
+        }
+      ],
+      "rank": 127
+    },
+    {
+      "id": "애교",
+      "displayToken": "애교",
+      "tokenTitle": "애교",
+      "count": 83,
+      "ratio": 0.04254708373061032,
+      "monthBreakdown": [
+        {
+          "label": "2026.03",
+          "count": 22
+        },
+        {
+          "label": "2026.04",
+          "count": 61
+        }
+      ],
+      "rank": 128
+    },
+    {
+      "id": "왔다",
+      "displayToken": "왔다",
+      "tokenTitle": "왔다",
+      "count": 83,
+      "ratio": 0.04254708373061032,
+      "monthBreakdown": [
+        {
+          "label": "2026.03",
+          "count": 51
+        },
+        {
+          "label": "2026.04",
+          "count": 32
+        }
+      ],
+      "rank": 129
+    },
+    {
+      "id": "이것",
+      "displayToken": "이것",
+      "tokenTitle": "이것",
+      "count": 83,
+      "ratio": 0.04254708373061032,
+      "monthBreakdown": [
+        {
+          "label": "2026.03",
+          "count": 40
+        },
+        {
+          "label": "2026.04",
+          "count": 43
+        }
+      ],
+      "rank": 130
+    },
+    {
+      "id": "거의",
+      "displayToken": "거의",
+      "tokenTitle": "거의",
+      "count": 82,
+      "ratio": 0.04203446826397646,
+      "monthBreakdown": [
+        {
+          "label": "2026.03",
+          "count": 29
+        },
+        {
+          "label": "2026.04",
+          "count": 53
+        }
+      ],
+      "rank": 131
+    },
+    {
+      "id": "맞네",
+      "displayToken": "맞네",
+      "tokenTitle": "맞네",
+      "count": 82,
+      "ratio": 0.04203446826397646,
+      "monthBreakdown": [
+        {
+          "label": "2026.03",
+          "count": 32
+        },
+        {
+          "label": "2026.04",
+          "count": 50
+        }
+      ],
+      "rank": 132
+    },
+    {
+      "id": "쟈쟈쟈쟈",
+      "displayToken": "쟈쟈쟈쟈",
+      "tokenTitle": "쟈쟈쟈쟈",
+      "count": 81,
+      "ratio": 0.0415218527973426,
+      "monthBreakdown": [
+        {
+          "label": "2026.03",
+          "count": 36
+        },
+        {
+          "label": "2026.04",
+          "count": 45
+        }
+      ],
+      "rank": 133
+    },
+    {
+      "id": "친구들",
+      "displayToken": "친구들",
+      "tokenTitle": "친구들",
+      "count": 81,
+      "ratio": 0.0415218527973426,
+      "monthBreakdown": [
+        {
+          "label": "2026.03",
+          "count": 42
+        },
+        {
+          "label": "2026.04",
+          "count": 39
+        }
+      ],
+      "rank": 134
+    },
+    {
+      "id": "그런거",
+      "displayToken": "그런거",
+      "tokenTitle": "그런거",
+      "count": 80,
+      "ratio": 0.04100923733070874,
+      "monthBreakdown": [
+        {
+          "label": "2026.03",
+          "count": 33
+        },
+        {
+          "label": "2026.04",
+          "count": 47
+        }
+      ],
+      "rank": 135
+    },
+    {
+      "id": "맞다",
+      "displayToken": "맞다",
+      "tokenTitle": "맞다",
+      "count": 80,
+      "ratio": 0.04100923733070874,
+      "monthBreakdown": [
+        {
+          "label": "2026.03",
+          "count": 25
+        },
+        {
+          "label": "2026.04",
+          "count": 55
+        }
+      ],
+      "rank": 136
+    },
+    {
+      "id": "그걸",
+      "displayToken": "그걸",
+      "tokenTitle": "그걸",
+      "count": 79,
+      "ratio": 0.040496621864074885,
+      "monthBreakdown": [
+        {
+          "label": "2026.03",
+          "count": 37
+        },
+        {
+          "label": "2026.04",
+          "count": 42
+        }
+      ],
+      "rank": 137
+    },
+    {
+      "id": "본인",
+      "displayToken": "본인",
+      "tokenTitle": "본인",
+      "count": 79,
+      "ratio": 0.040496621864074885,
+      "monthBreakdown": [
+        {
+          "label": "2026.03",
+          "count": 49
+        },
+        {
+          "label": "2026.04",
+          "count": 30
+        }
+      ],
+      "rank": 138
+    },
+    {
+      "id": "있네",
+      "displayToken": "있네",
+      "tokenTitle": "있네",
+      "count": 79,
+      "ratio": 0.040496621864074885,
+      "monthBreakdown": [
+        {
+          "label": "2026.03",
+          "count": 31
+        },
+        {
+          "label": "2026.04",
+          "count": 48
+        }
+      ],
+      "rank": 139
+    },
+    {
+      "id": "그러면",
+      "displayToken": "그러면",
+      "tokenTitle": "그러면",
+      "count": 78,
+      "ratio": 0.03998400639744103,
+      "monthBreakdown": [
+        {
+          "label": "2026.03",
+          "count": 38
+        },
+        {
+          "label": "2026.04",
+          "count": 40
+        }
+      ],
+      "rank": 140
+    }
+  ]
+}

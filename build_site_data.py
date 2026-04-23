@@ -68,6 +68,14 @@ def format_bucket_label(bucket_key: str, bucket_minutes: int) -> str:
     return f"{bucket_dt.strftime('%H:%M')} - {end_dt.strftime('%H:%M')}"
 
 
+def format_issue_label(value: str) -> str:
+    text = normalize_text(value)
+    match = re.match(r"^(\d{4})-(\d{2})$", text)
+    if match:
+        return f"{match.group(1)}.{match.group(2)}"
+    return text
+
+
 def ensure_log_dir() -> None:
     if not LOG_DIR.exists():
         raise FileNotFoundError(f"월별 로그 폴더를 찾지 못했습니다: {LOG_DIR}")
@@ -377,6 +385,13 @@ def merge_bucket_counts(target: dict[str, int], source) -> None:
         target[bucket_text] = int(target.get(bucket_text) or 0) + int(raw_count or 0)
 
 
+def merge_text_list(target: list[str], values) -> None:
+    for value in list(values or []):
+        text = normalize_text(value)
+        if text and text not in target:
+            target.append(text)
+
+
 def merge_public_search_items(search_items: list[dict], merge_groups: list[dict], bucket_minutes: int) -> list[dict]:
     if not merge_groups:
         return search_items
@@ -496,6 +511,101 @@ def build_public_top_words(search_items: list[dict], excluded_words: set[str], l
         if len(rows) >= limit:
             break
     return rows
+
+
+def build_public_game_payload(report_paths: list[Path]) -> dict:
+    merge_groups = parse_public_word_merges()
+    excluded_words = parse_public_word_excludes()
+    aggregate_rows: dict[str, dict] = {}
+    source_labels: list[str] = []
+    total_count = 0
+
+    for path in sorted(report_paths):
+        payload = load_payload(path)
+        label = normalize_text(payload.get("label"), path.stem)
+        if label and label not in source_labels:
+            source_labels.append(label)
+        summary = payload.get("summary") if isinstance(payload.get("summary"), dict) else {}
+        advanced = summary.get("advancedInsights") if isinstance(summary.get("advancedInsights"), dict) else {}
+        bucket_minutes = int(advanced.get("bucketMinutes") or 2)
+        search_items = build_word_search_items(summary, bucket_minutes)
+        search_items = merge_public_search_items(search_items, merge_groups, bucket_minutes)
+
+        for item in search_items:
+            if not isinstance(item, dict) or is_public_word_excluded(item, excluded_words):
+                continue
+            display_token_value = normalize_text(item.get("displayToken"), item.get("token"))
+            lookup_key = normalize_lookup_token(display_token_value)
+            count = int(item.get("count") or 0)
+            if not lookup_key or count <= 0:
+                continue
+
+            total_count += count
+            row = aggregate_rows.get(lookup_key)
+            if row is None:
+                row = {
+                    "id": lookup_key,
+                    "displayToken": display_token_value,
+                    "tokenTitle": normalize_text(item.get("tokenTitle"), display_token_value),
+                    "count": 0,
+                    "aliases": [],
+                    "monthCounts": {},
+                }
+                aggregate_rows[lookup_key] = row
+
+            row["count"] += count
+            row["monthCounts"][label] = int(row["monthCounts"].get(label) or 0) + count
+            merge_text_list(row["aliases"], [display_token_value, *(item.get("aliases") or [])])
+            if len(normalize_text(item.get("tokenTitle"))) > len(normalize_text(row.get("tokenTitle"))):
+                row["tokenTitle"] = normalize_text(item.get("tokenTitle"), row["tokenTitle"])
+
+    rows: list[dict] = []
+    for item in aggregate_rows.values():
+        aliases = list(item.get("aliases") or [])
+        if aliases:
+            item["tokenTitle"] = "+".join(aliases)
+        else:
+            item["tokenTitle"] = normalize_text(item.get("tokenTitle"), item.get("displayToken"))
+        count = int(item.get("count") or 0)
+        if count < 20:
+            continue
+        month_breakdown = [
+            {
+                "label": format_issue_label(label),
+                "count": int(item.get("monthCounts", {}).get(label) or 0),
+            }
+            for label in source_labels
+            if int(item.get("monthCounts", {}).get(label) or 0) > 0
+        ]
+        rows.append(
+            {
+                "id": normalize_text(item.get("id")),
+                "displayToken": normalize_text(item.get("displayToken")),
+                "tokenTitle": normalize_text(item.get("tokenTitle"), item.get("displayToken")),
+                "count": count,
+                "ratio": ((count / total_count) * 100.0) if total_count > 0 else 0.0,
+                "monthBreakdown": month_breakdown,
+            }
+        )
+
+    rows.sort(
+        key=lambda item: (
+            -int(item.get("count") or 0),
+            normalize_lookup_token(item.get("displayToken")),
+        )
+    )
+
+    for index, row in enumerate(rows, start=1):
+        row["rank"] = index
+
+    issue_labels = [format_issue_label(label) for label in source_labels if format_issue_label(label)]
+    return {
+        "title": "더 많이 더 적게",
+        "subtitle": "전체 월간 로그 채팅 단어 게임",
+        "issueLabel": " + ".join(issue_labels),
+        "sourceIssues": issue_labels,
+        "items": rows[:140],
+    }
 
 
 def build_content_version() -> str:
@@ -633,7 +743,8 @@ def build_site() -> None:
 
     reports_index: list[dict] = []
     content_version = build_content_version()
-    for index, path in enumerate(list_report_paths(), start=1):
+    report_paths = list_report_paths()
+    for index, path in enumerate(report_paths, start=1):
         payload = load_payload(path)
         file_suffix = build_report_file_suffix(index, payload, content_version)
         report_file = f"report-{file_suffix}.json"
@@ -652,7 +763,9 @@ def build_site() -> None:
         reports_index.append(index_payload)
         write_json(DOCS_REPORT_DIR / report_file, report_payload)
         write_json(DOCS_SEARCH_DIR / word_search_file, search_payload)
-    write_json(DOCS_DATA_DIR / "reports.json", {"reports": reports_index})
+    game_file = f"game-{content_version}.json"
+    write_json(DOCS_DATA_DIR / game_file, build_public_game_payload(report_paths))
+    write_json(DOCS_DATA_DIR / "reports.json", {"reports": reports_index, "gameFile": f"./data/{game_file}"})
 
 
 def parse_args() -> argparse.Namespace:
