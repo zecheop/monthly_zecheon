@@ -13,56 +13,48 @@
       "token": "곤듀+곤듀가 외 1개",
       "displayToken": "곤듀",
       "tokenTitle": "곤듀+곤듀가+곤듀를",
-      "count": 2316,
-      "ratio": 2.1,
+      "count": 2640,
+      "ratio": 2.183785393453607,
       "imageUrl": ""
     },
     {
       "token": "ㅇㅉㄴㅇ",
       "displayToken": "ㅇㅉㄴㅇ",
       "tokenTitle": "ㅇㅉㄴㅇ",
-      "count": 549,
-      "ratio": 0.5,
+      "count": 552,
+      "ratio": 0.4566096731766633,
       "imageUrl": ""
     },
     {
       "token": "재하+재하재하 외 1개",
       "displayToken": "재하",
       "tokenTitle": "재하+재하재하+쟈쟈",
-      "count": 538,
-      "ratio": 0.49,
+      "count": 548,
+      "ratio": 0.4533009074290063,
       "imageUrl": ""
     },
     {
       "token": "오늘",
       "displayToken": "오늘",
       "tokenTitle": "오늘",
-      "count": 403,
-      "ratio": 0.37,
+      "count": 462,
+      "ratio": 0.38216244385438125,
       "imageUrl": ""
     },
     {
       "token": "재바+재바재바",
       "displayToken": "재바",
       "tokenTitle": "재바+재바재바",
-      "count": 295,
-      "ratio": 0.27,
-      "imageUrl": ""
-    },
-    {
-      "token": "그럼",
-      "displayToken": "그럼",
-      "tokenTitle": "그럼",
-      "count": 287,
-      "ratio": 0.26,
+      "count": 300,
+      "ratio": 0.24815743107427352,
       "imageUrl": ""
     },
     {
       "token": "아무래도",
       "displayToken": "아무래도",
       "tokenTitle": "아무래도",
-      "count": 275,
-      "ratio": 0.25,
+      "count": 293,
+      "ratio": 0.2423670910158738,
       "imageUrl": ""
     },
     {
@@ -70,63 +62,15 @@
       "displayToken": "ㅔㅔ",
       "tokenTitle": "ㅔㅔ",
       "count": 274,
-      "ratio": 0.25,
-      "imageUrl": ""
-    },
-    {
-      "token": "역시",
-      "displayToken": "역시",
-      "tokenTitle": "역시",
-      "count": 207,
-      "ratio": 0.19,
-      "imageUrl": ""
-    },
-    {
-      "token": "저거",
-      "displayToken": "저거",
-      "tokenTitle": "저거",
-      "count": 195,
-      "ratio": 0.18,
-      "imageUrl": ""
-    },
-    {
-      "token": "그건",
-      "displayToken": "그건",
-      "tokenTitle": "그건",
-      "count": 190,
-      "ratio": 0.17,
-      "imageUrl": ""
-    },
-    {
-      "token": "아직",
-      "displayToken": "아직",
-      "tokenTitle": "아직",
-      "count": 169,
-      "ratio": 0.15,
-      "imageUrl": ""
-    },
-    {
-      "token": "일단",
-      "displayToken": "일단",
-      "tokenTitle": "일단",
-      "count": 162,
-      "ratio": 0.15,
-      "imageUrl": ""
-    },
-    {
-      "token": "이건",
-      "displayToken": "이건",
-      "tokenTitle": "이건",
-      "count": 158,
-      "ratio": 0.14,
+      "ratio": 0.22665045371450315,
       "imageUrl": ""
     },
     {
       "token": "뭐야",
       "displayToken": "뭐야",
       "tokenTitle": "뭐야",
-      "count": 156,
-      "ratio": 0.14,
+      "count": 173,
+      "ratio": 0.1431041185861644,
       "imageUrl": ""
     },
     {
@@ -134,39 +78,95 @@
       "displayToken": "ㄱㅇㅇ",
       "tokenTitle": "ㄱㅇㅇ",
       "count": 154,
-      "ratio": 0.14,
+      "ratio": 0.12738748128479374,
       "imageUrl": ""
     },
     {
-      "token": "어우",
-      "displayToken": "어우",
-      "tokenTitle": "어우",
-      "count": 142,
-      "ratio": 0.13,
+      "token": "한번",
+      "displayToken": "한번",
+      "tokenTitle": "한번",
+      "count": 154,
+      "ratio": 0.12738748128479374,
       "imageUrl": ""
     },
     {
       "token": "노래",
       "displayToken": "노래",
       "tokenTitle": "노래",
-      "count": 142,
-      "ratio": 0.13,
+      "count": 151,
+      "ratio": 0.124905906974051,
       "imageUrl": ""
     },
     {
-      "token": "그래도",
-      "displayToken": "그래도",
-      "tokenTitle": "그래도",
-      "count": 136,
-      "ratio": 0.12,
+      "token": "구독",
+      "displayToken": "구독",
+      "tokenTitle": "구독",
+      "count": 150,
+      "ratio": 0.12407871553713676,
       "imageUrl": ""
     },
     {
-      "token": "그래서",
-      "displayToken": "그래서",
-      "tokenTitle": "그래서",
-      "count": 134,
-      "ratio": 0.12,
+      "token": "임재천",
+      "displayToken": "임재천",
+      "tokenTitle": "임재천",
+      "count": 148,
+      "ratio": 0.12242433266330827,
+      "imageUrl": ""
+    },
+    {
+      "token": "어우",
+      "displayToken": "어우",
+      "tokenTitle": "어우",
+      "count": 144,
+      "ratio": 0.1191155669156513,
+      "imageUrl": ""
+    },
+    {
+      "token": "방송",
+      "displayToken": "방송",
+      "tokenTitle": "방송",
+      "count": 140,
+      "ratio": 0.1158068011679943,
+      "imageUrl": ""
+    },
+    {
+      "token": "어흐",
+      "displayToken": "어흐",
+      "tokenTitle": "어흐",
+      "count": 140,
+      "ratio": 0.1158068011679943,
+      "imageUrl": ""
+    },
+    {
+      "token": "재천님",
+      "displayToken": "재천님",
+      "tokenTitle": "재천님",
+      "count": 139,
+      "ratio": 0.11497960973108007,
+      "imageUrl": ""
+    },
+    {
+      "token": "155+155cm",
+      "displayToken": "155",
+      "tokenTitle": "155+155cm",
+      "count": 138,
+      "ratio": 0.11415241829416582,
+      "imageUrl": ""
+    },
+    {
+      "token": "비난양파",
+      "displayToken": "비난양파",
+      "tokenTitle": "비난양파",
+      "count": 137,
+      "ratio": 0.11332522685725158,
+      "imageUrl": ""
+    },
+    {
+      "token": "재천",
+      "displayToken": "재천",
+      "tokenTitle": "재천",
+      "count": 137,
+      "ratio": 0.11332522685725158,
       "imageUrl": ""
     }
   ],

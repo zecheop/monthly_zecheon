@@ -30,6 +30,7 @@ LOG_DIR = Path(
 ).resolve()
 CLIP_TITLE_PATH = VIDEO_DIR / "videoname.txt"
 WORD_SEARCH_EXAMPLES_PATH = BASE_DIR / "word_search_examples.txt"
+PUBLIC_WORD_EXCLUDE_PATH = BASE_DIR / "public_word_exclude.txt"
 TOP_CLIP_RE = re.compile(r"^top(\d+)\.mp4$", re.IGNORECASE)
 TITLE_LINE_RE = re.compile(r"^\s*T(\d+)\.\s*(.+?)\s*$")
 SUPPORTED_SOUND_SUFFIXES = {".mp3", ".wav", ".ogg", ".m4a"}
@@ -299,6 +300,55 @@ def parse_word_search_examples() -> list[dict]:
     return rows
 
 
+def parse_public_word_excludes() -> set[str]:
+    if not PUBLIC_WORD_EXCLUDE_PATH.exists():
+        return set()
+    excluded: set[str] = set()
+    for raw_line in PUBLIC_WORD_EXCLUDE_PATH.read_text(encoding="utf-8").splitlines():
+        line = normalize_text(raw_line)
+        if not line or line.startswith("#"):
+            continue
+        excluded.add(normalize_lookup_token(line))
+    return excluded
+
+
+def is_public_word_excluded(item: dict, excluded_words: set[str]) -> bool:
+    if not excluded_words:
+        return False
+    aliases = item.get("aliases") if isinstance(item.get("aliases"), list) else []
+    candidates = [
+        item.get("displayToken"),
+        item.get("token"),
+        item.get("tokenTitle"),
+        *aliases,
+    ]
+    return any(normalize_lookup_token(candidate) in excluded_words for candidate in candidates)
+
+
+def build_public_top_words(search_items: list[dict], excluded_words: set[str], limit: int = 20) -> list[dict]:
+    rows: list[dict] = []
+    for item in search_items:
+        if not isinstance(item, dict) or is_public_word_excluded(item, excluded_words):
+            continue
+        token = normalize_text(item.get("token"))
+        display = normalize_text(item.get("displayToken"), token)
+        if not token or not display:
+            continue
+        rows.append(
+            {
+                "token": token,
+                "displayToken": display,
+                "tokenTitle": normalize_text(item.get("tokenTitle"), token),
+                "count": int(item.get("count") or 0),
+                "ratio": float(item.get("ratio") or 0.0),
+                "imageUrl": "",
+            }
+        )
+        if len(rows) >= limit:
+            break
+    return rows
+
+
 def build_report_index(
     path: Path,
     payload: dict,
@@ -337,14 +387,14 @@ def build_public_report(
     highlights = advanced.get("streamerHighlights") if isinstance(advanced.get("streamerHighlights"), dict) else {}
     period = summary.get("analysisPeriod") if isinstance(summary.get("analysisPeriod"), dict) else {}
     bucket_minutes = int(advanced.get("bucketMinutes") or 2)
-    top_words = trim_ranked_rows(summary.get("topWords"), limit=20, token_type="word")
+    search_items = build_word_search_items(summary, bucket_minutes)
+    top_words = build_public_top_words(search_items, parse_public_word_excludes(), limit=20)
     top_emotes = trim_ranked_rows(summary.get("topEmotes"), limit=20, token_type="emote")
     legend_rows = [
         build_moment(row, bucket_minutes)
         for row in list(highlights.get("legendTopMoments") or [])[:5]
         if isinstance(row, dict)
     ]
-    search_items = build_word_search_items(summary, bucket_minutes)
     report_payload = {
         "id": path.name,
         "label": normalize_text(payload.get("label"), "리포트"),

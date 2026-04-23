@@ -324,6 +324,8 @@ function renderReport(report) {
         </article>
       </section>
 
+      <p class="public-filter-note">※ TOP20 단어는 일반 연결어와 지시어 일부를 제외해 공개용으로 정제했습니다.</p>
+
       <article class="panel-card">
         <div class="section-head">
           <h3>Top5 Moments</h3>
