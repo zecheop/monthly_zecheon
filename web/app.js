@@ -27,6 +27,7 @@ function escapeHtml(value) {
 async function fetchJson(url) {
   const response = await fetch(url, {
     headers: { Accept: 'application/json' },
+    cache: 'no-store',
   });
   const data = await response.json().catch(() => ({}));
   if (!response.ok) {

@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 import argparse
+import hashlib
 import json
 import os
 import re
@@ -31,6 +32,7 @@ LOG_DIR = Path(
 CLIP_TITLE_PATH = VIDEO_DIR / "videoname.txt"
 WORD_SEARCH_EXAMPLES_PATH = BASE_DIR / "word_search_examples.txt"
 PUBLIC_WORD_EXCLUDE_PATH = BASE_DIR / "public_word_exclude.txt"
+PUBLIC_WORD_MERGES_PATH = BASE_DIR / "public_word_merges.txt"
 TOP_CLIP_RE = re.compile(r"^top(\d+)\.mp4$", re.IGNORECASE)
 TITLE_LINE_RE = re.compile(r"^\s*T(\d+)\.\s*(.+?)\s*$")
 SUPPORTED_SOUND_SUFFIXES = {".mp3", ".wav", ".ogg", ".m4a"}
@@ -192,6 +194,11 @@ def build_word_search_items(summary: dict, bucket_minutes: int) -> list[dict]:
                 "count": count,
                 "ratio": float(row.get("ratio") or 0.0),
                 "aliases": split_token_aliases(token, token_title),
+                "bucketCounts": {
+                    normalize_text(bucket_key): int(raw_count or 0)
+                    for bucket_key, raw_count in dict(row.get("bucketCounts") or {}).items()
+                    if normalize_text(bucket_key)
+                },
                 "peakBucketKey": peak_bucket_key,
                 "peakBucketLabel": format_bucket_label(peak_bucket_key, bucket_minutes) if peak_bucket_key else "-",
                 "peakBucketCount": peak_bucket_count,
@@ -312,6 +319,148 @@ def parse_public_word_excludes() -> set[str]:
     return excluded
 
 
+def parse_public_word_merges() -> list[dict]:
+    if not PUBLIC_WORD_MERGES_PATH.exists():
+        return []
+    groups: list[dict] = []
+    for raw_line in PUBLIC_WORD_MERGES_PATH.read_text(encoding="utf-8").splitlines():
+        line = normalize_text(raw_line)
+        if not line or line.startswith("#"):
+            continue
+        aliases: list[str] = []
+        alias_keys: set[str] = set()
+        for raw_part in line.split("|"):
+            alias = normalize_text(raw_part)
+            alias_key = normalize_lookup_token(alias)
+            if not alias or not alias_key or alias_key in alias_keys:
+                continue
+            aliases.append(alias)
+            alias_keys.add(alias_key)
+        if not aliases:
+            continue
+        groups.append(
+            {
+                "canonical": aliases[0],
+                "aliases": aliases,
+                "aliasKeys": alias_keys,
+            }
+        )
+    return groups
+
+
+def find_public_merge_group(item: dict, merge_groups: list[dict]) -> Optional[dict]:
+    if not merge_groups:
+        return None
+    aliases = item.get("aliases") if isinstance(item.get("aliases"), list) else []
+    candidate_keys = {
+        normalize_lookup_token(value)
+        for value in [
+            item.get("displayToken"),
+            item.get("token"),
+            item.get("tokenTitle"),
+            *aliases,
+        ]
+        if normalize_lookup_token(value)
+    }
+    for group in merge_groups:
+        alias_keys = group.get("aliasKeys")
+        if isinstance(alias_keys, set) and candidate_keys & alias_keys:
+            return group
+    return None
+
+
+def merge_bucket_counts(target: dict[str, int], source) -> None:
+    for bucket_key, raw_count in dict(source or {}).items():
+        bucket_text = normalize_text(bucket_key)
+        if not bucket_text:
+            continue
+        target[bucket_text] = int(target.get(bucket_text) or 0) + int(raw_count or 0)
+
+
+def merge_public_search_items(search_items: list[dict], merge_groups: list[dict], bucket_minutes: int) -> list[dict]:
+    if not merge_groups:
+        return search_items
+
+    merged_rows: dict[str, dict] = {}
+    passthrough_rows: list[dict] = []
+
+    for item in search_items:
+        if not isinstance(item, dict):
+            continue
+        group = find_public_merge_group(item, merge_groups)
+        if not group:
+            passthrough_rows.append(item)
+            continue
+
+        canonical = normalize_text(group.get("canonical"))
+        canonical_key = normalize_lookup_token(canonical)
+        if not canonical or not canonical_key:
+            passthrough_rows.append(item)
+            continue
+
+        merged = merged_rows.get(canonical_key)
+        if merged is None:
+            merged = {
+                "displayToken": canonical,
+                "token": canonical,
+                "tokenTitle": canonical,
+                "count": 0,
+                "ratio": 0.0,
+                "aliases": [],
+                "bucketCounts": {},
+                "_canonicalKey": canonical_key,
+                "_presentAliasKeys": set(),
+                "_groupAliases": list(group.get("aliases") or [canonical]),
+            }
+            merged_rows[canonical_key] = merged
+
+        merged["count"] += int(item.get("count") or 0)
+        merged["ratio"] += float(item.get("ratio") or 0.0)
+        merge_bucket_counts(merged["bucketCounts"], item.get("bucketCounts"))
+
+        item_aliases = item.get("aliases") if isinstance(item.get("aliases"), list) else []
+        for alias in [item.get("displayToken"), item.get("token"), item.get("tokenTitle"), *item_aliases]:
+            alias_key = normalize_lookup_token(alias)
+            if alias_key:
+                merged["_presentAliasKeys"].add(alias_key)
+
+    finalized_rows: list[dict] = []
+    for row in merged_rows.values():
+        present_alias_keys = row.get("_presentAliasKeys")
+        group_aliases = row.get("_groupAliases")
+        canonical_key = row.get("_canonicalKey")
+        ordered_aliases: list[str] = [normalize_text(row.get("displayToken"))]
+        if isinstance(group_aliases, list) and isinstance(present_alias_keys, set):
+            for alias in group_aliases:
+                alias_text = normalize_text(alias)
+                alias_key = normalize_lookup_token(alias_text)
+                if not alias_text or alias_key == canonical_key:
+                    continue
+                if alias_key in present_alias_keys and alias_text not in ordered_aliases:
+                    ordered_aliases.append(alias_text)
+        row["aliases"] = ordered_aliases
+        row["tokenTitle"] = "+".join(ordered_aliases)
+        peak_bucket_key, peak_bucket_count = find_peak_bucket(row.get("bucketCounts"))
+        row["peakBucketKey"] = peak_bucket_key
+        row["peakBucketLabel"] = format_bucket_label(peak_bucket_key, bucket_minutes) if peak_bucket_key else "-"
+        row["peakBucketCount"] = peak_bucket_count
+        row["peakDate"] = peak_bucket_key[:10] if len(peak_bucket_key) >= 10 else ""
+        row.pop("_canonicalKey", None)
+        row.pop("_presentAliasKeys", None)
+        row.pop("_groupAliases", None)
+        finalized_rows.append(row)
+
+    rows = passthrough_rows + finalized_rows
+    rows.sort(
+        key=lambda item: (
+            -int(item.get("count") or 0),
+            normalize_lookup_token(item.get("displayToken")),
+            normalize_lookup_token(item.get("tokenTitle")),
+        )
+    )
+    return [{**row, "rank": index} for index, row in enumerate(rows, start=1)]
+
+
 def is_public_word_excluded(item: dict, excluded_words: set[str]) -> bool:
     if not excluded_words:
         return False
@@ -349,14 +498,28 @@ def build_public_top_words(search_items: list[dict], excluded_words: set[str], l
     return rows
 
 
-def build_report_file_suffix(index: int, payload: dict) -> str:
+def build_content_version() -> str:
+    hasher = hashlib.sha256()
+    for path in [
+        Path(__file__),
+        PUBLIC_WORD_EXCLUDE_PATH,
+        PUBLIC_WORD_MERGES_PATH,
+        WORD_SEARCH_EXAMPLES_PATH,
+    ]:
+        hasher.update(path.name.encode("utf-8"))
+        if path.exists():
+            hasher.update(path.read_bytes())
+    return hasher.hexdigest()[:8]
+
+
+def build_report_file_suffix(index: int, payload: dict, content_version: str) -> str:
     label = normalize_text(payload.get("label"), f"report-{index:03d}")
     normalized_label = re.sub(r"[^0-9A-Za-z._-]+", "-", label).strip("-") or f"report-{index:03d}"
     generated_at = normalize_text(payload.get("generatedAt"))
     generated_stamp = re.sub(r"[^0-9]", "", generated_at)[:14]
     if not generated_stamp:
         generated_stamp = f"{index:03d}"
-    return f"{normalized_label}-{generated_stamp}"
+    return f"{normalized_label}-{generated_stamp}-{content_version}"
 
 
 def build_report_index(
@@ -398,6 +561,7 @@ def build_public_report(
     period = summary.get("analysisPeriod") if isinstance(summary.get("analysisPeriod"), dict) else {}
     bucket_minutes = int(advanced.get("bucketMinutes") or 2)
     search_items = build_word_search_items(summary, bucket_minutes)
+    search_items = merge_public_search_items(search_items, parse_public_word_merges(), bucket_minutes)
     top_words = build_public_top_words(search_items, parse_public_word_excludes(), limit=20)
     top_emotes = trim_ranked_rows(summary.get("topEmotes"), limit=20, token_type="emote")
     legend_rows = [
@@ -468,9 +632,10 @@ def build_site() -> None:
     (DOCS_DIR / ".nojekyll").write_text("", encoding="utf-8")
 
     reports_index: list[dict] = []
+    content_version = build_content_version()
     for index, path in enumerate(list_report_paths(), start=1):
         payload = load_payload(path)
-        file_suffix = build_report_file_suffix(index, payload)
+        file_suffix = build_report_file_suffix(index, payload, content_version)
         report_file = f"report-{file_suffix}.json"
         word_search_file = f"search-{file_suffix}.json"
         report_payload, search_payload = build_public_report(
