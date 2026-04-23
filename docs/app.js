@@ -507,7 +507,7 @@ async function bootstrap() {
   openReportPickerEl?.addEventListener('click', openReportPicker);
 
   try {
-    const data = await fetchJson('./data/reports.json');
+    const data = await fetchJson(`./data/reports.json?v=${Date.now()}`);
     state.reports = Array.isArray(data.reports) ? data.reports : [];
     renderArchiveList();
     if (!state.reports.length) {
