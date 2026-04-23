@@ -91,6 +91,10 @@ function updateScrollState() {
   document.body.classList.toggle('is-scrolled', window.scrollY > 20);
 }
 
+function syncBodyViewState() {
+  document.body.classList.toggle('game-mode', state.currentView === 'game');
+}
+
 function formatIssueTag(sourceText) {
   const match = String(sourceText || '').match(/(\d{4})-(\d{2})/);
   if (!match) {
@@ -129,7 +133,7 @@ function syncLocationHash() {
 
 function updateHeroIssue() {
   const nextText = state.currentView === 'game'
-    ? String(state.gameData?.issueLabel || '').trim()
+    ? ''
     : formatIssueTag(`${state.currentReport?.label || ''} ${state.currentReport?.subtitle || ''}`);
   if (!nextText) {
     heroIssueEl.textContent = '';
@@ -167,6 +171,7 @@ function updateNavState() {
 function setCurrentView(view, options = {}) {
   const { syncHash = true, scrollToContent = false } = options;
   state.currentView = view === 'game' ? 'game' : 'stats';
+  syncBodyViewState();
   updateNavState();
   renderReportPickerVisibility();
   setReportVisible(state.currentView === 'stats' && !!state.currentReport);
@@ -418,7 +423,7 @@ function renderReport(report) {
       ${renderSignalSection('TOP20 단어', report.topWords, 'word', '상위 단어 데이터가 아직 없습니다.')}
       ${renderSignalSection('TOP20 이모티콘', report.topEmotes, 'emote', '상위 이모티콘 데이터가 아직 없습니다.')}
 
-      <p class="public-filter-note">※ TOP20 단어는 접속어, 지시어, 시점 표현, 상황 설명용 일반어처럼 밈성보다 맥락 소비가 큰 표현을 일부 제외해 정제했습니다.</p>
+      <p class="public-filter-note">※ 일반어와 같은 표현을 일부 제외했습니다.</p>
 
       <article class="panel-card">
         <div class="section-head">
@@ -537,7 +542,7 @@ function bindWordSearch(report) {
 function renderGameBreakdown(item) {
   const rows = Array.isArray(item?.monthBreakdown) ? item.monthBreakdown : [];
   if (!rows.length) {
-    return '<div class="guess-breakdown"><span class="guess-breakdown-chip">월간 집계 없음</span></div>';
+    return '';
   }
   return `
     <div class="guess-breakdown">
@@ -548,30 +553,60 @@ function renderGameBreakdown(item) {
   `;
 }
 
+function buildGamePosterTiles(item) {
+  const aliases = String(item?.tokenTitle || '')
+    .split('+')
+    .map((value) => String(value || '').trim())
+    .filter(Boolean);
+  const labels = [item?.displayToken, ...aliases].filter(Boolean);
+  const pool = labels.length ? labels : [item?.displayToken || '채팅'];
+  return Array.from({ length: 6 }, (_, index) => `
+    <div class="guess-mosaic-tile tile-${(index % 6) + 1}">
+      <span>${escapeHtml(pool[index % pool.length])}</span>
+    </div>
+  `).join('');
+}
+
 function renderGameCard(item, options = {}) {
   const {
-    revealed = true,
+    showCount = true,
+    showMeta = false,
     accent = 'anchor',
+    isRevealed = false,
   } = options;
   if (!item) {
     return '';
   }
   const showGrouped = item.tokenTitle && normalizeComparableText(item.tokenTitle) !== normalizeComparableText(item.displayToken);
+  const badgeMarkup = showMeta
+    ? `<div class="guess-card-meta-row"><span class="guess-rank">전체 ${escapeHtml(formatNumber(item.rank || 0))}위</span></div>`
+    : '';
+  const backdropMarkup = item.imageUrl
+    ? `<div class="guess-backdrop is-photo" style="background-image:url('${escapeHtml(item.imageUrl)}');"></div>`
+    : `
+      <div class="guess-backdrop is-generated">
+        <div class="guess-backdrop-glow"></div>
+        <div class="guess-backdrop-orb"></div>
+        <div class="guess-backdrop-mosaic">${buildGamePosterTiles(item)}</div>
+      </div>
+    `;
   return `
-    <article class="guess-card guess-card-${escapeHtml(accent)} ${revealed ? 'is-revealed' : 'is-hidden'}">
-      <div class="guess-card-topline">
-        <span class="guess-rank">전체 ${escapeHtml(formatNumber(item.rank || 0))}위</span>
+    <article class="guess-card guess-card-${escapeHtml(accent)} ${isRevealed ? 'is-revealed' : 'is-hidden'}">
+      ${backdropMarkup}
+      <div class="guess-card-overlay"></div>
+      <div class="guess-card-inner">
+        ${badgeMarkup}
+        <div class="guess-word-wrap">
+          <h3>${escapeHtml(item.displayToken)}</h3>
+          ${showMeta && showGrouped ? `<p class="guess-token-title">${escapeHtml(item.tokenTitle)}</p>` : ''}
+        </div>
+        <div class="guess-count ${showCount ? 'is-visible' : 'is-hidden'}">
+          <strong>${showCount ? escapeHtml(formatNumber(item.count)) : '???'}</strong>
+          <span>회</span>
+        </div>
+        ${showMeta ? `<div class="guess-ratio">${escapeHtml(formatRatio(item.ratio))}</div>` : ''}
+        ${showMeta ? renderGameBreakdown(item) : ''}
       </div>
-      <div class="guess-word-wrap">
-        <h3>${escapeHtml(item.displayToken)}</h3>
-        ${showGrouped ? `<p class="guess-token-title">${escapeHtml(item.tokenTitle)}</p>` : '<p class="guess-token-title hidden"></p>'}
-      </div>
-      <div class="guess-count">
-        <strong>${revealed ? escapeHtml(formatNumber(item.count)) : '???'}</strong>
-        <span>회</span>
-      </div>
-      <div class="guess-ratio">${escapeHtml(formatRatio(item.ratio))}</div>
-      ${renderGameBreakdown(item)}
     </article>
   `;
 }
@@ -591,7 +626,7 @@ function pickRandomGameItem(excludedIds = new Set(), referenceItem = null) {
   if (!pool.length) {
     return null;
   }
-  return pool[Math.floor(Math.random() * Math.min(pool.length, 100))];
+  return pool[Math.floor(Math.random() * Math.min(pool.length, 80))];
 }
 
 function startGameSession() {
@@ -600,7 +635,7 @@ function startGameSession() {
     state.gameSession = null;
     return;
   }
-  const seedPool = items.slice(0, Math.min(items.length, 24));
+  const seedPool = items.slice(0, Math.min(items.length, 18));
   const leftItem = seedPool[Math.floor(Math.random() * seedPool.length)] || items[0];
   const usedIds = new Set([leftItem.id]);
   const rightItem = pickRandomGameItem(usedIds, leftItem);
@@ -671,6 +706,47 @@ function handleGameGuess(guess) {
   renderGame();
 }
 
+function renderGameStatus(session) {
+  if (!session.revealed) {
+    return '';
+  }
+  return `
+    <div class="game-result-burst is-${session.correct ? 'correct' : 'wrong'}">
+      <span>${session.correct ? '정답' : '아쉽!'}</span>
+    </div>
+  `;
+}
+
+function renderGameScore(session) {
+  return `
+    <div class="game-score-corner game-score-left">
+      <span>최고 점수</span>
+      <strong>${escapeHtml(formatNumber(state.gameBestScore || 0))}</strong>
+    </div>
+    <div class="game-score-corner game-score-right">
+      <span>현재 점수</span>
+      <strong>${escapeHtml(formatNumber(session.score || 0))}</strong>
+    </div>
+  `;
+}
+
+function renderGameControls(session) {
+  if (session.revealed) {
+    return `
+      <div class="game-button-stack is-frozen">
+        <button class="game-guess-button" type="button" disabled>${session.correct ? '정답' : '오답'}</button>
+        <button class="game-next-button" type="button" data-game-next>${session.correct ? '다음' : '다시 시작'}</button>
+      </div>
+    `;
+  }
+  return `
+    <div class="game-button-stack">
+      <button class="game-guess-button" type="button" data-game-guess="higher">더 많이</button>
+      <button class="game-guess-button" type="button" data-game-guess="lower">더 적게</button>
+    </div>
+  `;
+}
+
 function renderGame() {
   if (state.currentView !== 'game' && gameRootEl.classList.contains('hidden')) {
     return;
@@ -678,11 +754,8 @@ function renderGame() {
 
   if (state.gameError) {
     gameRootEl.innerHTML = `
-      <div class="report-shell">
+      <div class="game-wrap">
         <article class="panel-card">
-          <div class="section-head">
-            <h3>게임</h3>
-          </div>
           <p class="item-meta">${escapeHtml(state.gameError)}</p>
         </article>
       </div>
@@ -692,11 +765,8 @@ function renderGame() {
 
   if (!state.gameData) {
     gameRootEl.innerHTML = `
-      <div class="report-shell">
+      <div class="game-wrap">
         <article class="panel-card">
-          <div class="section-head">
-            <h3>게임</h3>
-          </div>
           <p class="item-meta">게임 데이터를 준비하는 중입니다.</p>
         </article>
       </div>
@@ -710,11 +780,8 @@ function renderGame() {
 
   if (!state.gameSession) {
     gameRootEl.innerHTML = `
-      <div class="report-shell">
+      <div class="game-wrap">
         <article class="panel-card">
-          <div class="section-head">
-            <h3>게임</h3>
-          </div>
           <p class="item-meta">게임으로 보여줄 단어 데이터가 아직 부족합니다.</p>
         </article>
       </div>
@@ -723,43 +790,26 @@ function renderGame() {
   }
 
   const session = state.gameSession;
-  const rightCountHigher = Number(session.rightItem?.count || 0) > Number(session.leftItem?.count || 0);
-  const resultText = !session.revealed
-    ? '오른쪽 단어가 왼쪽보다 더 많이 쓰였을지 골라보세요.'
-    : session.correct
-      ? `${session.rightItem.displayToken}은 ${formatNumber(session.rightItem.count)}회로 ${rightCountHigher ? '더 많이' : '더 적게'} 등장했습니다.`
-      : `${session.rightItem.displayToken}은 ${formatNumber(session.rightItem.count)}회였습니다. 이번 판은 여기까지예요.`;
-
   gameRootEl.innerHTML = `
-    <div class="report-shell">
-      <article class="panel-card game-shell">
-        <div class="game-shell-head">
-          <div>
-            <p class="eyebrow">게임</p>
-            <h2>${escapeHtml(state.gameData.title || '더 많이 더 적게')}</h2>
-            <p class="game-subtitle">${escapeHtml(state.gameData.issueLabel || '')} 채팅 로그 기준</p>
-          </div>
-          <div class="game-scoreboard">
-            <span class="game-score-label">현재 점수</span>
-            <strong>${escapeHtml(formatNumber(session.score || 0))}</strong>
-            <span class="game-score-sub">최고 ${escapeHtml(formatNumber(state.gameBestScore || 0))}</span>
-          </div>
-        </div>
-
-        <div class="game-stage">
-          ${renderGameCard(session.leftItem, { revealed: true, accent: 'anchor' })}
-
-          <div class="game-control-column">
-            <span class="game-versus">VS</span>
-            <button class="game-guess-button" type="button" data-game-guess="higher" ${session.revealed ? 'disabled' : ''}>더 많이</button>
-            <button class="game-guess-button" type="button" data-game-guess="lower" ${session.revealed ? 'disabled' : ''}>더 적게</button>
-            <p class="game-feedback ${session.revealed ? (session.correct ? 'is-good' : 'is-bad') : ''}">${escapeHtml(resultText)}</p>
-            ${session.revealed
-              ? `<button class="game-next-button" type="button" data-game-next>${session.correct ? '다음 단어' : '다시 시작'}</button>`
-              : '<p class="game-helper">왼쪽 단어와 비교해 오른쪽 단어의 사용량을 맞혀보세요.</p>'}
-          </div>
-
-          ${renderGameCard(session.rightItem, { revealed: session.revealed, accent: 'challenger' })}
+    <div class="game-wrap">
+      <article class="game-stage ${session.revealed ? (session.correct ? 'is-correct' : 'is-wrong') : ''}">
+        ${renderGameScore(session)}
+        ${renderGameStatus(session)}
+        ${renderGameCard(session.leftItem, {
+          showCount: true,
+          showMeta: session.revealed,
+          accent: 'anchor',
+          isRevealed: true,
+        })}
+        <div class="game-versus">VS</div>
+        ${renderGameCard(session.rightItem, {
+          showCount: session.revealed,
+          showMeta: session.revealed,
+          accent: 'challenger',
+          isRevealed: session.revealed,
+        })}
+        <div class="game-floating-controls">
+          ${renderGameControls(session)}
         </div>
       </article>
     </div>

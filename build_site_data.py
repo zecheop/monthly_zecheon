@@ -17,6 +17,7 @@ WEB_DIR = BASE_DIR / "web"
 IMG_DIR = BASE_DIR / "img"
 VIDEO_DIR = BASE_DIR / "video"
 SOUND_DIR = BASE_DIR / "sound"
+GAME_IMAGE_DIR = BASE_DIR / "game_images"
 DOCS_DIR = BASE_DIR / "docs"
 DOCS_DATA_DIR = DOCS_DIR / "data"
 DOCS_REPORT_DIR = DOCS_DATA_DIR / "reports"
@@ -33,9 +34,12 @@ CLIP_TITLE_PATH = VIDEO_DIR / "videoname.txt"
 WORD_SEARCH_EXAMPLES_PATH = BASE_DIR / "word_search_examples.txt"
 PUBLIC_WORD_EXCLUDE_PATH = BASE_DIR / "public_word_exclude.txt"
 PUBLIC_WORD_MERGES_PATH = BASE_DIR / "public_word_merges.txt"
+PUBLIC_GAME_EXCLUDE_PATH = BASE_DIR / "public_game_exclude.txt"
 TOP_CLIP_RE = re.compile(r"^top(\d+)\.mp4$", re.IGNORECASE)
 TITLE_LINE_RE = re.compile(r"^\s*T(\d+)\.\s*(.+?)\s*$")
 SUPPORTED_SOUND_SUFFIXES = {".mp3", ".wav", ".ogg", ".m4a"}
+SUPPORTED_IMAGE_SUFFIXES = {".png", ".jpg", ".jpeg", ".webp", ".gif", ".svg"}
+PUBLIC_GAME_MIN_COUNT = 120
 
 
 def parse_datetime(value) -> Optional[datetime]:
@@ -327,6 +331,18 @@ def parse_public_word_excludes() -> set[str]:
     return excluded
 
 
+def parse_public_game_excludes() -> set[str]:
+    if not PUBLIC_GAME_EXCLUDE_PATH.exists():
+        return set()
+    excluded: set[str] = set()
+    for raw_line in PUBLIC_GAME_EXCLUDE_PATH.read_text(encoding="utf-8").splitlines():
+        line = normalize_text(raw_line)
+        if not line or line.startswith("#"):
+            continue
+        excluded.add(normalize_lookup_token(line))
+    return excluded
+
+
 def parse_public_word_merges() -> list[dict]:
     if not PUBLIC_WORD_MERGES_PATH.exists():
         return []
@@ -489,6 +505,97 @@ def is_public_word_excluded(item: dict, excluded_words: set[str]) -> bool:
     return any(normalize_lookup_token(candidate) in excluded_words for candidate in candidates)
 
 
+def build_game_image_lookup() -> dict[str, str]:
+    lookup: dict[str, str] = {}
+    if not GAME_IMAGE_DIR.exists():
+        return lookup
+    for path in GAME_IMAGE_DIR.iterdir():
+        if not path.is_file() or path.suffix.lower() not in SUPPORTED_IMAGE_SUFFIXES:
+            continue
+        lookup[normalize_lookup_token(path.stem)] = f"./assets/game/{quote(path.name)}"
+    return lookup
+
+
+def find_game_image_url(item: dict, image_lookup: dict[str, str]) -> str:
+    aliases = item.get("aliases") if isinstance(item.get("aliases"), list) else []
+    for candidate in [item.get("displayToken"), item.get("token"), item.get("tokenTitle"), *aliases]:
+        key = normalize_lookup_token(candidate)
+        if key and key in image_lookup:
+            return image_lookup[key]
+    item_id = normalize_text(item.get("id"))
+    if item_id:
+        return f"./assets/game/generated/{quote(item_id)}.svg"
+    return "./assets/game/generated/fallback.svg"
+
+
+def build_generated_game_palette(seed: str) -> tuple[str, str, str]:
+    palettes = [
+        ("#22140f", "#7a432f", "#f7c89a"),
+        ("#101828", "#32507a", "#e2ecff"),
+        ("#1b1026", "#6840a5", "#efe1ff"),
+        ("#11211d", "#1d7b69", "#d7fff2"),
+        ("#261612", "#9e5a33", "#ffe1c7"),
+        ("#171726", "#4657ad", "#edf0ff"),
+    ]
+    digest = hashlib.sha256(seed.encode("utf-8")).hexdigest()
+    return palettes[int(digest[:2], 16) % len(palettes)]
+
+
+def write_generated_game_placeholders(game_payload: dict) -> None:
+    generated_dir = DOCS_ASSET_DIR / "game" / "generated"
+    generated_dir.mkdir(parents=True, exist_ok=True)
+
+    fallback_path = generated_dir / "fallback.svg"
+    fallback_path.write_text(
+        (
+            '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 1200">'
+            '<rect width="1200" height="1200" fill="#151515"/>'
+            '<circle cx="920" cy="220" r="240" fill="#8b5cf6" opacity="0.2"/>'
+            '<circle cx="240" cy="930" r="320" fill="#f59e0b" opacity="0.14"/>'
+            '<text x="96" y="930" fill="#f6f0ea" font-size="112" font-family="Noto Sans KR, Noto Sans, sans-serif" '
+            'font-weight="700">Replace</text>'
+            '<text x="96" y="1035" fill="#b9b2aa" font-size="52" font-family="Noto Sans KR, Noto Sans, sans-serif">'
+            'Add token image files in game_images/ to override this poster.</text>'
+            "</svg>"
+        ),
+        encoding="utf-8",
+    )
+
+    for item in list(game_payload.get("items") or []):
+        image_url = normalize_text(item.get("imageUrl"))
+        if not image_url.startswith("./assets/game/generated/"):
+            continue
+        display_token_value = normalize_text(item.get("displayToken"), "CHAT")
+        token_title = normalize_text(item.get("tokenTitle"), display_token_value)
+        count = int(item.get("count") or 0)
+        rank = int(item.get("rank") or 0)
+        seed = normalize_lookup_token(item.get("id") or display_token_value)
+        base_color, accent_color, text_color = build_generated_game_palette(seed)
+        file_name = Path(image_url).name
+        output_path = generated_dir / file_name
+        output_path.write_text(
+            (
+                '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 1200">'
+                f'<rect width="1200" height="1200" fill="{base_color}"/>'
+                f'<circle cx="960" cy="260" r="290" fill="{accent_color}" opacity="0.28"/>'
+                f'<circle cx="260" cy="930" r="340" fill="{text_color}" opacity="0.08"/>'
+                f'<rect x="70" y="70" width="1060" height="1060" rx="54" fill="none" stroke="{text_color}" opacity="0.12"/>'
+                f'<text x="96" y="190" fill="{text_color}" opacity="0.72" font-size="42" '
+                'font-family="Noto Sans KR, Noto Sans, sans-serif">MONTHLY RECAP GAME</text>'
+                f'<text x="96" y="760" fill="{text_color}" font-size="166" font-family="Noto Sans KR, Noto Sans, sans-serif" '
+                f'font-weight="800">{display_token_value}</text>'
+                f'<text x="96" y="860" fill="{text_color}" opacity="0.78" font-size="54" '
+                f'font-family="Noto Sans KR, Noto Sans, sans-serif">{token_title}</text>'
+                f'<text x="96" y="1015" fill="{text_color}" opacity="0.92" font-size="70" '
+                f'font-family="Noto Sans KR, Noto Sans, sans-serif" font-weight="700">{count:,} chats</text>'
+                f'<text x="915" y="1015" text-anchor="end" fill="{text_color}" opacity="0.52" font-size="86" '
+                f'font-family="Noto Sans KR, Noto Sans, sans-serif" font-weight="800">#{rank}</text>'
+                "</svg>"
+            ),
+            encoding="utf-8",
+        )
+
+
 def build_public_top_words(search_items: list[dict], excluded_words: set[str], limit: int = 20) -> list[dict]:
     rows: list[dict] = []
     for item in search_items:
@@ -516,6 +623,8 @@ def build_public_top_words(search_items: list[dict], excluded_words: set[str], l
 def build_public_game_payload(report_paths: list[Path]) -> dict:
     merge_groups = parse_public_word_merges()
     excluded_words = parse_public_word_excludes()
+    game_excluded_words = parse_public_game_excludes()
+    image_lookup = build_game_image_lookup()
     aggregate_rows: dict[str, dict] = {}
     source_labels: list[str] = []
     total_count = 0
@@ -567,7 +676,7 @@ def build_public_game_payload(report_paths: list[Path]) -> dict:
         else:
             item["tokenTitle"] = normalize_text(item.get("tokenTitle"), item.get("displayToken"))
         count = int(item.get("count") or 0)
-        if count < 20:
+        if count < PUBLIC_GAME_MIN_COUNT or is_public_word_excluded(item, game_excluded_words):
             continue
         month_breakdown = [
             {
@@ -585,6 +694,7 @@ def build_public_game_payload(report_paths: list[Path]) -> dict:
                 "count": count,
                 "ratio": ((count / total_count) * 100.0) if total_count > 0 else 0.0,
                 "monthBreakdown": month_breakdown,
+                "imageUrl": find_game_image_url(item, image_lookup),
             }
         )
 
@@ -614,6 +724,7 @@ def build_content_version() -> str:
         Path(__file__),
         PUBLIC_WORD_EXCLUDE_PATH,
         PUBLIC_WORD_MERGES_PATH,
+        PUBLIC_GAME_EXCLUDE_PATH,
         WORD_SEARCH_EXAMPLES_PATH,
     ]:
         hasher.update(path.name.encode("utf-8"))
@@ -718,6 +829,8 @@ def ensure_asset_dirs() -> None:
     (DOCS_ASSET_DIR / "img").mkdir(parents=True, exist_ok=True)
     (DOCS_ASSET_DIR / "video").mkdir(parents=True, exist_ok=True)
     (DOCS_ASSET_DIR / "sound").mkdir(parents=True, exist_ok=True)
+    (DOCS_ASSET_DIR / "game").mkdir(parents=True, exist_ok=True)
+    (DOCS_ASSET_DIR / "game" / "generated").mkdir(parents=True, exist_ok=True)
 
 
 def copy_asset_folder(src_dir: Path, dst_dir: Path) -> None:
@@ -736,9 +849,11 @@ def write_json(path: Path, payload: dict | list) -> None:
 def build_site() -> None:
     reset_docs_dir()
     ensure_asset_dirs()
+    GAME_IMAGE_DIR.mkdir(parents=True, exist_ok=True)
     copy_static_assets()
     copy_asset_folder(VIDEO_DIR, DOCS_ASSET_DIR / "video")
     copy_asset_folder(SOUND_DIR, DOCS_ASSET_DIR / "sound")
+    copy_asset_folder(GAME_IMAGE_DIR, DOCS_ASSET_DIR / "game")
     (DOCS_DIR / ".nojekyll").write_text("", encoding="utf-8")
 
     reports_index: list[dict] = []
@@ -763,8 +878,10 @@ def build_site() -> None:
         reports_index.append(index_payload)
         write_json(DOCS_REPORT_DIR / report_file, report_payload)
         write_json(DOCS_SEARCH_DIR / word_search_file, search_payload)
+    game_payload = build_public_game_payload(report_paths)
+    write_generated_game_placeholders(game_payload)
     game_file = f"game-{content_version}.json"
-    write_json(DOCS_DATA_DIR / game_file, build_public_game_payload(report_paths))
+    write_json(DOCS_DATA_DIR / game_file, game_payload)
     write_json(DOCS_DATA_DIR / "reports.json", {"reports": reports_index, "gameFile": f"./data/{game_file}"})
 
 
