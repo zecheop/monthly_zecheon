@@ -369,10 +369,21 @@ def parse_public_word_merges() -> list[dict]:
         line = normalize_text(raw_line)
         if not line or line.startswith("#"):
             continue
+        parsed_parts: list[str] = []
+        if "=" in line or ":" in line:
+            delimiter = "=" if "=" in line else ":"
+            canonical_part, alias_part = line.split(delimiter, 1)
+            canonical = normalize_text(canonical_part)
+            alias_values = [
+                normalize_text(raw_part)
+                for raw_part in re.split(r"[|,]", alias_part)
+            ]
+            parsed_parts = [canonical, *alias_values]
+        else:
+            parsed_parts = [normalize_text(raw_part) for raw_part in line.split("|")]
         aliases: list[str] = []
         alias_keys: set[str] = set()
-        for raw_part in line.split("|"):
-            alias = normalize_text(raw_part)
+        for alias in parsed_parts:
             alias_key = normalize_lookup_token(alias)
             if not alias or not alias_key or alias_key in alias_keys:
                 continue

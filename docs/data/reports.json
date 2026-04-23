@@ -1,29 +1,29 @@
 {
   "reports": [
     {
-      "id": "chzzk-merge-log-임재천-2026-04-20260424-020435.json",
+      "id": "chzzk-merge-log-임재천-2026-04-20260424-035252.json",
       "channelName": "임재천",
       "label": "2026-04",
       "title": "임재천 2026-04",
       "subtitle": "2026-04-01 ~ 2026-04-24",
-      "generatedAt": "2026-04-24T02:04:35",
+      "generatedAt": "2026-04-24T03:52:52",
       "videoCount": 17,
       "messageCount": 84948,
-      "reportFile": "./data/reports/report-2026-04-20260424020435-0c39f08f.json",
-      "wordSearchFile": "./data/word-search/search-2026-04-20260424020435-0c39f08f.json"
+      "reportFile": "./data/reports/report-2026-04-20260424035252-c1486105.json",
+      "wordSearchFile": "./data/word-search/search-2026-04-20260424035252-c1486105.json"
     },
     {
-      "id": "chzzk-merge-log-임재천-2026-03-20260424-020350.json",
+      "id": "chzzk-merge-log-임재천-2026-03-20260424-035159.json",
       "channelName": "임재천",
       "label": "2026-03",
       "title": "임재천 2026-03",
       "subtitle": "2026-03-01 ~ 2026-03-31",
-      "generatedAt": "2026-04-24T02:03:50",
+      "generatedAt": "2026-04-24T03:51:59",
       "videoCount": 6,
       "messageCount": 73302,
-      "reportFile": "./data/reports/report-2026-03-20260424020350-0c39f08f.json",
-      "wordSearchFile": "./data/word-search/search-2026-03-20260424020350-0c39f08f.json"
+      "reportFile": "./data/reports/report-2026-03-20260424035159-c1486105.json",
+      "wordSearchFile": "./data/word-search/search-2026-03-20260424035159-c1486105.json"
     }
   ],
-  "gameFile": "./data/game-0c39f08f.json"
+  "gameFile": "./data/game-c1486105.json"
 }
