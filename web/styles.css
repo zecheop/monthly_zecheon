@@ -1034,7 +1034,7 @@ body.is-scrolled .site-nav-inner {
 .game-floating-controls {
   position: absolute;
   top: 50%;
-  right: max(28px, 3vw);
+  left: calc(50% + clamp(48px, 6vw, 116px));
   z-index: 8;
   transform: translateY(-50%);
 }

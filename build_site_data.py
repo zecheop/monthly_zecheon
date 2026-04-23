@@ -35,6 +35,7 @@ WORD_SEARCH_EXAMPLES_PATH = BASE_DIR / "word_search_examples.txt"
 PUBLIC_WORD_EXCLUDE_PATH = BASE_DIR / "public_word_exclude.txt"
 PUBLIC_WORD_MERGES_PATH = BASE_DIR / "public_word_merges.txt"
 PUBLIC_GAME_EXCLUDE_PATH = BASE_DIR / "public_game_exclude.txt"
+PUBLIC_GAME_WORDS_PATH = BASE_DIR / "public_game_words.txt"
 TOP_CLIP_RE = re.compile(r"^top(\d+)\.mp4$", re.IGNORECASE)
 TITLE_LINE_RE = re.compile(r"^\s*T(\d+)\.\s*(.+?)\s*$")
 SUPPORTED_SOUND_SUFFIXES = {".mp3", ".wav", ".ogg", ".m4a"}
@@ -343,6 +344,23 @@ def parse_public_game_excludes() -> set[str]:
     return excluded
 
 
+def parse_public_game_words() -> list[str]:
+    if not PUBLIC_GAME_WORDS_PATH.exists():
+        return []
+    words: list[str] = []
+    seen: set[str] = set()
+    for raw_line in PUBLIC_GAME_WORDS_PATH.read_text(encoding="utf-8").splitlines():
+        line = normalize_text(raw_line)
+        if not line or line.startswith("#"):
+            continue
+        token_key = normalize_lookup_token(line)
+        if not token_key or token_key in seen:
+            continue
+        seen.add(token_key)
+        words.append(token_key)
+    return words
+
+
 def parse_public_word_merges() -> list[dict]:
     if not PUBLIC_WORD_MERGES_PATH.exists():
         return []
@@ -624,6 +642,7 @@ def build_public_game_payload(report_paths: list[Path]) -> dict:
     merge_groups = parse_public_word_merges()
     excluded_words = parse_public_word_excludes()
     game_excluded_words = parse_public_game_excludes()
+    curated_game_words = parse_public_game_words()
     image_lookup = build_game_image_lookup()
     aggregate_rows: dict[str, dict] = {}
     source_labels: list[str] = []
@@ -668,7 +687,7 @@ def build_public_game_payload(report_paths: list[Path]) -> dict:
             if len(normalize_text(item.get("tokenTitle"))) > len(normalize_text(row.get("tokenTitle"))):
                 row["tokenTitle"] = normalize_text(item.get("tokenTitle"), row["tokenTitle"])
 
-    rows: list[dict] = []
+    all_rows: list[dict] = []
     for item in aggregate_rows.values():
         aliases = list(item.get("aliases") or [])
         if aliases:
@@ -676,8 +695,6 @@ def build_public_game_payload(report_paths: list[Path]) -> dict:
         else:
             item["tokenTitle"] = normalize_text(item.get("tokenTitle"), item.get("displayToken"))
         count = int(item.get("count") or 0)
-        if count < PUBLIC_GAME_MIN_COUNT or is_public_word_excluded(item, game_excluded_words):
-            continue
         month_breakdown = [
             {
                 "label": format_issue_label(label),
@@ -686,7 +703,7 @@ def build_public_game_payload(report_paths: list[Path]) -> dict:
             for label in source_labels
             if int(item.get("monthCounts", {}).get(label) or 0) > 0
         ]
-        rows.append(
+        all_rows.append(
             {
                 "id": normalize_text(item.get("id")),
                 "displayToken": normalize_text(item.get("displayToken")),
@@ -698,15 +715,33 @@ def build_public_game_payload(report_paths: list[Path]) -> dict:
             }
         )
 
-    rows.sort(
+    all_rows.sort(
         key=lambda item: (
             -int(item.get("count") or 0),
             normalize_lookup_token(item.get("displayToken")),
         )
     )
 
-    for index, row in enumerate(rows, start=1):
+    for index, row in enumerate(all_rows, start=1):
         row["rank"] = index
+
+    if curated_game_words:
+        rows_by_id = {
+            normalize_lookup_token(row.get("id") or row.get("displayToken")): row
+            for row in all_rows
+        }
+        rows = [
+            rows_by_id[word_key]
+            for word_key in curated_game_words
+            if word_key in rows_by_id
+        ]
+    else:
+        rows = [
+            row
+            for row in all_rows
+            if int(row.get("count") or 0) >= PUBLIC_GAME_MIN_COUNT
+            and not is_public_word_excluded(row, game_excluded_words)
+        ]
 
     issue_labels = [format_issue_label(label) for label in source_labels if format_issue_label(label)]
     return {
@@ -725,6 +760,7 @@ def build_content_version() -> str:
         PUBLIC_WORD_EXCLUDE_PATH,
         PUBLIC_WORD_MERGES_PATH,
         PUBLIC_GAME_EXCLUDE_PATH,
+        PUBLIC_GAME_WORDS_PATH,
         WORD_SEARCH_EXAMPLES_PATH,
     ]:
         hasher.update(path.name.encode("utf-8"))

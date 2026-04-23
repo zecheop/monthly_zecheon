@@ -9,8 +9,8 @@
       "generatedAt": "2026-04-24T02:04:35",
       "videoCount": 17,
       "messageCount": 84948,
-      "reportFile": "./data/reports/report-2026-04-20260424020435-57588f18.json",
-      "wordSearchFile": "./data/word-search/search-2026-04-20260424020435-57588f18.json"
+      "reportFile": "./data/reports/report-2026-04-20260424020435-0c39f08f.json",
+      "wordSearchFile": "./data/word-search/search-2026-04-20260424020435-0c39f08f.json"
     },
     {
       "id": "chzzk-merge-log-임재천-2026-03-20260424-020350.json",
@@ -21,9 +21,9 @@
       "generatedAt": "2026-04-24T02:03:50",
       "videoCount": 6,
       "messageCount": 73302,
-      "reportFile": "./data/reports/report-2026-03-20260424020350-57588f18.json",
-      "wordSearchFile": "./data/word-search/search-2026-03-20260424020350-57588f18.json"
+      "reportFile": "./data/reports/report-2026-03-20260424020350-0c39f08f.json",
+      "wordSearchFile": "./data/word-search/search-2026-03-20260424020350-0c39f08f.json"
     }
   ],
-  "gameFile": "./data/game-57588f18.json"
+  "gameFile": "./data/game-0c39f08f.json"
 }
