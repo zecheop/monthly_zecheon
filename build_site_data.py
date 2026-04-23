@@ -349,6 +349,16 @@ def build_public_top_words(search_items: list[dict], excluded_words: set[str], l
     return rows
 
 
+def build_report_file_suffix(index: int, payload: dict) -> str:
+    label = normalize_text(payload.get("label"), f"report-{index:03d}")
+    normalized_label = re.sub(r"[^0-9A-Za-z._-]+", "-", label).strip("-") or f"report-{index:03d}"
+    generated_at = normalize_text(payload.get("generatedAt"))
+    generated_stamp = re.sub(r"[^0-9]", "", generated_at)[:14]
+    if not generated_stamp:
+        generated_stamp = f"{index:03d}"
+    return f"{normalized_label}-{generated_stamp}"
+
+
 def build_report_index(
     path: Path,
     payload: dict,
@@ -460,8 +470,9 @@ def build_site() -> None:
     reports_index: list[dict] = []
     for index, path in enumerate(list_report_paths(), start=1):
         payload = load_payload(path)
-        report_file = f"report-{index:03d}.json"
-        word_search_file = f"search-{index:03d}.json"
+        file_suffix = build_report_file_suffix(index, payload)
+        report_file = f"report-{file_suffix}.json"
+        word_search_file = f"search-{file_suffix}.json"
         report_payload, search_payload = build_public_report(
             path,
             payload,
