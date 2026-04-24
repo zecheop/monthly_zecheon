@@ -578,16 +578,24 @@ def is_public_word_excluded(item: dict, excluded_words: set[str]) -> bool:
     return any(normalize_lookup_token(candidate) in excluded_words for candidate in candidates)
 
 
-def build_game_media_lookup() -> dict[str, dict[str, str]]:
+def copy_game_assets_and_build_lookup() -> dict[str, dict[str, str]]:
     lookup: dict[str, dict[str, str]] = {}
     if not GAME_IMAGE_DIR.exists():
         return lookup
+    dst_dir = DOCS_ASSET_DIR / "game"
+    dst_dir.mkdir(parents=True, exist_ok=True)
     for path in GAME_IMAGE_DIR.iterdir():
         suffix = path.suffix.lower()
         if not path.is_file() or suffix not in (SUPPORTED_IMAGE_SUFFIXES | SUPPORTED_VIDEO_SUFFIXES):
             continue
-        lookup[normalize_lookup_token(path.stem)] = {
-            "url": f"./assets/game/{quote(path.name)}",
+        lookup_key = normalize_lookup_token(path.stem)
+        if not lookup_key:
+            continue
+        content_hash = hashlib.sha256(path.read_bytes()).hexdigest()[:12]
+        dst_name = f"token-{content_hash}{suffix}"
+        shutil.copy2(path, dst_dir / dst_name)
+        lookup[lookup_key] = {
+            "url": f"./assets/game/{dst_name}",
             "kind": "video" if suffix in SUPPORTED_VIDEO_SUFFIXES else "image",
         }
     return lookup
@@ -698,12 +706,11 @@ def build_public_top_words(search_items: list[dict], excluded_words: set[str], l
     return rows
 
 
-def build_public_game_payload(report_paths: list[Path]) -> dict:
+def build_public_game_payload(report_paths: list[Path], media_lookup: dict[str, dict[str, str]]) -> dict:
     merge_groups = parse_public_word_merges()
     excluded_words = parse_public_word_excludes()
     game_excluded_words = parse_public_game_excludes()
     curated_game_words = parse_public_game_words()
-    media_lookup = build_game_media_lookup()
     aggregate_rows: dict[str, dict] = {}
     source_labels: list[str] = []
     total_count = 0
@@ -951,7 +958,7 @@ def build_site() -> None:
     copy_static_assets()
     copy_asset_folder(VIDEO_DIR, DOCS_ASSET_DIR / "video")
     copy_asset_folder(SOUND_DIR, DOCS_ASSET_DIR / "sound")
-    copy_asset_folder(GAME_IMAGE_DIR, DOCS_ASSET_DIR / "game")
+    media_lookup = copy_game_assets_and_build_lookup()
     (DOCS_DIR / ".nojekyll").write_text("", encoding="utf-8")
 
     reports_index: list[dict] = []
@@ -976,7 +983,7 @@ def build_site() -> None:
         reports_index.append(index_payload)
         write_json(DOCS_REPORT_DIR / report_file, report_payload)
         write_json(DOCS_SEARCH_DIR / word_search_file, search_payload)
-    game_payload = build_public_game_payload(report_paths)
+    game_payload = build_public_game_payload(report_paths, media_lookup)
     write_generated_game_placeholders(game_payload)
     game_file = f"game-{content_version}.json"
     write_json(DOCS_DATA_DIR / game_file, game_payload)
