@@ -16,6 +16,7 @@ const state = {
   gameAudio: {},
   pendingRoundAudioToken: '',
   gameMediaMuted: true,
+  gameTransitionTimer: null,
 };
 
 const openReportPickerEl = document.getElementById('open-report-picker');
@@ -377,9 +378,12 @@ function renderSignalSection(title, rows, kind, emptyText) {
                   <div class="rank-main">
                     <div class="token-title" title="${escapeHtml(row.tokenTitle || rawDisplayLabel)}">
                       ${row.imageUrl ? `<img src="${escapeHtml(row.imageUrl)}" alt="${escapeHtml(rawDisplayLabel)}">` : ''}
-                      ${displayLabel ? `<span>${escapeHtml(displayLabel)}</span>` : ''}
+                      <div class="token-title-text">
+                        ${displayLabel ? `<span class="token-primary">${escapeHtml(displayLabel)}</span>` : ''}
+                        ${isGrouped ? `<span class="token-aliases">${escapeHtml(row.tokenTitle)}</span>` : ''}
+                      </div>
                     </div>
-                    <div class="item-meta">${escapeHtml(formatRatio(row.ratio))}${isGrouped ? ` · ${escapeHtml(row.tokenTitle)}` : ''}</div>
+                    <div class="item-meta">${escapeHtml(formatRatio(row.ratio))}</div>
                   </div>
                   <div class="item-value">
                     <strong>${escapeHtml(formatNumber(row.count))}</strong>
@@ -597,7 +601,9 @@ function sessionHasVideoMedia(session) {
 }
 
 function syncGameBackdropMedia(forcePlay = false) {
-  const videoEls = Array.from(gameRootEl.querySelectorAll('.guess-backdrop-video'));
+  const activeScope = gameRootEl.querySelector('.game-stage.is-active') || gameRootEl;
+  const scopedVideoEls = Array.from(activeScope.querySelectorAll('.guess-backdrop-video'));
+  const videoEls = scopedVideoEls.length ? scopedVideoEls : Array.from(gameRootEl.querySelectorAll('.guess-backdrop-video'));
   if (!videoEls.length) {
     return;
   }
@@ -774,8 +780,10 @@ function renderGameCard(item, options = {}) {
       <div class="guess-card-overlay"></div>
       <div class="guess-card-inner">
         <div class="guess-word-wrap">
-          <h3>${escapeHtml(item.displayToken)}</h3>
-          ${showMeta && showGrouped ? `<p class="guess-token-title">${escapeHtml(item.tokenTitle)}</p>` : ''}
+          <div class="guess-word-head">
+            <h3>${escapeHtml(item.displayToken)}</h3>
+            ${showMeta && showGrouped ? `<p class="guess-token-inline">${escapeHtml(item.tokenTitle)}</p>` : ''}
+          </div>
         </div>
         <div class="guess-count ${showCount ? 'is-visible' : 'is-hidden'}">
           <strong>${showCount ? escapeHtml(formatNumber(item.count)) : '???'}</strong>
@@ -836,7 +844,6 @@ function startGameSession() {
 function advanceGameSession() {
   if (!state.gameSession?.rightItem) {
     startGameSession();
-    renderGame();
     return;
   }
   const carriedLeft = state.gameSession.rightItem;
@@ -851,7 +858,6 @@ function advanceGameSession() {
   }
   if (!nextRight) {
     startGameSession();
-    renderGame();
     return;
   }
   usedIds.add(nextRight.id);
@@ -864,7 +870,6 @@ function advanceGameSession() {
     usedIds,
   };
   state.pendingRoundAudioToken = nextRight.id;
-  renderGame();
 }
 
 function handleGameGuess(guess) {
@@ -887,11 +892,99 @@ function handleGameGuess(guess) {
   if (feedbackUrl) {
     playAudio(feedbackUrl, { volume: 0.95 });
   }
-  renderGame();
+  renderGame({ animateReveal: true, forceMediaPlayback: true });
 }
 
 function renderGameStatus(session) {
   return '';
+}
+
+function renderGameStage(session, options = {}) {
+  const {
+    stageClass = '',
+    isActive = false,
+    animateReveal = false,
+    showChrome = true,
+  } = options;
+  const resultStateClass = session.revealed ? (session.correct ? 'is-correct' : 'is-wrong') : '';
+  const versusStateClass = session.revealed ? (session.correct ? 'is-correct' : 'is-wrong') : '';
+  const revealedClass = session.revealed && !animateReveal ? 'is-revealed' : '';
+  const versusFace = session.correct
+    ? `
+      <span class="game-versus-icon" aria-hidden="true">
+        <svg viewBox="0 0 24 24">
+          <path d="M5 12.6 9.2 16.8 19 7"></path>
+        </svg>
+      </span>
+    `
+    : `
+      <span class="game-versus-icon" aria-hidden="true">
+        <svg viewBox="0 0 24 24">
+          <path d="M7 7 17 17"></path>
+          <path d="M17 7 7 17"></path>
+        </svg>
+      </span>
+    `;
+  return `
+    <article class="game-stage ${resultStateClass} ${stageClass} ${isActive ? 'is-active' : ''}">
+      ${showChrome ? renderGameScore(session) : ''}
+      ${showChrome ? renderGameMediaToggle(session) : ''}
+      ${showChrome ? renderGameStatus(session) : ''}
+      ${renderGameCard(session.leftItem, {
+        showCount: true,
+        showMeta: session.revealed,
+        accent: 'anchor',
+        isRevealed: true,
+      })}
+      <div class="game-versus ${revealedClass} ${versusStateClass}">
+        <div class="game-versus-flip">
+          <div class="game-versus-face game-versus-front">
+            <span class="game-versus-label">VS</span>
+          </div>
+          <div class="game-versus-face game-versus-back">
+            ${session.revealed ? versusFace : '<span class="game-versus-label">VS</span>'}
+          </div>
+        </div>
+      </div>
+      ${renderGameCard(session.rightItem, {
+        showCount: session.revealed,
+        showMeta: session.revealed,
+        accent: 'challenger',
+        isRevealed: session.revealed,
+      })}
+      ${showChrome ? `
+        <div class="game-floating-controls">
+          ${renderGameControls(session)}
+        </div>
+      ` : ''}
+    </article>
+  `;
+}
+
+function triggerGameRevealMotion() {
+  const versusEl = gameRootEl.querySelector('.game-stage.is-active .game-versus');
+  if (!versusEl) {
+    return;
+  }
+  window.requestAnimationFrame(() => {
+    versusEl.classList.add('is-revealed', 'is-pulsed');
+    window.setTimeout(() => {
+      versusEl.classList.remove('is-pulsed');
+    }, 700);
+  });
+}
+
+function transitionGameRound(prepareNextSession) {
+  const previousSession = state.gameSession;
+  prepareNextSession();
+  if (!previousSession || !state.gameSession) {
+    renderGame({ forceMediaPlayback: true });
+    return;
+  }
+  renderGame({
+    forceMediaPlayback: true,
+    transitionFrom: previousSession,
+  });
 }
 
 function renderGameScore(session) {
@@ -959,7 +1052,11 @@ function renderGameControls(session) {
 }
 
 function renderGame(options = {}) {
-  const { forceMediaPlayback = false } = options;
+  const {
+    forceMediaPlayback = false,
+    animateReveal = false,
+    transitionFrom = null,
+  } = options;
   if (state.currentView !== 'game' && gameRootEl.classList.contains('hidden')) {
     return;
   }
@@ -1002,60 +1099,45 @@ function renderGame(options = {}) {
   }
 
   const session = state.gameSession;
-  const versusFace = !session.revealed
-    ? '<span class="game-versus-label">VS</span>'
-    : session.correct
-      ? `
-        <span class="game-versus-icon" aria-hidden="true">
-          <svg viewBox="0 0 24 24">
-            <path d="M5 12.6 9.2 16.8 19 7"></path>
-          </svg>
-        </span>
-      `
-      : `
-        <span class="game-versus-icon" aria-hidden="true">
-          <svg viewBox="0 0 24 24">
-            <path d="M7 7 17 17"></path>
-            <path d="M17 7 7 17"></path>
-          </svg>
-        </span>
-      `;
+  if (!transitionFrom && state.gameTransitionTimer) {
+    window.clearTimeout(state.gameTransitionTimer);
+    state.gameTransitionTimer = null;
+  }
   gameRootEl.innerHTML = `
     <div class="game-wrap">
-      <article class="game-stage ${session.revealed ? (session.correct ? 'is-correct' : 'is-wrong') : ''}">
-        ${renderGameScore(session)}
-        ${renderGameMediaToggle(session)}
-        ${renderGameStatus(session)}
-        ${renderGameCard(session.leftItem, {
-          showCount: true,
-          showMeta: session.revealed,
-          accent: 'anchor',
-          isRevealed: true,
-        })}
-        <div class="game-versus ${session.revealed ? 'is-revealed' : ''} ${session.correct ? 'is-correct' : 'is-wrong'}">
-          <div class="game-versus-flip">
-            <div class="game-versus-face game-versus-front">
-              <span class="game-versus-label">VS</span>
-            </div>
-            <div class="game-versus-face game-versus-back">
-              ${versusFace}
-            </div>
-          </div>
-        </div>
-        ${renderGameCard(session.rightItem, {
-          showCount: session.revealed,
-          showMeta: session.revealed,
-          accent: 'challenger',
-          isRevealed: session.revealed,
-        })}
-        <div class="game-floating-controls">
-          ${renderGameControls(session)}
-        </div>
-      </article>
+      <div class="game-stage-stack ${transitionFrom ? 'is-layered' : ''}">
+        ${transitionFrom
+          ? `
+            ${renderGameStage(transitionFrom, {
+              stageClass: 'is-transition-old',
+              showChrome: false,
+            })}
+            ${renderGameStage(session, {
+              stageClass: 'is-transition-new',
+              isActive: true,
+            })}
+          `
+          : renderGameStage(session, {
+            isActive: true,
+            animateReveal,
+          })}
+      </div>
     </div>
   `;
   syncGameBackdropMedia(forceMediaPlayback);
   maybePlayCurrentRoundAudio();
+  if (transitionFrom) {
+    const stackEl = gameRootEl.querySelector('.game-stage-stack');
+    window.requestAnimationFrame(() => {
+      stackEl?.classList.add('is-transitioning');
+    });
+    state.gameTransitionTimer = window.setTimeout(() => {
+      state.gameTransitionTimer = null;
+      renderGame({ forceMediaPlayback: true });
+    }, 560);
+  } else if (animateReveal && session.revealed) {
+    triggerGameRevealMotion();
+  }
 }
 
 function bindGameControls() {
@@ -1077,7 +1159,6 @@ function bindGameControls() {
         playAudio(clickUrl, { volume: 0.7 });
       }
       handleGameGuess(guessButton.getAttribute('data-game-guess') || '');
-      syncGameBackdropMedia(true);
       return;
     }
     const nextButton = event.target.closest('[data-game-next]');
@@ -1087,10 +1168,13 @@ function bindGameControls() {
         playAudio(clickUrl, { volume: 0.7 });
       }
       if (state.gameSession?.correct) {
-        advanceGameSession();
+        transitionGameRound(() => {
+          advanceGameSession();
+        });
       } else {
-        startGameSession();
-        renderGame({ forceMediaPlayback: true });
+        transitionGameRound(() => {
+          startGameSession();
+        });
       }
     }
   });
