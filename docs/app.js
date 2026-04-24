@@ -66,16 +66,9 @@ function normalizeComparableText(value) {
   return String(value || '').trim().toLowerCase().replace(/\s+/g, '');
 }
 
-function isHiddenDCode(label) {
-  return /^d_/i.test(String(label || '').trim());
-}
-
 function getEmoteVisibleLabel(row, mode = 'default') {
   const label = String(row?.displayToken || row?.token || '').trim();
   if (mode === 'clip') {
-    return '';
-  }
-  if (isHiddenDCode(label)) {
     return '';
   }
   return label;
