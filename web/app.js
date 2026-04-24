@@ -11,6 +11,8 @@ const state = {
   gameError: '',
   gameSession: null,
   gameBestScore: 0,
+  heroVideos: [],
+  currentHeroVideo: '',
   gameAudio: {},
   pendingRoundAudioToken: '',
   gameMediaMuted: false,
@@ -26,6 +28,7 @@ const reportRootEl = document.getElementById('report-root');
 const gameRootEl = document.getElementById('game-root');
 const navTabEls = Array.from(document.querySelectorAll('[data-view-tab]'));
 const heroVideoEl = document.getElementById('hero-video');
+const HERO_VIDEO_STORAGE_KEY = 'monthly-zecheon-last-hero-video';
 
 function escapeHtml(value) {
   return String(value ?? '')
@@ -89,21 +92,86 @@ function pickRandomItem(items) {
   return items[Math.floor(Math.random() * items.length)] || '';
 }
 
-function setHeroVideo(videos) {
+function readStoredHeroVideo() {
+  try {
+    return String(window.sessionStorage.getItem(HERO_VIDEO_STORAGE_KEY) || '').trim();
+  } catch {
+    return '';
+  }
+}
+
+function writeStoredHeroVideo(value) {
+  try {
+    window.sessionStorage.setItem(HERO_VIDEO_STORAGE_KEY, String(value || '').trim());
+  } catch {}
+}
+
+function pickNextHeroVideo(videos, excluded = []) {
+  const list = Array.isArray(videos)
+    ? videos.map((item) => String(item || '').trim()).filter(Boolean)
+    : [];
+  if (!list.length) {
+    return '';
+  }
+  const excludedSet = new Set(excluded.map((item) => String(item || '').trim()).filter(Boolean));
+  const candidates = list.filter((item) => !excludedSet.has(item));
+  return pickRandomItem(candidates.length ? candidates : list);
+}
+
+function playHeroVideo(src) {
   if (!(heroVideoEl instanceof HTMLVideoElement)) {
     return;
   }
-  const selected = pickRandomItem(videos);
-  if (!selected) {
+  const nextSrc = String(src || '').trim();
+  if (!nextSrc) {
     heroVideoEl.removeAttribute('src');
+    state.currentHeroVideo = '';
     return;
   }
-  if (heroVideoEl.getAttribute('src') === selected) {
-    return;
-  }
-  heroVideoEl.setAttribute('src', selected);
+  state.currentHeroVideo = nextSrc;
+  writeStoredHeroVideo(nextSrc);
+  heroVideoEl.setAttribute('src', nextSrc);
+  heroVideoEl.currentTime = 0;
   heroVideoEl.load();
   void heroVideoEl.play().catch(() => {});
+}
+
+function playNextHeroVideo() {
+  const nextSrc = pickNextHeroVideo(state.heroVideos, [state.currentHeroVideo]);
+  if (!nextSrc) {
+    return;
+  }
+  playHeroVideo(nextSrc);
+}
+
+function ensureHeroVideoBindings() {
+  if (!(heroVideoEl instanceof HTMLVideoElement) || heroVideoEl.dataset.heroBound === 'true') {
+    return;
+  }
+  heroVideoEl.dataset.heroBound = 'true';
+  heroVideoEl.addEventListener('ended', () => {
+    playNextHeroVideo();
+  });
+  heroVideoEl.addEventListener('error', () => {
+    playNextHeroVideo();
+  });
+}
+
+function setHeroVideo(videos) {
+  state.heroVideos = Array.isArray(videos)
+    ? videos.map((item) => String(item || '').trim()).filter(Boolean)
+    : [];
+  if (!(heroVideoEl instanceof HTMLVideoElement)) {
+    return;
+  }
+  ensureHeroVideoBindings();
+  if (!state.heroVideos.length) {
+    playHeroVideo('');
+    return;
+  }
+  const storedSrc = readStoredHeroVideo();
+  const selected = pickNextHeroVideo(state.heroVideos, [storedSrc]);
+  playHeroVideo(selected || state.heroVideos[0]);
 }
 
 function setLoading(isLoading, message = '리포트를 준비하는 중입니다...') {
