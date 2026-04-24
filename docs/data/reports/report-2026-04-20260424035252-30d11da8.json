@@ -98,14 +98,6 @@
       "imageUrl": ""
     },
     {
-      "token": "한번",
-      "displayToken": "한번",
-      "tokenTitle": "한번",
-      "count": 154,
-      "ratio": 0.12738748128479374,
-      "imageUrl": ""
-    },
-    {
       "token": "노래",
       "displayToken": "노래",
       "tokenTitle": "노래",
@@ -167,6 +159,14 @@
       "tokenTitle": "치지직",
       "count": 136,
       "ratio": 0.11249803542033733,
+      "imageUrl": ""
+    },
+    {
+      "token": "감사합니다",
+      "displayToken": "감사합니다",
+      "tokenTitle": "감사합니다",
+      "count": 135,
+      "ratio": 0.11167084398342308,
       "imageUrl": ""
     }
   ],
@@ -407,5 +407,5 @@
       "audioUrl": ""
     }
   ],
-  "wordSearchFile": "./data/word-search/search-2026-04-20260424035252-95b7935f.json"
+  "wordSearchFile": "./data/word-search/search-2026-04-20260424035252-30d11da8.json"
 }
