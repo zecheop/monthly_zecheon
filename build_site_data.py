@@ -65,6 +65,11 @@ def normalize_lookup_token(value) -> str:
     return "".join(normalized.strip().lower().split())
 
 
+def build_versioned_sound_asset_url(path: Path) -> str:
+    content_hash = hashlib.sha256(path.read_bytes()).hexdigest()[:12]
+    return f"./assets/sound/{quote(path.name)}?v={content_hash}"
+
+
 def format_bucket_label(bucket_key: str, bucket_minutes: int) -> str:
     normalized = normalize_text(bucket_key)
     if not normalized:
@@ -303,7 +308,7 @@ def build_sound_lookup() -> dict[str, str]:
         for path in SOUND_DIR.iterdir():
             if not path.is_file() or path.suffix.lower() not in SUPPORTED_SOUND_SUFFIXES:
                 continue
-            lookup[normalize_lookup_token(path.stem)] = f"./assets/sound/{quote(path.name)}"
+            lookup[normalize_lookup_token(path.stem)] = build_versioned_sound_asset_url(path)
     return lookup
 
 
@@ -321,7 +326,7 @@ def build_game_audio_manifest() -> dict[str, Any]:
         if not path.is_file() or path.suffix.lower() not in SUPPORTED_SOUND_SUFFIXES:
             continue
         stem_key = normalize_lookup_token(path.stem)
-        asset_url = f"./assets/sound/{quote(path.name)}"
+        asset_url = build_versioned_sound_asset_url(path)
         if stem_key in {"click", "button", "buttonclick", "button-click"}:
             manifest["click"] = asset_url
             continue
@@ -351,7 +356,7 @@ def parse_word_search_examples() -> list[dict]:
         if sound_name:
             sound_path = SOUND_DIR / sound_name
             if sound_path.exists():
-                audio_url = f"./assets/sound/{quote(sound_path.name)}"
+                audio_url = build_versioned_sound_asset_url(sound_path)
         if not audio_url:
             audio_url = sound_lookup.get(normalize_lookup_token(query), "")
         rows.append(
