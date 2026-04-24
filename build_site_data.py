@@ -65,6 +65,21 @@ def normalize_lookup_token(value) -> str:
     return "".join(normalized.strip().lower().split())
 
 
+def build_loose_lookup_keys(value: Any) -> set[str]:
+    raw = unicodedata.normalize("NFC", str(value or "")).strip()
+    if not raw:
+        return set()
+    candidates = {
+        raw,
+        raw.replace("_", " "),
+        raw.replace("-", " "),
+        raw.replace("_", ""),
+        raw.replace("-", ""),
+        raw.replace("_", " ").replace("-", " "),
+    }
+    return {normalize_lookup_token(candidate) for candidate in candidates if normalize_lookup_token(candidate)}
+
+
 def build_versioned_sound_asset_url(path: Path) -> str:
     content_hash = hashlib.sha256(path.read_bytes()).hexdigest()[:12]
     return f"./assets/sound/{quote(path.name)}?v={content_hash}"
@@ -593,25 +608,27 @@ def copy_game_assets_and_build_lookup() -> dict[str, dict[str, str]]:
         suffix = path.suffix.lower()
         if not path.is_file() or suffix not in (SUPPORTED_IMAGE_SUFFIXES | SUPPORTED_VIDEO_SUFFIXES):
             continue
-        lookup_key = normalize_lookup_token(path.stem)
-        if not lookup_key:
+        lookup_keys = build_loose_lookup_keys(path.stem)
+        if not lookup_keys:
             continue
         content_hash = hashlib.sha256(path.read_bytes()).hexdigest()[:12]
         dst_name = f"token-{content_hash}{suffix}"
         shutil.copy2(path, dst_dir / dst_name)
-        lookup[lookup_key] = {
+        payload = {
             "url": f"./assets/game/{dst_name}",
             "kind": "video" if suffix in SUPPORTED_VIDEO_SUFFIXES else "image",
         }
+        for lookup_key in lookup_keys:
+            lookup[lookup_key] = dict(payload)
     return lookup
 
 
 def find_game_media_payload(item: dict, media_lookup: dict[str, dict[str, str]]) -> dict[str, str]:
     aliases = item.get("aliases") if isinstance(item.get("aliases"), list) else []
     for candidate in [item.get("displayToken"), item.get("token"), item.get("tokenTitle"), *aliases]:
-        key = normalize_lookup_token(candidate)
-        if key and key in media_lookup:
-            return dict(media_lookup[key])
+        for key in build_loose_lookup_keys(candidate):
+            if key in media_lookup:
+                return dict(media_lookup[key])
     return {"url": "", "kind": "image"}
 
 
