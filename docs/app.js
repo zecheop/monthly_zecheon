@@ -744,8 +744,12 @@ function renderGameCard(item, options = {}) {
     return '';
   }
   const showGrouped = item.tokenTitle && normalizeComparableText(item.tokenTitle) !== normalizeComparableText(item.displayToken);
-  const badgeMarkup = showMeta
-    ? `<div class="guess-card-meta-row"><span class="guess-rank">전체 ${escapeHtml(formatNumber(item.rank || 0))}위</span></div>`
+  const footerMetaMarkup = showMeta
+    ? `
+      <div class="guess-card-footer-meta">
+        <span class="guess-rank">전체 ${escapeHtml(formatNumber(item.rank || 0))}위</span>
+      </div>
+    `
     : '';
   const mediaKind = String(item.mediaKind || 'image').trim();
   const mediaUrl = String(item.mediaUrl || '').trim();
@@ -769,7 +773,6 @@ function renderGameCard(item, options = {}) {
       ${backdropMarkup}
       <div class="guess-card-overlay"></div>
       <div class="guess-card-inner">
-        ${badgeMarkup}
         <div class="guess-word-wrap">
           <h3>${escapeHtml(item.displayToken)}</h3>
           ${showMeta && showGrouped ? `<p class="guess-token-title">${escapeHtml(item.tokenTitle)}</p>` : ''}
@@ -780,6 +783,7 @@ function renderGameCard(item, options = {}) {
         </div>
         ${showMeta ? `<div class="guess-ratio">${escapeHtml(formatRatio(item.ratio))}</div>` : ''}
         ${showMeta ? renderGameBreakdown(item) : ''}
+        ${footerMetaMarkup}
       </div>
     </article>
   `;
@@ -887,14 +891,7 @@ function handleGameGuess(guess) {
 }
 
 function renderGameStatus(session) {
-  if (!session.revealed) {
-    return '';
-  }
-  return `
-    <div class="game-result-burst is-${session.correct ? 'correct' : 'wrong'}">
-      <span>${session.correct ? '정답' : '아쉽!'}</span>
-    </div>
-  `;
+  return '';
 }
 
 function renderGameScore(session) {
@@ -943,7 +940,6 @@ function renderGameControls(session) {
   if (session.revealed) {
     return `
       <div class="game-button-stack is-frozen">
-        <button class="game-guess-button" type="button" disabled>${session.correct ? '정답' : '오답'}</button>
         <button class="game-next-button" type="button" data-game-next>${session.correct ? '다음' : '다시 시작'}</button>
       </div>
     `;
@@ -1006,6 +1002,24 @@ function renderGame(options = {}) {
   }
 
   const session = state.gameSession;
+  const versusFace = !session.revealed
+    ? '<span class="game-versus-label">VS</span>'
+    : session.correct
+      ? `
+        <span class="game-versus-icon" aria-hidden="true">
+          <svg viewBox="0 0 24 24">
+            <path d="M5 12.6 9.2 16.8 19 7"></path>
+          </svg>
+        </span>
+      `
+      : `
+        <span class="game-versus-icon" aria-hidden="true">
+          <svg viewBox="0 0 24 24">
+            <path d="M7 7 17 17"></path>
+            <path d="M17 7 7 17"></path>
+          </svg>
+        </span>
+      `;
   gameRootEl.innerHTML = `
     <div class="game-wrap">
       <article class="game-stage ${session.revealed ? (session.correct ? 'is-correct' : 'is-wrong') : ''}">
@@ -1018,7 +1032,16 @@ function renderGame(options = {}) {
           accent: 'anchor',
           isRevealed: true,
         })}
-        <div class="game-versus">VS</div>
+        <div class="game-versus ${session.revealed ? 'is-revealed' : ''} ${session.correct ? 'is-correct' : 'is-wrong'}">
+          <div class="game-versus-flip">
+            <div class="game-versus-face game-versus-front">
+              <span class="game-versus-label">VS</span>
+            </div>
+            <div class="game-versus-face game-versus-back">
+              ${versusFace}
+            </div>
+          </div>
+        </div>
         ${renderGameCard(session.rightItem, {
           showCount: session.revealed,
           showMeta: session.revealed,
