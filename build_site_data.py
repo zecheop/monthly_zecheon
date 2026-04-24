@@ -6,6 +6,7 @@ import json
 import os
 import re
 import shutil
+import unicodedata
 from datetime import datetime, timedelta
 from pathlib import Path
 from typing import Iterable, Optional
@@ -60,7 +61,8 @@ def normalize_text(value, fallback: str = "") -> str:
 
 
 def normalize_lookup_token(value) -> str:
-    return "".join(str(value or "").strip().lower().split())
+    normalized = unicodedata.normalize("NFC", str(value or ""))
+    return "".join(normalized.strip().lower().split())
 
 
 def format_bucket_label(bucket_key: str, bucket_minutes: int) -> str:
