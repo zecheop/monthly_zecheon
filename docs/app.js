@@ -29,6 +29,7 @@ const gameRootEl = document.getElementById('game-root');
 const navTabEls = Array.from(document.querySelectorAll('[data-view-tab]'));
 const heroVideoEl = document.getElementById('hero-video');
 const HERO_VIDEO_STORAGE_KEY = 'monthly-zecheon-last-hero-video';
+const REPORT_STORAGE_KEY = 'monthly-zecheon-last-report-id';
 
 function escapeHtml(value) {
   return String(value ?? '')
@@ -103,6 +104,20 @@ function readStoredHeroVideo() {
 function writeStoredHeroVideo(value) {
   try {
     window.sessionStorage.setItem(HERO_VIDEO_STORAGE_KEY, String(value || '').trim());
+  } catch {}
+}
+
+function readStoredReportId() {
+  try {
+    return String(window.sessionStorage.getItem(REPORT_STORAGE_KEY) || '').trim();
+  } catch {
+    return '';
+  }
+}
+
+function writeStoredReportId(value) {
+  try {
+    window.sessionStorage.setItem(REPORT_STORAGE_KEY, String(value || '').trim());
   } catch {}
 }
 
@@ -216,17 +231,23 @@ function formatIssueTag(sourceText) {
 function parseLocationState() {
   const rawHash = window.location.hash.replace(/^#/, '').trim();
   if (!rawHash) {
-    return { view: 'stats', reportId: '' };
+    return { view: 'stats', reportId: readStoredReportId() };
   }
   try {
     const decoded = decodeURIComponent(rawHash);
     if (decoded === 'game') {
       return { view: 'game', reportId: '' };
     }
+    if (decoded === 'stat' || decoded === 'stats') {
+      return { view: 'stats', reportId: readStoredReportId() };
+    }
     return { view: 'stats', reportId: decoded };
   } catch {
     if (rawHash === 'game') {
       return { view: 'game', reportId: '' };
+    }
+    if (rawHash === 'stat' || rawHash === 'stats') {
+      return { view: 'stats', reportId: readStoredReportId() };
     }
     return { view: 'stats', reportId: rawHash };
   }
@@ -235,7 +256,7 @@ function parseLocationState() {
 function syncLocationHash() {
   const nextHash = state.currentView === 'game'
     ? '#game'
-    : (state.currentReportId ? `#${encodeURIComponent(state.currentReportId)}` : '');
+    : '#stat';
   if (window.location.hash !== nextHash) {
     history.replaceState(null, '', nextHash || window.location.pathname);
   }
@@ -889,18 +910,23 @@ function renderGameScore(session) {
   `;
 }
 
-function renderGameControls(session) {
-  const mediaToggleMarkup = sessionHasVideoMedia(session)
-    ? `
+function renderGameMediaToggle(session) {
+  if (!sessionHasVideoMedia(session)) {
+    return '';
+  }
+  return `
+    <div class="game-media-corner">
       <button class="game-media-toggle" type="button" data-game-mute-toggle aria-pressed="${state.gameMediaMuted ? 'true' : 'false'}">
         <span class="game-media-toggle-label">${state.gameMediaMuted ? '소리 켜기' : '음소거'}</span>
       </button>
-    `
-    : '';
+    </div>
+  `;
+}
+
+function renderGameControls(session) {
   if (session.revealed) {
     return `
       <div class="game-button-stack is-frozen">
-        ${mediaToggleMarkup}
         <button class="game-guess-button" type="button" disabled>${session.correct ? '정답' : '오답'}</button>
         <button class="game-next-button" type="button" data-game-next>${session.correct ? '다음' : '다시 시작'}</button>
       </div>
@@ -908,7 +934,6 @@ function renderGameControls(session) {
   }
   return `
     <div class="game-button-stack">
-      ${mediaToggleMarkup}
       <button class="game-guess-button" type="button" data-game-guess="higher">
         <span class="game-button-label">더 많이</span>
         <span class="game-button-icon game-button-icon-up" aria-hidden="true"></span>
@@ -969,6 +994,7 @@ function renderGame(options = {}) {
     <div class="game-wrap">
       <article class="game-stage ${session.revealed ? (session.correct ? 'is-correct' : 'is-wrong') : ''}">
         ${renderGameScore(session)}
+        ${renderGameMediaToggle(session)}
         ${renderGameStatus(session)}
         ${renderGameCard(session.leftItem, {
           showCount: true,
@@ -1039,6 +1065,7 @@ async function loadReport(reportId, options = {}) {
   }
 
   state.currentReportId = reportId;
+  writeStoredReportId(reportId);
   renderArchiveList();
   setError('');
   const isInitialLoad = !state.hasLoadedReport || !state.currentReport;

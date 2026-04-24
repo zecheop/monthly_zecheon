@@ -818,6 +818,13 @@ body.is-scrolled .site-nav-inner {
   text-align: right;
 }
 
+.game-media-corner {
+  position: absolute;
+  top: 96px;
+  right: 22px;
+  z-index: 8;
+}
+
 .game-score-corner span {
   font-size: 12px;
   font-weight: 700;
@@ -1281,6 +1288,11 @@ body.is-scrolled .site-nav-inner {
   }
 
   .game-score-right {
+    right: 14px;
+  }
+
+  .game-media-corner {
+    top: 86px;
     right: 14px;
   }
 
