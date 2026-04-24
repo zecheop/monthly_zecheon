@@ -15,7 +15,7 @@ const state = {
   currentHeroVideo: '',
   gameAudio: {},
   pendingRoundAudioToken: '',
-  gameMediaMuted: false,
+  gameMediaMuted: true,
 };
 
 const openReportPickerEl = document.getElementById('open-report-picker');
@@ -914,10 +914,26 @@ function renderGameMediaToggle(session) {
   if (!sessionHasVideoMedia(session)) {
     return '';
   }
+  const label = state.gameMediaMuted ? '게임 영상 소리 켜기' : '게임 영상 음소거';
+  const iconMarkup = state.gameMediaMuted
+    ? `
+      <svg class="game-media-icon" viewBox="0 0 24 24" aria-hidden="true">
+        <path d="M4 10.5h3.8L12.3 6v12l-4.5-4.5H4z"></path>
+        <path d="M15.2 9.2l5.6 5.6"></path>
+        <path d="M20.8 9.2l-5.6 5.6"></path>
+      </svg>
+    `
+    : `
+      <svg class="game-media-icon" viewBox="0 0 24 24" aria-hidden="true">
+        <path d="M4 10.5h3.8L12.3 6v12l-4.5-4.5H4z"></path>
+        <path d="M16 9.3a4.6 4.6 0 0 1 0 5.4"></path>
+        <path d="M18.7 7.2a7.7 7.7 0 0 1 0 9.6"></path>
+      </svg>
+    `;
   return `
     <div class="game-media-corner">
-      <button class="game-media-toggle" type="button" data-game-mute-toggle aria-pressed="${state.gameMediaMuted ? 'true' : 'false'}">
-        <span class="game-media-toggle-label">${state.gameMediaMuted ? '소리 켜기' : '음소거'}</span>
+      <button class="game-media-toggle" type="button" data-game-mute-toggle aria-label="${label}" title="${label}" aria-pressed="${state.gameMediaMuted ? 'true' : 'false'}">
+        ${iconMarkup}
       </button>
     </div>
   `;

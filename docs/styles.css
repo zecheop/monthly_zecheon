@@ -1117,14 +1117,27 @@ body.is-scrolled .site-nav-inner {
   backdrop-filter: blur(10px);
 }
 
+.game-media-toggle {
+  min-width: 0;
+  width: 46px;
+  height: 46px;
+  padding: 0;
+  border-radius: 999px;
+}
+
 .game-media-toggle[aria-pressed="true"] {
   color: rgba(255, 255, 255, 0.76);
   border-color: rgba(255, 255, 255, 0.18);
 }
 
-.game-media-toggle-label {
-  display: inline-flex;
-  align-items: center;
+.game-media-icon {
+  width: 22px;
+  height: 22px;
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 1.9;
+  stroke-linecap: round;
+  stroke-linejoin: round;
 }
 
 .game-button-label {
