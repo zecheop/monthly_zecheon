@@ -37,9 +37,11 @@ PUBLIC_WORD_MERGES_PATH = BASE_DIR / "public_word_merges.txt"
 PUBLIC_GAME_EXCLUDE_PATH = BASE_DIR / "public_game_exclude.txt"
 PUBLIC_GAME_WORDS_PATH = BASE_DIR / "public_game_words.txt"
 TOP_CLIP_RE = re.compile(r"^top(\d+)\.mp4$", re.IGNORECASE)
+HERO_VIDEO_RE = re.compile(r"^video(\d+)\.(mp4|webm|mov|m4v)$", re.IGNORECASE)
 TITLE_LINE_RE = re.compile(r"^\s*T(\d+)\.\s*(.+?)\s*$")
 SUPPORTED_SOUND_SUFFIXES = {".mp3", ".wav", ".ogg", ".m4a"}
 SUPPORTED_IMAGE_SUFFIXES = {".png", ".jpg", ".jpeg", ".webp", ".gif", ".svg"}
+SUPPORTED_VIDEO_SUFFIXES = {".mp4", ".webm", ".mov", ".m4v"}
 PUBLIC_GAME_MIN_COUNT = 120
 
 
@@ -256,6 +258,18 @@ def list_top_clip_paths() -> list[tuple[int, Path]]:
     return sorted(paths, key=lambda item: item[0])
 
 
+def list_hero_video_paths() -> list[Path]:
+    paths: list[tuple[int, Path]] = []
+    for path in VIDEO_DIR.iterdir():
+        if not path.is_file():
+            continue
+        match = HERO_VIDEO_RE.match(path.name)
+        if not match:
+            continue
+        paths.append((int(match.group(1)), path))
+    return [path for _, path in sorted(paths, key=lambda item: item[0])]
+
+
 def build_top_moment_clips(legend_rows: list[dict], bucket_minutes: int) -> list[dict]:
     title_map = parse_clip_titles()
     clips: list[dict] = []
@@ -265,7 +279,7 @@ def build_top_moment_clips(legend_rows: list[dict], bucket_minutes: int) -> list
         clips.append(
             {
                 "rank": clip_index,
-                "label": f"T{clip_index}",
+                "label": str(clip_index),
                 "title": normalize_text(title_map.get(clip_index), f"Top {clip_index}"),
                 "videoUrl": f"./assets/video/{quote(clip_path.name)}",
                 "date": normalize_text((moment or {}).get("date"), "-"),
@@ -289,6 +303,34 @@ def build_sound_lookup() -> dict[str, str]:
                 continue
             lookup[normalize_lookup_token(path.stem)] = f"./assets/sound/{quote(path.name)}"
     return lookup
+
+
+def build_game_audio_manifest() -> dict[str, Any]:
+    manifest: dict[str, Any] = {
+        "click": "",
+        "success": "",
+        "fail": "",
+        "tokens": {},
+    }
+    if not SOUND_DIR.exists():
+        return manifest
+
+    for path in SOUND_DIR.iterdir():
+        if not path.is_file() or path.suffix.lower() not in SUPPORTED_SOUND_SUFFIXES:
+            continue
+        stem_key = normalize_lookup_token(path.stem)
+        asset_url = f"./assets/sound/{quote(path.name)}"
+        if stem_key in {"click", "button", "buttonclick", "button-click"}:
+            manifest["click"] = asset_url
+            continue
+        if stem_key in {"success", "correct", "win"}:
+            manifest["success"] = asset_url
+            continue
+        if stem_key in {"fail", "wrong", "lose", "error"}:
+            manifest["fail"] = asset_url
+            continue
+        manifest["tokens"][stem_key] = asset_url
+    return manifest
 
 
 def parse_word_search_examples() -> list[dict]:
@@ -534,27 +576,31 @@ def is_public_word_excluded(item: dict, excluded_words: set[str]) -> bool:
     return any(normalize_lookup_token(candidate) in excluded_words for candidate in candidates)
 
 
-def build_game_image_lookup() -> dict[str, str]:
-    lookup: dict[str, str] = {}
+def build_game_media_lookup() -> dict[str, dict[str, str]]:
+    lookup: dict[str, dict[str, str]] = {}
     if not GAME_IMAGE_DIR.exists():
         return lookup
     for path in GAME_IMAGE_DIR.iterdir():
-        if not path.is_file() or path.suffix.lower() not in SUPPORTED_IMAGE_SUFFIXES:
+        suffix = path.suffix.lower()
+        if not path.is_file() or suffix not in (SUPPORTED_IMAGE_SUFFIXES | SUPPORTED_VIDEO_SUFFIXES):
             continue
-        lookup[normalize_lookup_token(path.stem)] = f"./assets/game/{quote(path.name)}"
+        lookup[normalize_lookup_token(path.stem)] = {
+            "url": f"./assets/game/{quote(path.name)}",
+            "kind": "video" if suffix in SUPPORTED_VIDEO_SUFFIXES else "image",
+        }
     return lookup
 
 
-def find_game_image_url(item: dict, image_lookup: dict[str, str]) -> str:
+def find_game_media_payload(item: dict, media_lookup: dict[str, dict[str, str]]) -> dict[str, str]:
     aliases = item.get("aliases") if isinstance(item.get("aliases"), list) else []
     for candidate in [item.get("displayToken"), item.get("token"), item.get("tokenTitle"), *aliases]:
         key = normalize_lookup_token(candidate)
-        if key and key in image_lookup:
-            return image_lookup[key]
+        if key and key in media_lookup:
+            return dict(media_lookup[key])
     item_id = normalize_text(item.get("id"))
     if item_id:
-        return f"./assets/game/generated/{quote(item_id)}.svg"
-    return "./assets/game/generated/fallback.svg"
+        return {"url": f"./assets/game/generated/{quote(item_id)}.svg", "kind": "image"}
+    return {"url": "./assets/game/generated/fallback.svg", "kind": "image"}
 
 
 def build_generated_game_palette(seed: str) -> tuple[str, str, str]:
@@ -591,8 +637,9 @@ def write_generated_game_placeholders(game_payload: dict) -> None:
     )
 
     for item in list(game_payload.get("items") or []):
-        image_url = normalize_text(item.get("imageUrl"))
-        if not image_url.startswith("./assets/game/generated/"):
+        media_url = normalize_text(item.get("mediaUrl"))
+        media_kind = normalize_text(item.get("mediaKind"), "image")
+        if media_kind != "image" or not media_url.startswith("./assets/game/generated/"):
             continue
         display_token_value = normalize_text(item.get("displayToken"), "CHAT")
         token_title = normalize_text(item.get("tokenTitle"), display_token_value)
@@ -600,7 +647,7 @@ def write_generated_game_placeholders(game_payload: dict) -> None:
         rank = int(item.get("rank") or 0)
         seed = normalize_lookup_token(item.get("id") or display_token_value)
         base_color, accent_color, text_color = build_generated_game_palette(seed)
-        file_name = Path(image_url).name
+        file_name = Path(media_url).name
         output_path = generated_dir / file_name
         output_path.write_text(
             (
@@ -654,7 +701,7 @@ def build_public_game_payload(report_paths: list[Path]) -> dict:
     excluded_words = parse_public_word_excludes()
     game_excluded_words = parse_public_game_excludes()
     curated_game_words = parse_public_game_words()
-    image_lookup = build_game_image_lookup()
+    media_lookup = build_game_media_lookup()
     aggregate_rows: dict[str, dict] = {}
     source_labels: list[str] = []
     total_count = 0
@@ -714,6 +761,7 @@ def build_public_game_payload(report_paths: list[Path]) -> dict:
             for label in source_labels
             if int(item.get("monthCounts", {}).get(label) or 0) > 0
         ]
+        media_payload = find_game_media_payload(item, media_lookup)
         all_rows.append(
             {
                 "id": normalize_text(item.get("id")),
@@ -722,7 +770,8 @@ def build_public_game_payload(report_paths: list[Path]) -> dict:
                 "count": count,
                 "ratio": ((count / total_count) * 100.0) if total_count > 0 else 0.0,
                 "monthBreakdown": month_breakdown,
-                "imageUrl": find_game_image_url(item, image_lookup),
+                "mediaUrl": normalize_text(media_payload.get("url")),
+                "mediaKind": normalize_text(media_payload.get("kind"), "image"),
             }
         )
 
@@ -929,7 +978,15 @@ def build_site() -> None:
     write_generated_game_placeholders(game_payload)
     game_file = f"game-{content_version}.json"
     write_json(DOCS_DATA_DIR / game_file, game_payload)
-    write_json(DOCS_DATA_DIR / "reports.json", {"reports": reports_index, "gameFile": f"./data/{game_file}"})
+    write_json(
+        DOCS_DATA_DIR / "reports.json",
+        {
+            "reports": reports_index,
+            "gameFile": f"./data/{game_file}",
+            "heroVideos": [f"./assets/video/{quote(path.name)}" for path in list_hero_video_paths()],
+            "gameAudio": build_game_audio_manifest(),
+        },
+    )
 
 
 def parse_args() -> argparse.Namespace:

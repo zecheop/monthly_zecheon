@@ -2,7 +2,6 @@ const state = {
   reports: [],
   currentReportId: '',
   currentReport: null,
-  currentAudio: null,
   currentView: 'stats',
   reportPickerOpen: false,
   searchCache: new Map(),
@@ -12,6 +11,8 @@ const state = {
   gameError: '',
   gameSession: null,
   gameBestScore: 0,
+  gameAudio: {},
+  pendingRoundAudioToken: '',
 };
 
 const openReportPickerEl = document.getElementById('open-report-picker');
@@ -23,6 +24,7 @@ const errorPanelEl = document.getElementById('error-panel');
 const reportRootEl = document.getElementById('report-root');
 const gameRootEl = document.getElementById('game-root');
 const navTabEls = Array.from(document.querySelectorAll('[data-view-tab]'));
+const heroVideoEl = document.getElementById('hero-video');
 
 function escapeHtml(value) {
   return String(value ?? '')
@@ -62,6 +64,52 @@ function formatLift(value) {
 
 function normalizeComparableText(value) {
   return String(value || '').trim().toLowerCase().replace(/\s+/g, '');
+}
+
+function isHiddenDCode(label) {
+  return /^d_/i.test(String(label || '').trim());
+}
+
+function getEmoteVisibleLabel(row, mode = 'default') {
+  const label = String(row?.displayToken || row?.token || '').trim();
+  if (mode === 'clip') {
+    return '';
+  }
+  if (isHiddenDCode(label)) {
+    return '';
+  }
+  return label;
+}
+
+function getVisibleRowLabel(row, kind, mode = 'default') {
+  if (kind === 'emote') {
+    return getEmoteVisibleLabel(row, mode);
+  }
+  return String(row?.displayToken || row?.token || '').trim();
+}
+
+function pickRandomItem(items) {
+  if (!Array.isArray(items) || !items.length) {
+    return '';
+  }
+  return items[Math.floor(Math.random() * items.length)] || '';
+}
+
+function setHeroVideo(videos) {
+  if (!(heroVideoEl instanceof HTMLVideoElement)) {
+    return;
+  }
+  const selected = pickRandomItem(videos);
+  if (!selected) {
+    heroVideoEl.removeAttribute('src');
+    return;
+  }
+  if (heroVideoEl.getAttribute('src') === selected) {
+    return;
+  }
+  heroVideoEl.setAttribute('src', selected);
+  heroVideoEl.load();
+  void heroVideoEl.play().catch(() => {});
 }
 
 function setLoading(isLoading, message = '리포트를 준비하는 중입니다...') {
@@ -234,17 +282,19 @@ function renderSignalSection(title, rows, kind, emptyText) {
           <div class="signal-column">
             ${columnRows.map((row, rowIndex) => {
               const index = rows.indexOf(row) + 1;
-              const displayLabel = row.displayToken || row.token;
-              const isGrouped = row.tokenTitle && normalizeComparableText(row.tokenTitle) !== normalizeComparableText(displayLabel);
+              const rawDisplayLabel = row.displayToken || row.token;
+              const displayLabel = getVisibleRowLabel(row, kind, 'signal');
+              const isGrouped = kind === 'word' && row.tokenTitle && normalizeComparableText(row.tokenTitle) !== normalizeComparableText(rawDisplayLabel);
               const fill = buildSignalWidth(row.ratio, maxRatio);
+              const rankClass = index === 1 ? ' is-rank-gold' : index === 2 ? ' is-rank-silver' : index === 3 ? ' is-rank-bronze' : '';
               return `
-                <article class="signal-row signal-row-${kind}" style="--fill:${fill}%;">
+                <article class="signal-row signal-row-${kind}${rankClass}" style="--fill:${fill}%;">
                   <div class="signal-row-fill"></div>
                   <div class="rank-badge ${index === 1 ? 'is-gold' : ''}${index === 2 ? ' is-silver' : ''}${index === 3 ? ' is-bronze' : ''}">${index}</div>
                   <div class="rank-main">
-                    <div class="token-title" title="${escapeHtml(row.tokenTitle || displayLabel)}">
-                      ${row.imageUrl ? `<img src="${escapeHtml(row.imageUrl)}" alt="${escapeHtml(displayLabel)}">` : ''}
-                      <span>${escapeHtml(displayLabel)}</span>
+                    <div class="token-title" title="${escapeHtml(row.tokenTitle || rawDisplayLabel)}">
+                      ${row.imageUrl ? `<img src="${escapeHtml(row.imageUrl)}" alt="${escapeHtml(rawDisplayLabel)}">` : ''}
+                      ${displayLabel ? `<span>${escapeHtml(displayLabel)}</span>` : ''}
                     </div>
                     <div class="item-meta">${escapeHtml(formatRatio(row.ratio))}${isGrouped ? ` · ${escapeHtml(row.tokenTitle)}` : ''}</div>
                   </div>
@@ -261,16 +311,17 @@ function renderSignalSection(title, rows, kind, emptyText) {
   `;
 }
 
-function renderCompactTokens(rows, emptyText) {
+function renderCompactTokens(rows, emptyText, options = {}) {
+  const { kind = 'word', hideText = false } = options;
   if (!rows || !rows.length) {
     return `<p class="item-meta">${escapeHtml(emptyText)}</p>`;
   }
   return `
     <div class="compact-token-row">
       ${rows.map((row) => `
-        <span class="compact-token" title="${escapeHtml(row.tokenTitle || row.displayToken || row.token)}">
+        <span class="compact-token ${hideText ? 'is-icon-only' : ''}" title="${escapeHtml(row.tokenTitle || row.displayToken || row.token)}">
           ${row.imageUrl ? `<img src="${escapeHtml(row.imageUrl)}" alt="${escapeHtml(row.displayToken || row.token)}">` : ''}
-          <span>${escapeHtml(row.displayToken || row.token)}</span>
+          ${hideText && row.imageUrl ? '' : `<span>${escapeHtml(getVisibleRowLabel(row, kind, kind === 'emote' ? 'clip' : 'signal') || row.displayToken || row.token || '')}</span>`}
         </span>
       `).join('')}
     </div>
@@ -280,22 +331,20 @@ function renderCompactTokens(rows, emptyText) {
 function renderTopMomentClips(report) {
   const rows = report.topMomentClips || [];
   if (!rows.length) {
-    return '<p class="item-meta">표시할 Top Moments 클립이 아직 없습니다.</p>';
+    return '<p class="item-meta">표시할 탑5 클립이 아직 없습니다.</p>';
   }
   return `
     <div class="clip-carousel">
       ${rows.map((row) => `
         <article class="clip-card">
           <div class="clip-card-head">
-            <span class="clip-kicker">${escapeHtml(row.label || `T${row.rank || ''}`)}</span>
+            <span class="clip-kicker ${Number(row.rank) === 1 ? 'is-gold' : Number(row.rank) === 2 ? 'is-silver' : Number(row.rank) === 3 ? 'is-bronze' : ''}">
+              ${Number(row.rank) === 1 ? '🥇 ' : Number(row.rank) === 2 ? '🥈 ' : Number(row.rank) === 3 ? '🥉 ' : ''}${escapeHtml(row.label || String(row.rank || ''))}
+            </span>
             <h4>${escapeHtml(row.title || `Top ${row.rank || ''}`)}</h4>
           </div>
           <div class="clip-player-wrap">
             <video class="clip-player" src="${escapeHtml(row.videoUrl)}" controls preload="metadata"></video>
-            <div class="clip-player-controls">
-              <button class="clip-skip-button" type="button" data-clip-skip="-10">-10초</button>
-              <button class="clip-skip-button" type="button" data-clip-skip="10">+10초</button>
-            </div>
           </div>
           <div class="clip-card-body">
             <div class="clip-meta-row">
@@ -305,39 +354,17 @@ function renderTopMomentClips(report) {
             </div>
             <div class="clip-token-block">
               <span class="clip-token-label">단어</span>
-              ${renderCompactTokens(row.topWords, '단어가 없습니다.')}
+              ${renderCompactTokens(row.topWords, '단어가 없습니다.', { kind: 'word' })}
             </div>
             <div class="clip-token-block">
               <span class="clip-token-label">이모티콘</span>
-              ${renderCompactTokens(row.topEmotes, '이모티콘이 없습니다.')}
+              ${renderCompactTokens(row.topEmotes, '이모티콘이 없습니다.', { kind: 'emote', hideText: true })}
             </div>
           </div>
         </article>
       `).join('')}
     </div>
   `;
-}
-
-function bindClipPlayers() {
-  const skipButtons = Array.from(document.querySelectorAll('[data-clip-skip]'));
-  skipButtons.forEach((button) => {
-    button.addEventListener('click', () => {
-      const clipCard = button.closest('.clip-card');
-      const videoEl = clipCard?.querySelector('.clip-player');
-      if (!(videoEl instanceof HTMLVideoElement)) {
-        return;
-      }
-      const delta = Number(button.getAttribute('data-clip-skip') || 0);
-      const currentTime = Number.isFinite(videoEl.currentTime) ? videoEl.currentTime : 0;
-      const duration = Number.isFinite(videoEl.duration) ? videoEl.duration : null;
-      const rawNextTime = currentTime + delta;
-      const nextTime = duration == null
-        ? Math.max(0, rawNextTime)
-        : Math.min(Math.max(0, rawNextTime), duration);
-      videoEl.currentTime = nextTime;
-      videoEl.focus();
-    });
-  });
 }
 
 function buildPeakMomentText(item) {
@@ -427,32 +454,57 @@ function renderReport(report) {
 
       <article class="panel-card">
         <div class="section-head">
-          <h3>Top5 Moments</h3>
+          <h3>탑5 클립</h3>
         </div>
         ${renderTopMomentClips(report)}
-      </article>
-
-      <article class="panel-card">
-        <div class="section-head">
-          <h3>단어 검색기</h3>
-        </div>
-        ${renderWordSearch(report)}
       </article>
     </div>
   `;
 }
 
-function playAudio(url) {
+function playAudio(url, options = {}) {
   if (!url) {
     return;
   }
-  if (state.currentAudio) {
-    state.currentAudio.pause();
-    state.currentAudio.currentTime = 0;
-  }
   const audio = new Audio(url);
-  state.currentAudio = audio;
+  audio.volume = Number.isFinite(Number(options.volume)) ? Number(options.volume) : 1;
   void audio.play().catch(() => {});
+}
+
+function resolveGameAudioUrl(kind) {
+  return String(state.gameAudio?.[kind] || '').trim();
+}
+
+function resolveGameTokenAudioUrl(item) {
+  const tokenMap = state.gameAudio?.tokens || {};
+  const aliases = String(item?.tokenTitle || '')
+    .split('+')
+    .map((value) => normalizeComparableText(value))
+    .filter(Boolean);
+  const candidates = [
+    normalizeComparableText(item?.displayToken),
+    normalizeComparableText(item?.id),
+    ...aliases,
+  ].filter(Boolean);
+  for (const candidate of candidates) {
+    if (tokenMap[candidate]) {
+      return tokenMap[candidate];
+    }
+  }
+  return '';
+}
+
+function maybePlayCurrentRoundAudio() {
+  const pendingToken = normalizeComparableText(state.pendingRoundAudioToken);
+  const currentToken = normalizeComparableText(state.gameSession?.rightItem?.id || state.gameSession?.rightItem?.displayToken);
+  if (!pendingToken || !currentToken || pendingToken !== currentToken) {
+    return;
+  }
+  const audioUrl = resolveGameTokenAudioUrl(state.gameSession?.rightItem);
+  state.pendingRoundAudioToken = '';
+  if (audioUrl) {
+    playAudio(audioUrl, { volume: 0.92 });
+  }
 }
 
 async function getSearchItems(report) {
@@ -581,8 +633,16 @@ function renderGameCard(item, options = {}) {
   const badgeMarkup = showMeta
     ? `<div class="guess-card-meta-row"><span class="guess-rank">전체 ${escapeHtml(formatNumber(item.rank || 0))}위</span></div>`
     : '';
-  const backdropMarkup = item.imageUrl
-    ? `<div class="guess-backdrop is-photo" style="background-image:url('${escapeHtml(item.imageUrl)}');"></div>`
+  const mediaKind = String(item.mediaKind || 'image').trim();
+  const mediaUrl = String(item.mediaUrl || '').trim();
+  const backdropMarkup = mediaUrl && mediaKind === 'video'
+    ? `
+      <div class="guess-backdrop is-video">
+        <video class="guess-backdrop-video" src="${escapeHtml(mediaUrl)}" autoplay muted loop playsinline preload="metadata"></video>
+      </div>
+    `
+    : mediaUrl
+    ? `<div class="guess-backdrop is-photo" style="background-image:url('${escapeHtml(mediaUrl)}');"></div>`
     : `
       <div class="guess-backdrop is-generated">
         <div class="guess-backdrop-glow"></div>
@@ -652,6 +712,7 @@ function startGameSession() {
     rightItem,
     usedIds,
   };
+  state.pendingRoundAudioToken = rightItem.id;
 }
 
 function advanceGameSession() {
@@ -684,6 +745,7 @@ function advanceGameSession() {
     rightItem: nextRight,
     usedIds,
   };
+  state.pendingRoundAudioToken = nextRight.id;
   renderGame();
 }
 
@@ -695,6 +757,7 @@ function handleGameGuess(guess) {
   const rightCount = Number(state.gameSession.rightItem?.count || 0);
   const relation = rightCount > leftCount ? 'higher' : 'lower';
   const correct = guess === relation;
+  const feedbackUrl = resolveGameAudioUrl(correct ? 'success' : 'fail');
   const nextScore = correct ? Number(state.gameSession.score || 0) + 1 : Number(state.gameSession.score || 0);
   state.gameBestScore = Math.max(state.gameBestScore, nextScore);
   state.gameSession = {
@@ -703,6 +766,9 @@ function handleGameGuess(guess) {
     revealed: true,
     correct,
   };
+  if (feedbackUrl) {
+    playAudio(feedbackUrl, { volume: 0.95 });
+  }
   renderGame();
 }
 
@@ -820,17 +886,26 @@ function renderGame() {
       </article>
     </div>
   `;
+  maybePlayCurrentRoundAudio();
 }
 
 function bindGameControls() {
   gameRootEl.addEventListener('click', (event) => {
     const guessButton = event.target.closest('[data-game-guess]');
     if (guessButton) {
+      const clickUrl = resolveGameAudioUrl('click');
+      if (clickUrl) {
+        playAudio(clickUrl, { volume: 0.7 });
+      }
       handleGameGuess(guessButton.getAttribute('data-game-guess') || '');
       return;
     }
     const nextButton = event.target.closest('[data-game-next]');
     if (nextButton) {
+      const clickUrl = resolveGameAudioUrl('click');
+      if (clickUrl) {
+        playAudio(clickUrl, { volume: 0.7 });
+      }
       if (state.gameSession?.correct) {
         advanceGameSession();
       } else {
@@ -868,8 +943,6 @@ async function loadReport(reportId, options = {}) {
     }
     state.currentReport = report;
     renderReport(report);
-    bindClipPlayers();
-    bindWordSearch(report);
     state.hasLoadedReport = true;
     setReportUpdating(false);
     setLoading(false);
@@ -878,7 +951,6 @@ async function loadReport(reportId, options = {}) {
     if (syncHash && state.currentView === 'stats') {
       syncLocationHash();
     }
-    void getSearchItems(report);
   } catch (error) {
     setReportUpdating(false);
     setLoading(false);
@@ -940,6 +1012,8 @@ async function bootstrap() {
   try {
     const data = await fetchJson(`./data/reports.json?v=${Date.now()}`);
     state.reports = Array.isArray(data.reports) ? data.reports : [];
+    state.gameAudio = data.gameAudio && typeof data.gameAudio === 'object' ? data.gameAudio : {};
+    setHeroVideo(Array.isArray(data.heroVideos) ? data.heroVideos : []);
     renderArchiveList();
     if (!state.reports.length) {
       setLoading(false);
