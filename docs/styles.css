@@ -573,7 +573,8 @@ body.is-scrolled .site-nav-inner {
 .clip-skip-button,
 .search-button,
 .game-guess-button,
-.game-next-button {
+.game-next-button,
+.game-media-toggle {
   padding: 10px 16px;
   border: 1px solid rgba(255, 255, 255, 0.14);
   border-radius: 999px;
@@ -586,7 +587,8 @@ body.is-scrolled .site-nav-inner {
 .clip-skip-button:hover,
 .search-button:hover,
 .game-guess-button:hover,
-.game-next-button:hover {
+.game-next-button:hover,
+.game-media-toggle:hover {
   transform: translateY(-1px);
   background: rgba(255, 255, 255, 0.14);
   border-color: rgba(255, 255, 255, 0.22);
@@ -1097,7 +1099,8 @@ body.is-scrolled .site-nav-inner {
 }
 
 .game-guess-button,
-.game-next-button {
+.game-next-button,
+.game-media-toggle {
   min-width: 148px;
   display: inline-flex;
   align-items: center;
@@ -1105,6 +1108,16 @@ body.is-scrolled .site-nav-inner {
   justify-content: center;
   background: rgba(23, 23, 23, 0.48);
   backdrop-filter: blur(10px);
+}
+
+.game-media-toggle[aria-pressed="true"] {
+  color: rgba(255, 255, 255, 0.76);
+  border-color: rgba(255, 255, 255, 0.18);
+}
+
+.game-media-toggle-label {
+  display: inline-flex;
+  align-items: center;
 }
 
 .game-button-label {

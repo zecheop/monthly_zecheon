@@ -13,6 +13,7 @@ const state = {
   gameBestScore: 0,
   gameAudio: {},
   pendingRoundAudioToken: '',
+  gameMediaMuted: false,
 };
 
 const openReportPickerEl = document.getElementById('open-report-picker');
@@ -219,7 +220,7 @@ function setCurrentView(view, options = {}) {
   setGameVisible(state.currentView === 'game');
   updateHeroIssue();
   if (state.currentView === 'game') {
-    renderGame();
+    renderGame({ forceMediaPlayback: true });
   }
   if (syncHash) {
     syncLocationHash();
@@ -500,6 +501,37 @@ function maybePlayCurrentRoundAudio() {
   }
 }
 
+function sessionHasVideoMedia(session) {
+  return [session?.leftItem, session?.rightItem].some((item) => (
+    String(item?.mediaKind || '').trim() === 'video' && String(item?.mediaUrl || '').trim()
+  ));
+}
+
+function syncGameBackdropMedia(forcePlay = false) {
+  const videoEls = Array.from(gameRootEl.querySelectorAll('.guess-backdrop-video'));
+  if (!videoEls.length) {
+    return;
+  }
+
+  const preferredVideo = videoEls.find((element) => element.dataset.gameVideoRole === 'challenger')
+    || videoEls.find((element) => element.dataset.gameVideoRole === 'anchor')
+    || null;
+
+  videoEls.forEach((videoEl) => {
+    if (!(videoEl instanceof HTMLVideoElement)) {
+      return;
+    }
+    const isPrimary = videoEl === preferredVideo;
+    const shouldMute = state.gameMediaMuted || !isPrimary;
+    videoEl.defaultMuted = shouldMute;
+    videoEl.muted = shouldMute;
+    videoEl.volume = shouldMute ? 0 : 1;
+    if (forcePlay || !videoEl.paused) {
+      void videoEl.play().catch(() => {});
+    }
+  });
+}
+
 async function getSearchItems(report) {
   if (!report?.id || !report?.wordSearchFile) {
     return [];
@@ -631,7 +663,7 @@ function renderGameCard(item, options = {}) {
   const backdropMarkup = mediaUrl && mediaKind === 'video'
     ? `
       <div class="guess-backdrop is-video">
-        <video class="guess-backdrop-video" src="${escapeHtml(mediaUrl)}" autoplay muted loop playsinline preload="metadata"></video>
+        <video class="guess-backdrop-video" data-game-video-role="${escapeHtml(accent)}" src="${escapeHtml(mediaUrl)}" autoplay loop playsinline preload="metadata" ${state.gameMediaMuted ? 'muted' : ''}></video>
       </div>
     `
     : mediaUrl
@@ -790,9 +822,17 @@ function renderGameScore(session) {
 }
 
 function renderGameControls(session) {
+  const mediaToggleMarkup = sessionHasVideoMedia(session)
+    ? `
+      <button class="game-media-toggle" type="button" data-game-mute-toggle aria-pressed="${state.gameMediaMuted ? 'true' : 'false'}">
+        <span class="game-media-toggle-label">${state.gameMediaMuted ? '소리 켜기' : '음소거'}</span>
+      </button>
+    `
+    : '';
   if (session.revealed) {
     return `
       <div class="game-button-stack is-frozen">
+        ${mediaToggleMarkup}
         <button class="game-guess-button" type="button" disabled>${session.correct ? '정답' : '오답'}</button>
         <button class="game-next-button" type="button" data-game-next>${session.correct ? '다음' : '다시 시작'}</button>
       </div>
@@ -800,6 +840,7 @@ function renderGameControls(session) {
   }
   return `
     <div class="game-button-stack">
+      ${mediaToggleMarkup}
       <button class="game-guess-button" type="button" data-game-guess="higher">
         <span class="game-button-label">더 많이</span>
         <span class="game-button-icon game-button-icon-up" aria-hidden="true"></span>
@@ -812,7 +853,8 @@ function renderGameControls(session) {
   `;
 }
 
-function renderGame() {
+function renderGame(options = {}) {
+  const { forceMediaPlayback = false } = options;
   if (state.currentView !== 'game' && gameRootEl.classList.contains('hidden')) {
     return;
   }
@@ -879,11 +921,22 @@ function renderGame() {
       </article>
     </div>
   `;
+  syncGameBackdropMedia(forceMediaPlayback);
   maybePlayCurrentRoundAudio();
 }
 
 function bindGameControls() {
   gameRootEl.addEventListener('click', (event) => {
+    const muteButton = event.target.closest('[data-game-mute-toggle]');
+    if (muteButton) {
+      const clickUrl = resolveGameAudioUrl('click');
+      state.gameMediaMuted = !state.gameMediaMuted;
+      if (clickUrl) {
+        playAudio(clickUrl, { volume: 0.65 });
+      }
+      renderGame({ forceMediaPlayback: true });
+      return;
+    }
     const guessButton = event.target.closest('[data-game-guess]');
     if (guessButton) {
       const clickUrl = resolveGameAudioUrl('click');
@@ -891,6 +944,7 @@ function bindGameControls() {
         playAudio(clickUrl, { volume: 0.7 });
       }
       handleGameGuess(guessButton.getAttribute('data-game-guess') || '');
+      syncGameBackdropMedia(true);
       return;
     }
     const nextButton = event.target.closest('[data-game-next]');
@@ -903,7 +957,7 @@ function bindGameControls() {
         advanceGameSession();
       } else {
         startGameSession();
-        renderGame();
+        renderGame({ forceMediaPlayback: true });
       }
     }
   });
@@ -996,7 +1050,7 @@ async function bootstrap() {
       const targetView = element.getAttribute('data-view-tab') || 'stats';
       setCurrentView(targetView, { syncHash: true, scrollToContent: true });
       if (targetView === 'game') {
-        renderGame();
+        renderGame({ forceMediaPlayback: true });
       }
     });
   });
@@ -1027,7 +1081,7 @@ async function bootstrap() {
       const nextLocation = parseLocationState();
       if (nextLocation.view === 'game') {
         setCurrentView('game', { syncHash: false });
-        renderGame();
+        renderGame({ forceMediaPlayback: true });
         return;
       }
       setCurrentView('stats', { syncHash: false });
