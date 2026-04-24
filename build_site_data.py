@@ -607,10 +607,7 @@ def find_game_media_payload(item: dict, media_lookup: dict[str, dict[str, str]])
         key = normalize_lookup_token(candidate)
         if key and key in media_lookup:
             return dict(media_lookup[key])
-    item_id = normalize_text(item.get("id"))
-    if item_id:
-        return {"url": f"./assets/game/generated/{quote(item_id)}.svg", "kind": "image"}
-    return {"url": "./assets/game/generated/fallback.svg", "kind": "image"}
+    return {"url": "", "kind": "image"}
 
 
 def build_generated_game_palette(seed: str) -> tuple[str, str, str]:
@@ -935,7 +932,6 @@ def ensure_asset_dirs() -> None:
     (DOCS_ASSET_DIR / "video").mkdir(parents=True, exist_ok=True)
     (DOCS_ASSET_DIR / "sound").mkdir(parents=True, exist_ok=True)
     (DOCS_ASSET_DIR / "game").mkdir(parents=True, exist_ok=True)
-    (DOCS_ASSET_DIR / "game" / "generated").mkdir(parents=True, exist_ok=True)
 
 
 def copy_asset_folder(src_dir: Path, dst_dir: Path) -> None:
@@ -984,7 +980,6 @@ def build_site() -> None:
         write_json(DOCS_REPORT_DIR / report_file, report_payload)
         write_json(DOCS_SEARCH_DIR / word_search_file, search_payload)
     game_payload = build_public_game_payload(report_paths, media_lookup)
-    write_generated_game_placeholders(game_payload)
     game_file = f"game-{content_version}.json"
     write_json(DOCS_DATA_DIR / game_file, game_payload)
     write_json(
