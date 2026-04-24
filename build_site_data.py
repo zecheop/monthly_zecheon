@@ -325,10 +325,10 @@ def build_game_audio_manifest() -> dict[str, Any]:
         if stem_key in {"click", "button", "buttonclick", "button-click"}:
             manifest["click"] = asset_url
             continue
-        if stem_key in {"success", "correct", "win"}:
+        if stem_key in {"success", "correct", "win", "o"}:
             manifest["success"] = asset_url
             continue
-        if stem_key in {"fail", "wrong", "lose", "error"}:
+        if stem_key in {"fail", "wrong", "lose", "error", "x"}:
             manifest["fail"] = asset_url
             continue
         manifest["tokens"][stem_key] = asset_url
