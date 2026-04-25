@@ -928,7 +928,7 @@ function renderGameStage(session, options = {}) {
   return `
     <article class="game-stage ${resultStateClass} ${stageClass} ${isActive ? 'is-active' : ''}">
       ${showChrome ? renderGameScore(session) : ''}
-      ${showChrome ? renderGameMediaToggle(session) : ''}
+      ${showChrome ? renderGameMediaToggle() : ''}
       ${showChrome ? renderGameStatus(session) : ''}
       ${renderGameCard(session.leftItem, {
         showCount: true,
@@ -1000,7 +1000,7 @@ function renderGameScore(session) {
   `;
 }
 
-function renderGameMediaToggle(session) {
+function renderGameMediaToggle() {
   const label = state.gameMediaMuted ? '게임 영상 소리 켜기' : '게임 영상 음소거';
   const stateLabel = state.gameMediaMuted ? '소리 OFF' : '소리 ON';
   const stateClass = state.gameMediaMuted ? 'is-muted' : 'is-active';
