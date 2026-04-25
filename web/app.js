@@ -1001,10 +1001,9 @@ function renderGameScore(session) {
 }
 
 function renderGameMediaToggle(session) {
-  if (!sessionHasVideoMedia(session)) {
-    return '';
-  }
   const label = state.gameMediaMuted ? '게임 영상 소리 켜기' : '게임 영상 음소거';
+  const stateLabel = state.gameMediaMuted ? '소리 OFF' : '소리 ON';
+  const stateClass = state.gameMediaMuted ? 'is-muted' : 'is-active';
   const iconMarkup = state.gameMediaMuted
     ? `
       <svg class="game-media-icon" viewBox="0 0 24 24" aria-hidden="true">
@@ -1022,8 +1021,9 @@ function renderGameMediaToggle(session) {
     `;
   return `
     <div class="game-media-corner">
-      <button class="game-media-toggle" type="button" data-game-mute-toggle aria-label="${label}" title="${label}" aria-pressed="${state.gameMediaMuted ? 'true' : 'false'}">
+      <button class="game-media-toggle ${stateClass}" type="button" data-game-mute-toggle aria-label="${label}" title="${label}" aria-pressed="${state.gameMediaMuted ? 'true' : 'false'}">
         ${iconMarkup}
+        <span class="game-media-label">${stateLabel}</span>
       </button>
     </div>
   `;
