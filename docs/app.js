@@ -38,6 +38,7 @@ const GAME_VIDEO_FADE_OUT_MS = 220;
 const GAME_VIDEO_FEEDBACK_MS = 880;
 const gameVideoFadeFrames = new WeakMap();
 const gameVideoFeedbackTimers = new WeakMap();
+const gameVideoAudibleRetryTimers = new WeakMap();
 
 function escapeHtml(value) {
   return String(value ?? '')
@@ -676,6 +677,41 @@ function stopGameVideoFade(videoEl) {
   }
 }
 
+function clearGameVideoAudibleRetries(videoEl) {
+  const timerIds = gameVideoAudibleRetryTimers.get(videoEl);
+  if (Array.isArray(timerIds)) {
+    timerIds.forEach((timerId) => window.clearTimeout(timerId));
+  }
+  gameVideoAudibleRetryTimers.delete(videoEl);
+}
+
+function scheduleGameVideoAudibleRetries(videoEl, tokenId) {
+  if (!(videoEl instanceof HTMLVideoElement)) {
+    return;
+  }
+  clearGameVideoAudibleRetries(videoEl);
+  const delays = [0, 180, 520];
+  const timerIds = delays.map((delay, index) => window.setTimeout(() => {
+    if (state.gameMediaMuted || isGameTokenPaused(tokenId)) {
+      return;
+    }
+    if (!videoEl.isConnected) {
+      return;
+    }
+    videoEl.defaultMuted = false;
+    videoEl.muted = false;
+    if (videoEl.paused) {
+      void videoEl.play().catch(() => {});
+    }
+    if (index === 0) {
+      animateGameVideoVolume(videoEl, GAME_VIDEO_AUDIBLE_VOLUME, GAME_VIDEO_FADE_IN_MS);
+    } else {
+      videoEl.volume = GAME_VIDEO_AUDIBLE_VOLUME;
+    }
+  }, delay));
+  gameVideoAudibleRetryTimers.set(videoEl, timerIds);
+}
+
 function animateGameVideoVolume(videoEl, targetVolume, duration = GAME_VIDEO_FADE_IN_MS, options = {}) {
   if (!(videoEl instanceof HTMLVideoElement)) {
     options.onComplete?.();
@@ -807,6 +843,7 @@ function syncGameBackdropMedia(forcePlay = false) {
     const shouldForcePlay = forcePlay || videoEl.paused;
 
     if (shouldPausePlayback) {
+      clearGameVideoAudibleRetries(videoEl);
       animateGameVideoVolume(videoEl, 0, GAME_VIDEO_FADE_OUT_MS, {
         onComplete: () => {
           videoEl.pause();
@@ -825,6 +862,7 @@ function syncGameBackdropMedia(forcePlay = false) {
     videoEl.preload = 'auto';
 
     if (!shouldBeAudible) {
+      clearGameVideoAudibleRetries(videoEl);
       const silenceVideo = () => {
         videoEl.defaultMuted = true;
         videoEl.muted = true;
@@ -843,15 +881,6 @@ function syncGameBackdropMedia(forcePlay = false) {
       return;
     }
 
-    const startAudiblePlayback = () => {
-      if (state.gameMediaMuted || isGameTokenPaused(tokenId)) {
-        return;
-      }
-      videoEl.defaultMuted = false;
-      videoEl.muted = false;
-      animateGameVideoVolume(videoEl, GAME_VIDEO_AUDIBLE_VOLUME, GAME_VIDEO_FADE_IN_MS);
-    };
-
     videoEl.defaultMuted = true;
     videoEl.muted = true;
     videoEl.volume = 0;
@@ -859,15 +888,15 @@ function syncGameBackdropMedia(forcePlay = false) {
       const playResult = videoEl.play();
       if (playResult && typeof playResult.then === 'function') {
         playResult.then(() => {
-          window.setTimeout(startAudiblePlayback, 90);
+          scheduleGameVideoAudibleRetries(videoEl, tokenId);
         }).catch(() => {});
       } else {
-        window.setTimeout(startAudiblePlayback, 90);
+        scheduleGameVideoAudibleRetries(videoEl, tokenId);
       }
       return;
     }
 
-    startAudiblePlayback();
+    scheduleGameVideoAudibleRetries(videoEl, tokenId);
   });
 }
 
