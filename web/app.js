@@ -1251,7 +1251,7 @@ function renderGameMediaToggle() {
   return `
     <div class="game-media-corner">
       <button class="game-media-toggle ${stateClass}" type="button" data-game-mute-toggle aria-label="${label}" title="${label}" aria-pressed="${state.gameMediaMuted ? 'true' : 'false'}">
-        <span data-game-media-icon>${getGameMediaToggleIconMarkup()}</span>
+        <span class="game-media-icon-wrap" data-game-media-icon>${getGameMediaToggleIconMarkup()}</span>
         <span class="game-media-label" data-game-media-label>${stateLabel}</span>
       </button>
     </div>

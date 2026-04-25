@@ -1319,6 +1319,7 @@ body.is-scrolled .site-nav-inner {
   padding: 0 16px;
   border-radius: 999px;
   gap: 8px;
+  line-height: 1;
   color: #f5fbff;
   border-color: rgba(75, 189, 206, 0.22);
   background: linear-gradient(180deg, rgba(20, 29, 34, 0.92), rgba(14, 18, 22, 0.92));
@@ -1342,16 +1343,27 @@ body.is-scrolled .site-nav-inner {
   color: rgba(255, 242, 242, 0.92);
 }
 
+.game-media-icon-wrap {
+  display: inline-flex;
+  width: 20px;
+  height: 20px;
+  align-items: center;
+  justify-content: center;
+  flex: 0 0 20px;
+}
+
 .game-media-label {
   font-size: 12px;
   font-weight: 800;
   letter-spacing: 0.06em;
+  line-height: 1;
   white-space: nowrap;
 }
 
 .game-media-icon {
   width: 20px;
   height: 20px;
+  display: block;
   fill: none;
   stroke: currentColor;
   stroke-width: 1.9;
