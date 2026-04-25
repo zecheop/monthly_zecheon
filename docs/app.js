@@ -16,11 +16,7 @@ const state = {
   gameAudio: {},
   pendingRoundAudioToken: '',
   gameMediaMuted: true,
-  gameMediaPlaybackPaused: false,
-  gameMediaPausedRoles: {
-    anchor: false,
-    challenger: false,
-  },
+  gamePausedTokenIds: new Set(),
   gameTransitionTimer: null,
 };
 
@@ -592,30 +588,38 @@ function resolveGameTokenAudioUrl(item) {
   return '';
 }
 
-function createDefaultGameMediaPausedRoles() {
-  return {
-    anchor: false,
-    challenger: false,
-  };
+function normalizeGameTokenId(value) {
+  return String(value || '').trim();
 }
 
-function resetGameMediaPausedRoles() {
-  state.gameMediaPausedRoles = createDefaultGameMediaPausedRoles();
+function resetGamePausedTokens(preservedIds = []) {
+  state.gamePausedTokenIds = new Set(
+    (Array.isArray(preservedIds) ? preservedIds : [preservedIds])
+      .map((value) => normalizeGameTokenId(value))
+      .filter(Boolean)
+  );
 }
 
-function isGameMediaRolePaused(role) {
-  return Boolean(state.gameMediaPausedRoles?.[role]);
+function isGameTokenPaused(tokenId) {
+  return state.gamePausedTokenIds instanceof Set
+    ? state.gamePausedTokenIds.has(normalizeGameTokenId(tokenId))
+    : false;
 }
 
-function setGameMediaRolePaused(role, paused) {
-  if (!role) {
+function setGameTokenPaused(tokenId, paused) {
+  const normalizedTokenId = normalizeGameTokenId(tokenId);
+  if (!normalizedTokenId) {
     return;
   }
-  state.gameMediaPausedRoles = {
-    ...createDefaultGameMediaPausedRoles(),
-    ...(state.gameMediaPausedRoles || {}),
-    [role]: !!paused,
-  };
+  const nextSet = state.gamePausedTokenIds instanceof Set
+    ? new Set(state.gamePausedTokenIds)
+    : new Set();
+  if (paused) {
+    nextSet.add(normalizedTokenId);
+  } else {
+    nextSet.delete(normalizedTokenId);
+  }
+  state.gamePausedTokenIds = nextSet;
 }
 
 function maybePlayCurrentRoundAudio() {
@@ -796,8 +800,9 @@ function syncGameBackdropMedia(forcePlay = false) {
 
   const primaryVideo = getPrimaryGameVideoElement(videoEls);
   videoEls.forEach((videoEl) => {
+    const tokenId = normalizeGameTokenId(videoEl.dataset.gameTokenId);
     const isPrimary = videoEl === primaryVideo;
-    const shouldPausePlayback = state.gameMediaPlaybackPaused;
+    const shouldPausePlayback = isGameTokenPaused(tokenId);
     const shouldBeAudible = isPrimary && !state.gameMediaMuted && !shouldPausePlayback;
     const shouldForcePlay = forcePlay || videoEl.paused;
 
@@ -839,7 +844,7 @@ function syncGameBackdropMedia(forcePlay = false) {
     }
 
     const startAudiblePlayback = () => {
-      if (state.gameMediaMuted || state.gameMediaPlaybackPaused) {
+      if (state.gameMediaMuted || isGameTokenPaused(tokenId)) {
         return;
       }
       videoEl.defaultMuted = false;
@@ -998,11 +1003,12 @@ function renderGameCard(item, options = {}) {
     : '';
   const mediaKind = String(item.mediaKind || 'image').trim();
   const mediaUrl = String(item.mediaUrl || '').trim();
+  const tokenId = normalizeGameTokenId(item.id || item.displayToken);
   const backdropMarkup = mediaUrl && mediaKind === 'video'
     ? `
       <div class="guess-backdrop is-video">
-        <video class="guess-backdrop-video" data-game-video-role="${escapeHtml(accent)}" src="${escapeHtml(mediaUrl)}" autoplay loop playsinline preload="auto" muted></video>
-        <button class="guess-video-toggle" type="button" data-game-video-toggle data-game-video-role="${escapeHtml(accent)}" aria-label="영상 일시정지 또는 재생">
+        <video class="guess-backdrop-video" data-game-video-role="${escapeHtml(accent)}" data-game-token-id="${escapeHtml(tokenId)}" src="${escapeHtml(mediaUrl)}" autoplay loop playsinline preload="auto" muted></video>
+        <button class="guess-video-toggle" type="button" data-game-video-toggle data-game-video-role="${escapeHtml(accent)}" data-game-token-id="${escapeHtml(tokenId)}" aria-label="영상 일시정지 또는 재생">
           <span class="guess-video-feedback" data-game-video-feedback aria-hidden="true"></span>
         </button>
       </div>
@@ -1080,7 +1086,7 @@ function startGameSession() {
     rightItem,
     usedIds,
   };
-  resetGameMediaPausedRoles();
+  resetGamePausedTokens();
   state.pendingRoundAudioToken = rightItem.id;
 }
 
@@ -1090,6 +1096,7 @@ function advanceGameSession() {
     return;
   }
   const carriedLeft = state.gameSession.rightItem;
+  const preservedPausedIds = isGameTokenPaused(carriedLeft.id) ? [carriedLeft.id] : [];
   let usedIds = state.gameSession.usedIds instanceof Set
     ? new Set(state.gameSession.usedIds)
     : new Set();
@@ -1112,7 +1119,7 @@ function advanceGameSession() {
     rightItem: nextRight,
     usedIds,
   };
-  resetGameMediaPausedRoles();
+  resetGamePausedTokens(preservedPausedIds);
   state.pendingRoundAudioToken = nextRight.id;
 }
 
@@ -1373,38 +1380,33 @@ function bindGameControls() {
   gameRootEl.addEventListener('click', (event) => {
     const videoToggle = event.target.closest('[data-game-video-toggle]');
     if (videoToggle) {
+      const tokenId = normalizeGameTokenId(videoToggle.getAttribute('data-game-token-id'));
       const videoEl = videoToggle.closest('.guess-card')?.querySelector('.guess-backdrop-video');
       if (videoEl instanceof HTMLVideoElement) {
-        const nextPaused = !state.gameMediaPlaybackPaused;
-        state.gameMediaPlaybackPaused = nextPaused;
+        const nextPaused = !isGameTokenPaused(tokenId);
+        setGameTokenPaused(tokenId, nextPaused);
         if (nextPaused) {
-          const activeVideoEls = getActiveGameVideoElements();
-          const primaryVideo = getPrimaryGameVideoElement(activeVideoEls);
-          activeVideoEls.forEach((activeVideoEl) => {
-            const isAudibleVideo = activeVideoEl === primaryVideo && !state.gameMediaMuted;
-            if (isAudibleVideo) {
-              animateGameVideoVolume(activeVideoEl, 0, GAME_VIDEO_FADE_OUT_MS, {
-                onComplete: () => {
-                  activeVideoEl.pause();
-                  activeVideoEl.defaultMuted = true;
-                  activeVideoEl.muted = true;
-                  activeVideoEl.volume = 0;
-                  setGameVideoPausedVisual(activeVideoEl, true);
-                },
-              });
-            } else {
-              activeVideoEl.pause();
-              activeVideoEl.defaultMuted = true;
-              activeVideoEl.muted = true;
-              activeVideoEl.volume = 0;
-              setGameVideoPausedVisual(activeVideoEl, true);
-            }
-          });
+          const isAudibleVideo = videoEl === getPrimaryGameVideoElement() && !state.gameMediaMuted;
+          if (isAudibleVideo) {
+            animateGameVideoVolume(videoEl, 0, GAME_VIDEO_FADE_OUT_MS, {
+              onComplete: () => {
+                videoEl.pause();
+                videoEl.defaultMuted = true;
+                videoEl.muted = true;
+                videoEl.volume = 0;
+                setGameVideoPausedVisual(videoEl, true);
+              },
+            });
+          } else {
+            videoEl.pause();
+            videoEl.defaultMuted = true;
+            videoEl.muted = true;
+            videoEl.volume = 0;
+            setGameVideoPausedVisual(videoEl, true);
+          }
           showGameVideoFeedback(videoEl, 'paused');
         } else {
-          getActiveGameVideoElements().forEach((activeVideoEl) => {
-            setGameVideoPausedVisual(activeVideoEl, false);
-          });
+          setGameVideoPausedVisual(videoEl, false);
           showGameVideoFeedback(videoEl, 'playing');
           syncGameBackdropMedia(true);
         }
@@ -1505,7 +1507,7 @@ async function loadGameData(gameFile) {
     state.gameData = await fetchJson(`${gameFile}?v=${Date.now()}`);
     state.gameError = '';
     state.gameSession = null;
-    resetGameMediaPausedRoles();
+    resetGamePausedTokens();
     updateHeroIssue();
     renderGame();
   } catch (error) {
