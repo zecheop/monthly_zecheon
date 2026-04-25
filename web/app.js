@@ -700,6 +700,7 @@ function scheduleGameVideoAudibleRetries(videoEl, tokenId) {
     }
     videoEl.defaultMuted = false;
     videoEl.muted = false;
+    videoEl.removeAttribute('muted');
     if (videoEl.paused) {
       void videoEl.play().catch(() => {});
     }
@@ -885,6 +886,11 @@ function syncGameBackdropMedia(forcePlay = false) {
     videoEl.muted = true;
     videoEl.volume = 0;
     if (shouldForcePlay) {
+      videoEl.pause();
+      videoEl.defaultMuted = false;
+      videoEl.muted = false;
+      videoEl.removeAttribute('muted');
+      videoEl.volume = 0.001;
       const playResult = videoEl.play();
       if (playResult && typeof playResult.then === 'function') {
         playResult.then(() => {
