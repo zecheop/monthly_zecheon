@@ -16,6 +16,10 @@ const state = {
   gameAudio: {},
   pendingRoundAudioToken: '',
   gameMediaMuted: true,
+  gameMediaPausedRoles: {
+    anchor: false,
+    challenger: false,
+  },
   gameTransitionTimer: null,
 };
 
@@ -31,6 +35,12 @@ const navTabEls = Array.from(document.querySelectorAll('[data-view-tab]'));
 const heroVideoEl = document.getElementById('hero-video');
 const HERO_VIDEO_STORAGE_KEY = 'monthly-zecheon-last-hero-video';
 const REPORT_STORAGE_KEY = 'monthly-zecheon-last-report-id';
+const GAME_VIDEO_AUDIBLE_VOLUME = 0.58;
+const GAME_VIDEO_FADE_IN_MS = 360;
+const GAME_VIDEO_FADE_OUT_MS = 220;
+const GAME_VIDEO_FEEDBACK_MS = 880;
+const gameVideoFadeFrames = new WeakMap();
+const gameVideoFeedbackTimers = new WeakMap();
 
 function escapeHtml(value) {
   return String(value ?? '')
@@ -581,6 +591,32 @@ function resolveGameTokenAudioUrl(item) {
   return '';
 }
 
+function createDefaultGameMediaPausedRoles() {
+  return {
+    anchor: false,
+    challenger: false,
+  };
+}
+
+function resetGameMediaPausedRoles() {
+  state.gameMediaPausedRoles = createDefaultGameMediaPausedRoles();
+}
+
+function isGameMediaRolePaused(role) {
+  return Boolean(state.gameMediaPausedRoles?.[role]);
+}
+
+function setGameMediaRolePaused(role, paused) {
+  if (!role) {
+    return;
+  }
+  state.gameMediaPausedRoles = {
+    ...createDefaultGameMediaPausedRoles(),
+    ...(state.gameMediaPausedRoles || {}),
+    [role]: !!paused,
+  };
+}
+
 function maybePlayCurrentRoundAudio() {
   const pendingToken = normalizeComparableText(state.pendingRoundAudioToken);
   const currentToken = normalizeComparableText(state.gameSession?.rightItem?.id || state.gameSession?.rightItem?.displayToken);
@@ -600,30 +636,233 @@ function sessionHasVideoMedia(session) {
   ));
 }
 
+function getActiveGameStageElement() {
+  return gameRootEl.querySelector('.game-stage.is-active') || gameRootEl;
+}
+
+function getActiveGameVideoElements() {
+  return Array.from(getActiveGameStageElement().querySelectorAll('.guess-backdrop-video'))
+    .filter((element) => element instanceof HTMLVideoElement);
+}
+
+function getGameVideoElementByRole(role) {
+  return getActiveGameVideoElements().find((element) => element.dataset.gameVideoRole === role) || null;
+}
+
+function getPrimaryGameVideoElement(videoEls = getActiveGameVideoElements()) {
+  return videoEls.find((element) => element.dataset.gameVideoRole === 'challenger')
+    || videoEls.find((element) => element.dataset.gameVideoRole === 'anchor')
+    || null;
+}
+
+function clampVolume(value) {
+  const num = Number(value);
+  if (!Number.isFinite(num)) {
+    return 0;
+  }
+  return Math.max(0, Math.min(1, num));
+}
+
+function stopGameVideoFade(videoEl) {
+  const frameId = gameVideoFadeFrames.get(videoEl);
+  if (frameId) {
+    window.cancelAnimationFrame(frameId);
+    gameVideoFadeFrames.delete(videoEl);
+  }
+}
+
+function animateGameVideoVolume(videoEl, targetVolume, duration = GAME_VIDEO_FADE_IN_MS, options = {}) {
+  if (!(videoEl instanceof HTMLVideoElement)) {
+    options.onComplete?.();
+    return;
+  }
+  stopGameVideoFade(videoEl);
+  const startVolume = clampVolume(videoEl.volume);
+  const nextVolume = clampVolume(targetVolume);
+  if (duration <= 0 || Math.abs(startVolume - nextVolume) < 0.01) {
+    videoEl.volume = nextVolume;
+    options.onComplete?.();
+    return;
+  }
+
+  const startedAt = performance.now();
+  const tick = (now) => {
+    const progress = Math.min(1, (now - startedAt) / duration);
+    const eased = 1 - Math.pow(1 - progress, 3);
+    videoEl.volume = startVolume + ((nextVolume - startVolume) * eased);
+    if (progress < 1) {
+      const frameId = window.requestAnimationFrame(tick);
+      gameVideoFadeFrames.set(videoEl, frameId);
+      return;
+    }
+    gameVideoFadeFrames.delete(videoEl);
+    options.onComplete?.();
+  };
+
+  const frameId = window.requestAnimationFrame(tick);
+  gameVideoFadeFrames.set(videoEl, frameId);
+}
+
+function getGameVideoFeedbackMarkup(mode) {
+  if (mode === 'paused') {
+    return `
+      <span class="guess-video-feedback-glyph" aria-hidden="true">
+        <span></span><span></span>
+      </span>
+      <span class="guess-video-feedback-label">일시정지</span>
+    `;
+  }
+  return `
+    <span class="guess-video-feedback-glyph is-play" aria-hidden="true">
+      <span></span>
+    </span>
+    <span class="guess-video-feedback-label">재생 중</span>
+  `;
+}
+
+function setGameVideoPausedVisual(videoEl, paused) {
+  const cardEl = videoEl.closest('.guess-card');
+  cardEl?.classList.toggle('is-media-paused', !!paused);
+}
+
+function showGameVideoFeedback(videoEl, mode) {
+  const feedbackEl = videoEl.closest('.guess-card')?.querySelector('[data-game-video-feedback]');
+  if (!feedbackEl) {
+    return;
+  }
+  const timerId = gameVideoFeedbackTimers.get(feedbackEl);
+  if (timerId) {
+    window.clearTimeout(timerId);
+  }
+  feedbackEl.innerHTML = getGameVideoFeedbackMarkup(mode);
+  feedbackEl.classList.remove('is-paused', 'is-playing');
+  feedbackEl.classList.add('is-visible', mode === 'paused' ? 'is-paused' : 'is-playing');
+  const nextTimerId = window.setTimeout(() => {
+    feedbackEl.classList.remove('is-visible', 'is-paused', 'is-playing');
+  }, GAME_VIDEO_FEEDBACK_MS);
+  gameVideoFeedbackTimers.set(feedbackEl, nextTimerId);
+}
+
+function getGameMediaToggleIconMarkup() {
+  if (state.gameMediaMuted) {
+    return `
+      <svg class="game-media-icon" viewBox="0 0 24 24" aria-hidden="true">
+        <path d="M4 10.5h3.8L12.3 6v12l-4.5-4.5H4z"></path>
+        <path d="M15.2 9.2l5.6 5.6"></path>
+        <path d="M20.8 9.2l-5.6 5.6"></path>
+      </svg>
+    `;
+  }
+  return `
+    <svg class="game-media-icon" viewBox="0 0 24 24" aria-hidden="true">
+      <path d="M4 10.5h3.8L12.3 6v12l-4.5-4.5H4z"></path>
+      <path d="M16 9.3a4.6 4.6 0 0 1 0 5.4"></path>
+      <path d="M18.7 7.2a7.7 7.7 0 0 1 0 9.6"></path>
+    </svg>
+  `;
+}
+
+function syncGameMediaToggleButtonUi() {
+  const buttonEls = Array.from(gameRootEl.querySelectorAll('[data-game-mute-toggle]'));
+  if (!buttonEls.length) {
+    return;
+  }
+  const label = state.gameMediaMuted ? '게임 영상 소리 켜기' : '게임 영상 음소거';
+  const stateLabel = state.gameMediaMuted ? '소리 OFF' : '소리 ON';
+  buttonEls.forEach((buttonEl) => {
+    buttonEl.classList.toggle('is-muted', state.gameMediaMuted);
+    buttonEl.classList.toggle('is-active', !state.gameMediaMuted);
+    buttonEl.setAttribute('aria-label', label);
+    buttonEl.setAttribute('title', label);
+    buttonEl.setAttribute('aria-pressed', state.gameMediaMuted ? 'true' : 'false');
+    const iconEl = buttonEl.querySelector('[data-game-media-icon]');
+    const labelEl = buttonEl.querySelector('[data-game-media-label]');
+    if (iconEl) {
+      iconEl.innerHTML = getGameMediaToggleIconMarkup();
+    }
+    if (labelEl) {
+      labelEl.textContent = stateLabel;
+    }
+  });
+}
+
 function syncGameBackdropMedia(forcePlay = false) {
-  const activeScope = gameRootEl.querySelector('.game-stage.is-active') || gameRootEl;
-  const scopedVideoEls = Array.from(activeScope.querySelectorAll('.guess-backdrop-video'));
-  const videoEls = scopedVideoEls.length ? scopedVideoEls : Array.from(gameRootEl.querySelectorAll('.guess-backdrop-video'));
+  const videoEls = getActiveGameVideoElements();
+  syncGameMediaToggleButtonUi();
   if (!videoEls.length) {
     return;
   }
 
-  const preferredVideo = videoEls.find((element) => element.dataset.gameVideoRole === 'challenger')
-    || videoEls.find((element) => element.dataset.gameVideoRole === 'anchor')
-    || null;
-
+  const primaryVideo = getPrimaryGameVideoElement(videoEls);
   videoEls.forEach((videoEl) => {
-    if (!(videoEl instanceof HTMLVideoElement)) {
+    const role = String(videoEl.dataset.gameVideoRole || '').trim();
+    const isPrimary = videoEl === primaryVideo;
+    const isRolePaused = isGameMediaRolePaused(role);
+    const shouldBeAudible = isPrimary && !state.gameMediaMuted && !isRolePaused;
+    const shouldForcePlay = forcePlay || videoEl.paused;
+
+    if (isRolePaused) {
+      animateGameVideoVolume(videoEl, 0, GAME_VIDEO_FADE_OUT_MS, {
+        onComplete: () => {
+          videoEl.pause();
+          videoEl.defaultMuted = true;
+          videoEl.muted = true;
+          videoEl.volume = 0;
+          setGameVideoPausedVisual(videoEl, true);
+        },
+      });
       return;
     }
-    const isPrimary = videoEl === preferredVideo;
-    const shouldMute = state.gameMediaMuted || !isPrimary;
-    videoEl.defaultMuted = shouldMute;
-    videoEl.muted = shouldMute;
-    videoEl.volume = shouldMute ? 0 : 1;
-    if (forcePlay || !videoEl.paused) {
-      void videoEl.play().catch(() => {});
+
+    setGameVideoPausedVisual(videoEl, false);
+    videoEl.playsInline = true;
+    videoEl.loop = true;
+    videoEl.preload = 'auto';
+
+    if (!shouldBeAudible) {
+      const silenceVideo = () => {
+        videoEl.defaultMuted = true;
+        videoEl.muted = true;
+        videoEl.volume = 0;
+      };
+      if (!videoEl.paused && videoEl.volume > 0.01) {
+        animateGameVideoVolume(videoEl, 0, GAME_VIDEO_FADE_OUT_MS, {
+          onComplete: silenceVideo,
+        });
+      } else {
+        silenceVideo();
+      }
+      if (shouldForcePlay) {
+        void videoEl.play().catch(() => {});
+      }
+      return;
     }
+
+    const startAudiblePlayback = () => {
+      if (state.gameMediaMuted || isGameMediaRolePaused(role)) {
+        return;
+      }
+      videoEl.defaultMuted = false;
+      videoEl.muted = false;
+      animateGameVideoVolume(videoEl, GAME_VIDEO_AUDIBLE_VOLUME, GAME_VIDEO_FADE_IN_MS);
+    };
+
+    videoEl.defaultMuted = true;
+    videoEl.muted = true;
+    videoEl.volume = 0;
+    if (shouldForcePlay) {
+      const playResult = videoEl.play();
+      if (playResult && typeof playResult.then === 'function') {
+        playResult.then(() => {
+          window.setTimeout(startAudiblePlayback, 90);
+        }).catch(() => {});
+      } else {
+        window.setTimeout(startAudiblePlayback, 90);
+      }
+      return;
+    }
+
+    startAudiblePlayback();
   });
 }
 
@@ -762,7 +1001,10 @@ function renderGameCard(item, options = {}) {
   const backdropMarkup = mediaUrl && mediaKind === 'video'
     ? `
       <div class="guess-backdrop is-video">
-        <video class="guess-backdrop-video" data-game-video-role="${escapeHtml(accent)}" src="${escapeHtml(mediaUrl)}" autoplay loop playsinline preload="metadata" ${state.gameMediaMuted ? 'muted' : ''}></video>
+        <video class="guess-backdrop-video" data-game-video-role="${escapeHtml(accent)}" src="${escapeHtml(mediaUrl)}" autoplay loop playsinline preload="auto" muted></video>
+        <button class="guess-video-toggle" type="button" data-game-video-toggle data-game-video-role="${escapeHtml(accent)}" aria-label="영상 일시정지 또는 재생">
+          <span class="guess-video-feedback" data-game-video-feedback aria-hidden="true"></span>
+        </button>
       </div>
     `
     : mediaUrl
@@ -838,6 +1080,7 @@ function startGameSession() {
     rightItem,
     usedIds,
   };
+  resetGameMediaPausedRoles();
   state.pendingRoundAudioToken = rightItem.id;
 }
 
@@ -869,6 +1112,7 @@ function advanceGameSession() {
     rightItem: nextRight,
     usedIds,
   };
+  resetGameMediaPausedRoles();
   state.pendingRoundAudioToken = nextRight.id;
 }
 
@@ -1004,26 +1248,11 @@ function renderGameMediaToggle() {
   const label = state.gameMediaMuted ? '게임 영상 소리 켜기' : '게임 영상 음소거';
   const stateLabel = state.gameMediaMuted ? '소리 OFF' : '소리 ON';
   const stateClass = state.gameMediaMuted ? 'is-muted' : 'is-active';
-  const iconMarkup = state.gameMediaMuted
-    ? `
-      <svg class="game-media-icon" viewBox="0 0 24 24" aria-hidden="true">
-        <path d="M4 10.5h3.8L12.3 6v12l-4.5-4.5H4z"></path>
-        <path d="M15.2 9.2l5.6 5.6"></path>
-        <path d="M20.8 9.2l-5.6 5.6"></path>
-      </svg>
-    `
-    : `
-      <svg class="game-media-icon" viewBox="0 0 24 24" aria-hidden="true">
-        <path d="M4 10.5h3.8L12.3 6v12l-4.5-4.5H4z"></path>
-        <path d="M16 9.3a4.6 4.6 0 0 1 0 5.4"></path>
-        <path d="M18.7 7.2a7.7 7.7 0 0 1 0 9.6"></path>
-      </svg>
-    `;
   return `
     <div class="game-media-corner">
       <button class="game-media-toggle ${stateClass}" type="button" data-game-mute-toggle aria-label="${label}" title="${label}" aria-pressed="${state.gameMediaMuted ? 'true' : 'false'}">
-        ${iconMarkup}
-        <span class="game-media-label">${stateLabel}</span>
+        <span data-game-media-icon>${getGameMediaToggleIconMarkup()}</span>
+        <span class="game-media-label" data-game-media-label>${stateLabel}</span>
       </button>
     </div>
   `;
@@ -1142,6 +1371,38 @@ function renderGame(options = {}) {
 
 function bindGameControls() {
   gameRootEl.addEventListener('click', (event) => {
+    const videoToggle = event.target.closest('[data-game-video-toggle]');
+    if (videoToggle) {
+      const role = String(videoToggle.getAttribute('data-game-video-role') || '').trim();
+      const videoEl = getGameVideoElementByRole(role);
+      if (videoEl instanceof HTMLVideoElement) {
+        const nextPaused = !isGameMediaRolePaused(role);
+        setGameMediaRolePaused(role, nextPaused);
+        if (nextPaused) {
+          const isAudibleVideo = videoEl === getPrimaryGameVideoElement() && !state.gameMediaMuted;
+          if (isAudibleVideo) {
+            animateGameVideoVolume(videoEl, 0, GAME_VIDEO_FADE_OUT_MS, {
+              onComplete: () => {
+                videoEl.pause();
+                videoEl.defaultMuted = true;
+                videoEl.muted = true;
+                videoEl.volume = 0;
+                setGameVideoPausedVisual(videoEl, true);
+              },
+            });
+          } else {
+            videoEl.pause();
+            setGameVideoPausedVisual(videoEl, true);
+          }
+          showGameVideoFeedback(videoEl, 'paused');
+        } else {
+          setGameVideoPausedVisual(videoEl, false);
+          showGameVideoFeedback(videoEl, 'playing');
+          syncGameBackdropMedia(true);
+        }
+      }
+      return;
+    }
     const muteButton = event.target.closest('[data-game-mute-toggle]');
     if (muteButton) {
       const clickUrl = resolveGameAudioUrl('click');
@@ -1149,7 +1410,7 @@ function bindGameControls() {
       if (clickUrl) {
         playAudio(clickUrl, { volume: 0.65 });
       }
-      renderGame({ forceMediaPlayback: true });
+      syncGameBackdropMedia(true);
       return;
     }
     const guessButton = event.target.closest('[data-game-guess]');
@@ -1236,6 +1497,7 @@ async function loadGameData(gameFile) {
     state.gameData = await fetchJson(`${gameFile}?v=${Date.now()}`);
     state.gameError = '';
     state.gameSession = null;
+    resetGameMediaPausedRoles();
     updateHeroIssue();
     renderGame();
   } catch (error) {
