@@ -1386,30 +1386,11 @@ function bindGameControls() {
         const nextPaused = !isGameTokenPaused(tokenId);
         setGameTokenPaused(tokenId, nextPaused);
         if (nextPaused) {
-          const isAudibleVideo = videoEl === getPrimaryGameVideoElement() && !state.gameMediaMuted;
-          if (isAudibleVideo) {
-            animateGameVideoVolume(videoEl, 0, GAME_VIDEO_FADE_OUT_MS, {
-              onComplete: () => {
-                videoEl.pause();
-                videoEl.defaultMuted = true;
-                videoEl.muted = true;
-                videoEl.volume = 0;
-                setGameVideoPausedVisual(videoEl, true);
-              },
-            });
-          } else {
-            videoEl.pause();
-            videoEl.defaultMuted = true;
-            videoEl.muted = true;
-            videoEl.volume = 0;
-            setGameVideoPausedVisual(videoEl, true);
-          }
           showGameVideoFeedback(videoEl, 'paused');
         } else {
-          setGameVideoPausedVisual(videoEl, false);
           showGameVideoFeedback(videoEl, 'playing');
-          syncGameBackdropMedia(true);
         }
+        syncGameBackdropMedia(true);
       }
       return;
     }
