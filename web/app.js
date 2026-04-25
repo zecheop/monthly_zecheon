@@ -16,6 +16,7 @@ const state = {
   gameAudio: {},
   pendingRoundAudioToken: '',
   gameMediaMuted: true,
+  gameMediaPlaybackPaused: false,
   gameMediaPausedRoles: {
     anchor: false,
     challenger: false,
@@ -795,13 +796,12 @@ function syncGameBackdropMedia(forcePlay = false) {
 
   const primaryVideo = getPrimaryGameVideoElement(videoEls);
   videoEls.forEach((videoEl) => {
-    const role = String(videoEl.dataset.gameVideoRole || '').trim();
     const isPrimary = videoEl === primaryVideo;
-    const isRolePaused = isGameMediaRolePaused(role);
-    const shouldBeAudible = isPrimary && !state.gameMediaMuted && !isRolePaused;
+    const shouldPausePlayback = state.gameMediaPlaybackPaused;
+    const shouldBeAudible = isPrimary && !state.gameMediaMuted && !shouldPausePlayback;
     const shouldForcePlay = forcePlay || videoEl.paused;
 
-    if (isRolePaused) {
+    if (shouldPausePlayback) {
       animateGameVideoVolume(videoEl, 0, GAME_VIDEO_FADE_OUT_MS, {
         onComplete: () => {
           videoEl.pause();
@@ -839,7 +839,7 @@ function syncGameBackdropMedia(forcePlay = false) {
     }
 
     const startAudiblePlayback = () => {
-      if (state.gameMediaMuted || isGameMediaRolePaused(role)) {
+      if (state.gameMediaMuted || state.gameMediaPlaybackPaused) {
         return;
       }
       videoEl.defaultMuted = false;
@@ -1373,30 +1373,38 @@ function bindGameControls() {
   gameRootEl.addEventListener('click', (event) => {
     const videoToggle = event.target.closest('[data-game-video-toggle]');
     if (videoToggle) {
-      const role = String(videoToggle.getAttribute('data-game-video-role') || '').trim();
-      const videoEl = getGameVideoElementByRole(role);
+      const videoEl = videoToggle.closest('.guess-card')?.querySelector('.guess-backdrop-video');
       if (videoEl instanceof HTMLVideoElement) {
-        const nextPaused = !isGameMediaRolePaused(role);
-        setGameMediaRolePaused(role, nextPaused);
+        const nextPaused = !state.gameMediaPlaybackPaused;
+        state.gameMediaPlaybackPaused = nextPaused;
         if (nextPaused) {
-          const isAudibleVideo = videoEl === getPrimaryGameVideoElement() && !state.gameMediaMuted;
-          if (isAudibleVideo) {
-            animateGameVideoVolume(videoEl, 0, GAME_VIDEO_FADE_OUT_MS, {
-              onComplete: () => {
-                videoEl.pause();
-                videoEl.defaultMuted = true;
-                videoEl.muted = true;
-                videoEl.volume = 0;
-                setGameVideoPausedVisual(videoEl, true);
-              },
-            });
-          } else {
-            videoEl.pause();
-            setGameVideoPausedVisual(videoEl, true);
-          }
+          const activeVideoEls = getActiveGameVideoElements();
+          const primaryVideo = getPrimaryGameVideoElement(activeVideoEls);
+          activeVideoEls.forEach((activeVideoEl) => {
+            const isAudibleVideo = activeVideoEl === primaryVideo && !state.gameMediaMuted;
+            if (isAudibleVideo) {
+              animateGameVideoVolume(activeVideoEl, 0, GAME_VIDEO_FADE_OUT_MS, {
+                onComplete: () => {
+                  activeVideoEl.pause();
+                  activeVideoEl.defaultMuted = true;
+                  activeVideoEl.muted = true;
+                  activeVideoEl.volume = 0;
+                  setGameVideoPausedVisual(activeVideoEl, true);
+                },
+              });
+            } else {
+              activeVideoEl.pause();
+              activeVideoEl.defaultMuted = true;
+              activeVideoEl.muted = true;
+              activeVideoEl.volume = 0;
+              setGameVideoPausedVisual(activeVideoEl, true);
+            }
+          });
           showGameVideoFeedback(videoEl, 'paused');
         } else {
-          setGameVideoPausedVisual(videoEl, false);
+          getActiveGameVideoElements().forEach((activeVideoEl) => {
+            setGameVideoPausedVisual(activeVideoEl, false);
+          });
           showGameVideoFeedback(videoEl, 'playing');
           syncGameBackdropMedia(true);
         }
