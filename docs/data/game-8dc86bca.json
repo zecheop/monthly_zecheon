@@ -770,6 +770,186 @@
       "mediaUrl": "./assets/game/token-6938b3cc6798.mp4",
       "mediaKind": "video",
       "rank": 820
+    },
+    {
+      "id": "드가자",
+      "displayToken": "드가자",
+      "tokenTitle": "드가자",
+      "count": 87,
+      "ratio": 0.04465041802029285,
+      "monthBreakdown": [
+        {
+          "label": "2026.03",
+          "count": 45
+        },
+        {
+          "label": "2026.04",
+          "count": 42
+        }
+      ],
+      "mediaUrl": "",
+      "mediaKind": "image",
+      "rank": 108
+    },
+    {
+      "id": "퍼리",
+      "displayToken": "퍼리",
+      "tokenTitle": "퍼리",
+      "count": 72,
+      "ratio": 0.0369520700857596,
+      "monthBreakdown": [
+        {
+          "label": "2026.03",
+          "count": 69
+        },
+        {
+          "label": "2026.04",
+          "count": 3
+        }
+      ],
+      "mediaUrl": "",
+      "mediaKind": "image",
+      "rank": 163
+    },
+    {
+      "id": "슬더스",
+      "displayToken": "슬더스",
+      "tokenTitle": "슬더스",
+      "count": 72,
+      "ratio": 0.0369520700857596,
+      "monthBreakdown": [
+        {
+          "label": "2026.03",
+          "count": 26
+        },
+        {
+          "label": "2026.04",
+          "count": 46
+        }
+      ],
+      "mediaUrl": "",
+      "mediaKind": "image",
+      "rank": 160
+    },
+    {
+      "id": "하트딸기",
+      "displayToken": "하트딸기",
+      "tokenTitle": "하트딸기",
+      "count": 62,
+      "ratio": 0.031819838129404095,
+      "monthBreakdown": [
+        {
+          "label": "2026.03",
+          "count": 52
+        },
+        {
+          "label": "2026.04",
+          "count": 10
+        }
+      ],
+      "mediaUrl": "",
+      "mediaKind": "image",
+      "rank": 208
+    },
+    {
+      "id": "비키니",
+      "displayToken": "비키니",
+      "tokenTitle": "비키니",
+      "count": 62,
+      "ratio": 0.031819838129404095,
+      "monthBreakdown": [
+        {
+          "label": "2026.03",
+          "count": 10
+        },
+        {
+          "label": "2026.04",
+          "count": 52
+        }
+      ],
+      "mediaUrl": "",
+      "mediaKind": "image",
+      "rank": 206
+    },
+    {
+      "id": "쇼츠",
+      "displayToken": "쇼츠",
+      "tokenTitle": "쇼츠",
+      "count": 55,
+      "ratio": 0.028227275759955244,
+      "monthBreakdown": [
+        {
+          "label": "2026.03",
+          "count": 13
+        },
+        {
+          "label": "2026.04",
+          "count": 42
+        }
+      ],
+      "mediaUrl": "",
+      "mediaKind": "image",
+      "rank": 254
+    },
+    {
+      "id": "풀돌",
+      "displayToken": "풀돌",
+      "tokenTitle": "풀돌",
+      "count": 56,
+      "ratio": 0.028740498955590797,
+      "monthBreakdown": [
+        {
+          "label": "2026.03",
+          "count": 22
+        },
+        {
+          "label": "2026.04",
+          "count": 34
+        }
+      ],
+      "mediaUrl": "",
+      "mediaKind": "image",
+      "rank": 246
+    },
+    {
+      "id": "설립자",
+      "displayToken": "설립자",
+      "tokenTitle": "설립자",
+      "count": 99,
+      "ratio": 0.05080909636791945,
+      "monthBreakdown": [
+        {
+          "label": "2026.03",
+          "count": 93
+        },
+        {
+          "label": "2026.04",
+          "count": 6
+        }
+      ],
+      "mediaUrl": "",
+      "mediaKind": "image",
+      "rank": 82
+    },
+    {
+      "id": "콜라보",
+      "displayToken": "콜라보",
+      "tokenTitle": "콜라보",
+      "count": 58,
+      "ratio": 0.029766945346861896,
+      "monthBreakdown": [
+        {
+          "label": "2026.03",
+          "count": 18
+        },
+        {
+          "label": "2026.04",
+          "count": 40
+        }
+      ],
+      "mediaUrl": "",
+      "mediaKind": "image",
+      "rank": 229
     }
   ]
 }
