@@ -301,6 +301,10 @@ function updateHeroIssue() {
   heroIssueEl.classList.remove('hidden');
 }
 
+function updateHeroAction() {
+  openReportPickerEl.classList.toggle('hidden', state.currentView !== 'stats');
+}
+
 function renderArchiveList() {
   if (!state.reports.length) {
     archiveListEl.innerHTML = '<div class="archive-empty">월간 로그가 아직 없습니다.</div>';
@@ -339,6 +343,7 @@ function setCurrentView(view, options = {}) {
   setReportVisible(state.currentView === 'stats' && !!state.currentReport);
   setGameVisible(state.currentView === 'game');
   updateHeroIssue();
+  updateHeroAction();
   if (state.currentView === 'game') {
     renderGame({ forceMediaPlayback: true });
   }
@@ -616,18 +621,35 @@ function animateSummaryCounter(counterEl, captionEl, targetValue) {
   window.requestAnimationFrame(tick);
 }
 
+function buildSummaryChatColumns(messages, columnCount = 3) {
+  const safeMessages = Array.isArray(messages) ? messages.filter(Boolean) : [];
+  if (!safeMessages.length) {
+    return [];
+  }
+  const columns = Array.from({ length: columnCount }, () => []);
+  safeMessages.forEach((message, index) => {
+    columns[index % columnCount].push(message);
+  });
+  return columns.map((column) => column.concat(column));
+}
+
 function renderSummary() {
   const story = state.summaryOverview || {};
   const logoUrl = getBrandAssetUrl('chzzkLogo');
   const callGondu = getSummaryCallTerm(story, '곤듀');
   const callJaecheon = getSummaryCallTerm(story, '재천');
   const combinedCalls = Number(callGondu?.count || 0) + Number(callJaecheon?.count || 0);
-  const topChatter = story.topChatter || {};
   const totalJourneyDays = getKstTodayDayLabel(story.referenceStartDate);
   const videoCount = Number(story.videoCount || 0);
   const messageCount = Number(story.messageCount || 0);
-  const topChatterCount = Number(topChatter.count || 0);
-  const topChatterRatio = Number(topChatter.ratio || 0);
+  const chatSamples = Array.isArray(story.chatSamples) && story.chatSamples.length
+    ? story.chatSamples
+    : ['곤듀', '재하', '비난양파', '치즈', '와', 'ㅋㅋㅋㅋㅋㅋ'];
+  const chatColumns = buildSummaryChatColumns(chatSamples, 3);
+  const callVariants = Array.isArray(story.callVariants) && story.callVariants.length
+    ? story.callVariants
+    : ['곤듀', '곤듀님', '곤듀는', '재천', '임재천', '재천님', '재천아', '재천이'];
+  const repeatedCallVariants = Array.from({ length: 4 }, () => callVariants).flat();
 
   summaryRootEl.innerHTML = `
     <div class="summary-wrap">
@@ -644,6 +666,7 @@ function renderSummary() {
           </div>
           <div class="summary-scroll-hint">
             <span class="summary-scroll-mouse" aria-hidden="true"><span></span></span>
+            <span class="summary-scroll-arrow" aria-hidden="true">⌄</span>
             <p>휠을 내려 요약을 살펴보세요</p>
           </div>
         </section>
@@ -651,17 +674,28 @@ function renderSummary() {
         <section class="summary-scene summary-scene-stat" data-summary-scene>
           <div class="summary-scene-inner">
             <p class="summary-line">곤듀는</p>
-            <div class="summary-number-block">
+            <p class="summary-quoted-line">
               <strong>${escapeHtml(formatNumber(totalJourneyDays))}</strong>
-              <span>일</span>
-            </div>
-            <p class="summary-line summary-line-tail">동안 <span class="summary-inline-number">${escapeHtml(formatNumber(videoCount))}</span>번의 방송을 진행했습니다</p>
+              <span>일동안</span>
+            </p>
+            <p class="summary-line summary-line-tail">
+              <span class="summary-inline-number summary-inline-number-large">${escapeHtml(formatNumber(videoCount))}</span>번의 방송을 진행했습니다
+            </p>
           </div>
         </section>
 
-        <section class="summary-scene summary-scene-stat" data-summary-scene>
-          <div class="summary-scene-inner">
-            <div class="summary-number-block is-wide">
+        <section class="summary-scene summary-scene-stat summary-scene-chat" data-summary-scene>
+          <div class="summary-chat-backdrop" aria-hidden="true">
+            ${chatColumns.map((column, columnIndex) => `
+              <div class="summary-chat-column is-column-${columnIndex + 1}">
+                ${column.map((message) => `
+                  <p class="summary-chat-bubble">${escapeHtml(message)}</p>
+                `).join('')}
+              </div>
+            `).join('')}
+          </div>
+          <div class="summary-scene-inner summary-scene-inner-chat">
+            <div class="summary-number-block is-wide is-chat-count">
               <strong data-summary-counter>${escapeHtml(formatNumber(1))}</strong>
               <span>개</span>
             </div>
@@ -670,26 +704,25 @@ function renderSummary() {
         </section>
 
         <section class="summary-scene summary-scene-question" data-summary-scene>
-          <div class="summary-scene-inner">
-            <p class="summary-question">
-              그렇다면, <span class="summary-emphasis">재첩이들</span>은 몇 번이나
-              <span class="summary-emphasis is-cyan">곤듀</span>를 불렀을까요?
-            </p>
-            <div class="summary-term-card is-single">
+          <div class="summary-variant-cloud" aria-hidden="true">
+            ${repeatedCallVariants.map((variant, index) => `
+              <span class="summary-variant-item is-variant-${(index % 6) + 1}">${escapeHtml(variant)}</span>
+            `).join('')}
+          </div>
+          <div class="summary-scene-inner summary-scene-inner-call">
+            <div class="summary-term-card is-single is-call-focus">
               <strong>${escapeHtml(formatNumber(combinedCalls))}</strong>
               <span class="summary-term-unit">회</span>
-              <p class="summary-term-note">(곤듀+재천 등)</p>
+              <p class="summary-term-note">재첩이가 곤듀를 부른 횟수</p>
+              <p class="summary-term-note subdued">(곤듀+재천 등)</p>
             </div>
           </div>
         </section>
 
         <section class="summary-scene summary-scene-finale" data-summary-scene>
           <div class="summary-scene-inner">
-            <div class="summary-top-chatter-card is-finale">
-              <p class="summary-question summary-question-small">가장 채팅을 많이 친 재첩은...</p>
-              <strong>${escapeHtml(formatNumber(topChatterCount))}</strong>
-              <span class="summary-term-unit">개의 채팅을 보냈습니다</span>
-              <p class="summary-term-note">전체 채팅의 ${escapeHtml(formatRatio(topChatterRatio))}에 해당하네요</p>
+            <div class="summary-top-chatter-card is-finale is-cta">
+              <p class="summary-question summary-question-small">통계 탭과, 게임 탭도 확인해보세요!</p>
             </div>
           </div>
         </section>

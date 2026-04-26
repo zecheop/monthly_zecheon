@@ -31,6 +31,7 @@ SOURCE_PROJECT_ROOT = Path(
 LOG_DIR = Path(
     os.getenv("CHZZK_SOURCE_LOG_DIR") or (SOURCE_PROJECT_ROOT / "analysis_logs")
 ).resolve()
+CHAT_CACHE_DIR = SOURCE_PROJECT_ROOT / ".chat_fetch_cache"
 CLIP_TITLE_PATH = VIDEO_DIR / "videoname.txt"
 WORD_SEARCH_EXAMPLES_PATH = BASE_DIR / "word_search_examples.txt"
 PUBLIC_WORD_EXCLUDE_PATH = BASE_DIR / "public_word_exclude.txt"
@@ -47,6 +48,23 @@ PUBLIC_GAME_MIN_COUNT = 120
 CHZZK_LOGO_PATH = IMG_DIR / "chzzk-logo.svg"
 SUMMARY_REFERENCE_START_DATE = "2026-03-27"
 SUMMARY_CALL_TERMS = ("곤듀", "재천")
+SUMMARY_CALL_VARIANTS = (
+    "곤듀",
+    "곤듀님",
+    "곤듀는",
+    "곤듀가",
+    "곤듀를",
+    "곤듀야",
+    "곤듀님은",
+    "재천",
+    "임재천",
+    "재천님",
+    "재천아",
+    "재천이",
+    "재천이는",
+    "재천이가",
+    "임재천님",
+)
 SUMMARY_ANONYMOUS_SUFFIX = "재첩"
 SUMMARY_ANON_ADJECTIVES = (
     "반짝",
@@ -330,6 +348,65 @@ def build_story_call_count(search_items: list[dict], target_label: str) -> int:
     return total
 
 
+def load_cached_video_messages(video_no: Any) -> list[dict]:
+    try:
+        normalized_video_no = int(video_no)
+    except (TypeError, ValueError):
+        return []
+    cache_path = CHAT_CACHE_DIR / f"video-{normalized_video_no}.json"
+    if not cache_path.exists():
+        return []
+    try:
+        payload = json.loads(cache_path.read_text(encoding="utf-8"))
+    except (OSError, json.JSONDecodeError):
+        return []
+    messages = payload.get("messages")
+    return list(messages) if isinstance(messages, list) else []
+
+
+def clean_summary_chat_text(value: Any) -> str:
+    text = normalize_text(value)
+    if not text:
+        return ""
+    text = re.sub(r"https?://\S+", "", text)
+    text = re.sub(r"\s+", " ", text).strip()
+    if len(text) < 2:
+        return ""
+    if len(text) > 42:
+        text = text[:41].rstrip() + "…"
+    return text
+
+
+def build_summary_chat_samples(report_paths: list[Path], limit: int = 42) -> list[str]:
+    samples: list[str] = []
+    seen: set[str] = set()
+    for path in sorted(report_paths, key=lambda item: item.name):
+        payload = load_payload(path)
+        summary = payload.get("summary") if isinstance(payload.get("summary"), dict) else {}
+        videos = summary.get("videos") if isinstance(summary.get("videos"), list) else []
+        for video in videos:
+            if not isinstance(video, dict):
+                continue
+            for message in load_cached_video_messages(video.get("videoNo")):
+                if not isinstance(message, dict):
+                    continue
+                if normalize_text(message.get("messageKind")).upper() == "SYSTEM":
+                    continue
+                if normalize_text(message.get("category")).lower() == "system":
+                    continue
+                text = clean_summary_chat_text(message.get("text"))
+                if not text:
+                    continue
+                lookup = normalize_lookup_token(text)
+                if not lookup or lookup in seen:
+                    continue
+                seen.add(lookup)
+                samples.append(text)
+                if len(samples) >= limit:
+                    return samples
+    return samples
+
+
 def build_summary_story(payload: dict, summary: dict, raw_search_items: list[dict]) -> dict:
     videos = list(summary.get("videos") or [])
     broadcast_days = sorted(
@@ -407,6 +484,8 @@ def build_global_summary_overview(report_paths: list[Path]) -> dict:
         "referenceStartDate": SUMMARY_REFERENCE_START_DATE,
         "videoCount": total_video_count,
         "messageCount": total_message_count,
+        "chatSamples": build_summary_chat_samples(report_paths),
+        "callVariants": list(SUMMARY_CALL_VARIANTS),
         "callTerms": [
             {"label": label, "count": int(call_counts.get(label) or 0)}
             for label in SUMMARY_CALL_TERMS
