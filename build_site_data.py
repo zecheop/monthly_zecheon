@@ -368,6 +368,57 @@ def build_summary_story(payload: dict, summary: dict, raw_search_items: list[dic
     }
 
 
+def build_global_summary_overview(report_paths: list[Path]) -> dict:
+    total_video_count = 0
+    total_message_count = 0
+    call_counts = {label: 0 for label in SUMMARY_CALL_TERMS}
+    chatter_counts: dict[str, int] = {}
+
+    for path in report_paths:
+        payload = load_payload(path)
+        summary = payload.get("summary") if isinstance(payload.get("summary"), dict) else {}
+        advanced = summary.get("advancedInsights") if isinstance(summary.get("advancedInsights"), dict) else {}
+        bucket_minutes = int(advanced.get("bucketMinutes") or 2)
+        raw_search_items = build_word_search_items(summary, bucket_minutes)
+        total_video_count += int(summary.get("videoCount") or 0)
+        total_message_count += int(summary.get("messageCount") or 0)
+        for label in SUMMARY_CALL_TERMS:
+            call_counts[label] += build_story_call_count(raw_search_items, label)
+
+        chatter_map = {}
+        merge_aggregates = summary.get("mergeAggregates") if isinstance(summary.get("mergeAggregates"), dict) else {}
+        all_aggregate = merge_aggregates.get("all") if isinstance(merge_aggregates.get("all"), dict) else {}
+        chatter_map = all_aggregate.get("chatterCounts") if isinstance(all_aggregate.get("chatterCounts"), dict) else {}
+        for nickname, count in chatter_map.items():
+            normalized_nickname = normalize_text(nickname)
+            if not normalized_nickname:
+                continue
+            chatter_counts[normalized_nickname] = int(chatter_counts.get(normalized_nickname) or 0) + int(count or 0)
+
+    top_nickname = ""
+    top_count = 0
+    if chatter_counts:
+        top_nickname, top_count = max(
+            chatter_counts.items(),
+            key=lambda item: (int(item[1]), normalize_lookup_token(item[0])),
+        )
+
+    return {
+        "referenceStartDate": SUMMARY_REFERENCE_START_DATE,
+        "videoCount": total_video_count,
+        "messageCount": total_message_count,
+        "callTerms": [
+            {"label": label, "count": int(call_counts.get(label) or 0)}
+            for label in SUMMARY_CALL_TERMS
+        ],
+        "topChatter": {
+            "nickname": top_nickname,
+            "count": top_count,
+            "ratio": ((top_count / total_message_count) * 100.0) if total_message_count > 0 else 0.0,
+        },
+    }
+
+
 def parse_clip_titles() -> dict[int, str]:
     if not CLIP_TITLE_PATH.exists():
         return {}
@@ -1125,6 +1176,7 @@ def build_site() -> None:
             "reports": reports_index,
             "gameFile": f"./data/{game_file}",
             "heroVideos": [f"./assets/video/{quote(path.name)}" for path in list_hero_video_paths()],
+            "summaryOverview": build_global_summary_overview(report_paths),
             "brandAssets": {
                 "chzzkLogo": f"./assets/img/{quote(CHZZK_LOGO_PATH.name)}" if CHZZK_LOGO_PATH.exists() else "",
             },

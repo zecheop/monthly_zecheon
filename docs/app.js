@@ -14,6 +14,7 @@ const state = {
   heroVideos: [],
   currentHeroVideo: '',
   brandAssets: {},
+  summaryOverview: null,
   gameAudio: {},
   pendingRoundAudioToken: '',
   gameMediaMuted: true,
@@ -288,9 +289,9 @@ function syncLocationHash() {
 }
 
 function updateHeroIssue() {
-  const nextText = state.currentView === 'game'
-    ? ''
-    : formatIssueTag(`${state.currentReport?.label || ''} ${state.currentReport?.subtitle || ''}`);
+  const nextText = state.currentView === 'stats'
+    ? formatIssueTag(`${state.currentReport?.label || ''} ${state.currentReport?.subtitle || ''}`)
+    : '';
   if (!nextText) {
     heroIssueEl.textContent = '';
     heroIssueEl.classList.add('hidden');
@@ -334,7 +335,7 @@ function setCurrentView(view, options = {}) {
   syncBodyViewState();
   updateNavState();
   renderReportPickerVisibility();
-  setSummaryVisible(state.currentView === 'summary' && !!state.currentReport);
+  setSummaryVisible(state.currentView === 'summary' && (!!state.summaryOverview || !!state.currentReport));
   setReportVisible(state.currentView === 'stats' && !!state.currentReport);
   setGameVisible(state.currentView === 'game');
   updateHeroIssue();
@@ -615,17 +616,16 @@ function animateSummaryCounter(counterEl, captionEl, targetValue) {
   window.requestAnimationFrame(tick);
 }
 
-function renderSummary(report) {
-  const story = report?.summaryStory || {};
+function renderSummary() {
+  const story = state.summaryOverview || {};
   const logoUrl = getBrandAssetUrl('chzzkLogo');
   const callGondu = getSummaryCallTerm(story, '곤듀');
   const callJaecheon = getSummaryCallTerm(story, '재천');
   const combinedCalls = Number(callGondu?.count || 0) + Number(callJaecheon?.count || 0);
-  const issueLabel = String(story.issueLabel || report?.label || '').trim();
   const topChatter = story.topChatter || {};
   const totalJourneyDays = getKstTodayDayLabel(story.referenceStartDate);
-  const videoCount = Number(story.videoCount || report?.overview?.videoCount || 0);
-  const messageCount = Number(story.messageCount || report?.overview?.messageCount || 0);
+  const videoCount = Number(story.videoCount || 0);
+  const messageCount = Number(story.messageCount || 0);
   const topChatterCount = Number(topChatter.count || 0);
   const topChatterRatio = Number(topChatter.ratio || 0);
 
@@ -634,7 +634,6 @@ function renderSummary(report) {
       <div class="summary-scroller" data-summary-scroller>
         <section class="summary-scene summary-scene-intro is-current" data-summary-scene>
           <div class="summary-scene-inner">
-            <div class="summary-stage-meta">${escapeHtml(issueLabel)}</div>
             <div class="summary-logo-story">
               <span class="summary-leading-text">지금까지</span>
               <span class="summary-logo-pill">
@@ -645,7 +644,7 @@ function renderSummary(report) {
           </div>
           <div class="summary-scroll-hint">
             <span class="summary-scroll-mouse" aria-hidden="true"><span></span></span>
-            <p>휠을 내려 이번 달의 기록을 넘겨 보세요</p>
+            <p>휠을 내려 요약을 살펴보세요</p>
           </div>
         </section>
 
@@ -780,6 +779,11 @@ function renderSummary(report) {
     const viewportHeight = scrollerEl.clientHeight || 1;
     const currentIndex = Math.round(scrollerEl.scrollTop / viewportHeight);
     const direction = event.deltaY > 0 ? 1 : -1;
+    if (direction < 0 && currentIndex === 0 && scrollerEl.scrollTop <= 12) {
+      event.preventDefault();
+      document.getElementById('top')?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      return;
+    }
     const nextIndex = Math.max(0, Math.min(sceneEls.length - 1, currentIndex + direction));
     if (nextIndex === currentIndex) {
       return;
@@ -1815,7 +1819,6 @@ async function loadReport(reportId, options = {}) {
       throw new Error('리포트 데이터가 비어 있습니다.');
     }
     state.currentReport = report;
-    renderSummary(report);
     renderReport(report);
     state.hasLoadedReport = true;
     setReportUpdating(false);
@@ -1890,8 +1893,10 @@ async function bootstrap() {
     const data = await fetchJson(`./data/reports.json?v=${Date.now()}`);
     state.reports = Array.isArray(data.reports) ? data.reports : [];
     state.brandAssets = data.brandAssets && typeof data.brandAssets === 'object' ? data.brandAssets : {};
+    state.summaryOverview = data.summaryOverview && typeof data.summaryOverview === 'object' ? data.summaryOverview : null;
     state.gameAudio = data.gameAudio && typeof data.gameAudio === 'object' ? data.gameAudio : {};
     setHeroVideo(Array.isArray(data.heroVideos) ? data.heroVideos : []);
+    renderSummary();
     renderArchiveList();
     if (!state.reports.length) {
       setLoading(false);
