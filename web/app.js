@@ -560,18 +560,74 @@ function getSummaryCallTerm(story, label) {
   return rows.find((row) => normalizeComparableText(row?.label) === normalizeComparableText(label)) || null;
 }
 
+function getKstTodayDayLabel(startDateText) {
+  const normalized = String(startDateText || '').trim();
+  if (!normalized) {
+    return 0;
+  }
+  const [year, month, day] = normalized.split('-').map((value) => Number(value));
+  if (![year, month, day].every(Number.isFinite)) {
+    return 0;
+  }
+  const startUtc = Date.UTC(year, month - 1, day);
+  const now = new Date();
+  const kstOffsetMs = 9 * 60 * 60 * 1000;
+  const nowUtc = now.getTime() + (now.getTimezoneOffset() * 60 * 1000);
+  const kstNow = new Date(nowUtc + kstOffsetMs);
+  const endUtc = Date.UTC(kstNow.getUTCFullYear(), kstNow.getUTCMonth(), kstNow.getUTCDate());
+  const diffDays = Math.floor((endUtc - startUtc) / 86400000);
+  return Math.max(0, diffDays) + 1;
+}
+
+function animateSummaryCounter(counterEl, captionEl, targetValue) {
+  if (!(counterEl instanceof HTMLElement)) {
+    return;
+  }
+  const nextValue = Math.max(1, Number(targetValue || 0));
+  const previousTarget = Number(counterEl.dataset.counterTarget || 0);
+  if (previousTarget === nextValue && counterEl.dataset.counterDone === 'true') {
+    return;
+  }
+  counterEl.dataset.counterTarget = String(nextValue);
+  counterEl.dataset.counterDone = 'false';
+  if (captionEl) {
+    captionEl.classList.remove('is-visible');
+  }
+  const startedAt = performance.now();
+  const duration = 1450;
+
+  const tick = (now) => {
+    const progress = Math.min(1, (now - startedAt) / duration);
+    const eased = 1 - Math.pow(1 - progress, 3);
+    const currentValue = Math.max(1, Math.round(1 + ((nextValue - 1) * eased)));
+    counterEl.textContent = formatNumber(currentValue);
+    if (progress < 1) {
+      window.requestAnimationFrame(tick);
+      return;
+    }
+    counterEl.textContent = formatNumber(nextValue);
+    counterEl.dataset.counterDone = 'true';
+    if (captionEl) {
+      captionEl.classList.add('is-visible');
+    }
+  };
+
+  window.requestAnimationFrame(tick);
+}
+
 function renderSummary(report) {
   const story = report?.summaryStory || {};
   const logoUrl = getBrandAssetUrl('chzzkLogo');
   const callGondu = getSummaryCallTerm(story, '곤듀');
   const callJaecheon = getSummaryCallTerm(story, '재천');
+  const combinedCalls = Number(callGondu?.count || 0) + Number(callJaecheon?.count || 0);
   const issueLabel = String(story.issueLabel || report?.label || '').trim();
   const topChatter = story.topChatter || {};
-  const broadcastDayCount = Number(story.broadcastDayCount || 0);
+  const totalJourneyDays = getKstTodayDayLabel(story.referenceStartDate);
   const videoCount = Number(story.videoCount || report?.overview?.videoCount || 0);
   const messageCount = Number(story.messageCount || report?.overview?.messageCount || 0);
-  const topChatterAlias = String(topChatter.anonymousAlias || '반짝재첩').trim();
   const topChatterCount = Number(topChatter.count || 0);
+  const topChatterRatio = Number(topChatter.ratio || 0);
 
   summaryRootEl.innerHTML = `
     <div class="summary-wrap">
@@ -583,11 +639,13 @@ function renderSummary(report) {
               <span class="summary-leading-text">지금까지</span>
               <span class="summary-logo-pill">
                 ${logoUrl ? `<img src="${escapeHtml(logoUrl)}" alt="치지직 로고">` : ''}
-                <span>치지직</span>
               </span>
               <span class="summary-trailing-text">에서...</span>
             </div>
-            <p class="summary-scene-note">휠을 내려 이번 달의 재첩 기록을 넘겨보세요.</p>
+          </div>
+          <div class="summary-scroll-hint">
+            <span class="summary-scroll-mouse" aria-hidden="true"><span></span></span>
+            <p>휠을 내려 이번 달의 기록을 넘겨 보세요</p>
           </div>
         </section>
 
@@ -595,66 +653,33 @@ function renderSummary(report) {
           <div class="summary-scene-inner">
             <p class="summary-line">곤듀는</p>
             <div class="summary-number-block">
-              <strong>${escapeHtml(formatNumber(broadcastDayCount))}</strong>
+              <strong>${escapeHtml(formatNumber(totalJourneyDays))}</strong>
               <span>일</span>
             </div>
-            <p class="summary-line summary-line-tail">동안 방송을 했고</p>
+            <p class="summary-line summary-line-tail">동안 <span class="summary-inline-number">${escapeHtml(formatNumber(videoCount))}</span>번의 방송을 진행했습니다</p>
           </div>
         </section>
 
         <section class="summary-scene summary-scene-stat" data-summary-scene>
           <div class="summary-scene-inner">
-            <div class="summary-number-block">
-              <strong>${escapeHtml(formatNumber(videoCount))}</strong>
-              <span>개</span>
-            </div>
-            <p class="summary-line summary-line-tail">의 방송을 진행했습니다</p>
-          </div>
-        </section>
-
-        <section class="summary-scene summary-scene-stat" data-summary-scene>
-          <div class="summary-scene-inner">
-            <p class="summary-line">그동안</p>
             <div class="summary-number-block is-wide">
-              <strong>${escapeHtml(formatNumber(messageCount))}</strong>
+              <strong data-summary-counter>${escapeHtml(formatNumber(1))}</strong>
               <span>개</span>
             </div>
-            <p class="summary-line summary-line-tail">의 채팅이 있었네요!</p>
+            <p class="summary-line summary-line-tail summary-counter-caption" data-summary-counter-caption>그동안 ${escapeHtml(formatNumber(messageCount))}개의 채팅이 있었네요!</p>
           </div>
         </section>
 
         <section class="summary-scene summary-scene-question" data-summary-scene>
           <div class="summary-scene-inner">
             <p class="summary-question">
-              <span class="summary-emphasis">재첩이들</span>은 몇 번이나
+              그렇다면, <span class="summary-emphasis">재첩이들</span>은 몇 번이나
               <span class="summary-emphasis is-cyan">곤듀</span>를 불렀을까요?
             </p>
-          </div>
-        </section>
-
-        <section class="summary-scene summary-scene-paired" data-summary-scene>
-          <div class="summary-scene-inner">
-            <div class="summary-term-grid">
-              <article class="summary-term-card">
-                <span class="summary-term-name">'곤듀'</span>
-                <strong>${escapeHtml(formatNumber(callGondu?.count || 0))}</strong>
-                <span class="summary-term-unit">회</span>
-              </article>
-              <article class="summary-term-card">
-                <span class="summary-term-name">'재천'</span>
-                <strong>${escapeHtml(formatNumber(callJaecheon?.count || 0))}</strong>
-                <span class="summary-term-unit">회</span>
-              </article>
-            </div>
-          </div>
-        </section>
-
-        <section class="summary-scene summary-scene-question" data-summary-scene>
-          <div class="summary-scene-inner">
-            <p class="summary-question">가장 채팅을 많이 친 재첩은...</p>
-            <div class="summary-top-chatter-card">
-              <span class="summary-top-chatter-label">익명화된 재첩</span>
-              <strong>${escapeHtml(topChatterAlias)}</strong>
+            <div class="summary-term-card is-single">
+              <strong>${escapeHtml(formatNumber(combinedCalls))}</strong>
+              <span class="summary-term-unit">회</span>
+              <p class="summary-term-note">(곤듀+재천 등)</p>
             </div>
           </div>
         </section>
@@ -662,15 +687,16 @@ function renderSummary(report) {
         <section class="summary-scene summary-scene-finale" data-summary-scene>
           <div class="summary-scene-inner">
             <div class="summary-top-chatter-card is-finale">
-              <span class="summary-top-chatter-label">혼자서 무려</span>
+              <p class="summary-question summary-question-small">가장 채팅을 많이 친 재첩은...</p>
               <strong>${escapeHtml(formatNumber(topChatterCount))}</strong>
               <span class="summary-term-unit">개의 채팅을 보냈습니다</span>
+              <p class="summary-term-note">전체 채팅의 ${escapeHtml(formatRatio(topChatterRatio))}에 해당하네요</p>
             </div>
           </div>
         </section>
       </div>
       <div class="summary-progress" data-summary-progress>
-        ${Array.from({ length: 8 }, (_, index) => `
+        ${Array.from({ length: 5 }, (_, index) => `
           <button class="summary-progress-dot ${index === 0 ? 'is-current' : ''}" type="button" data-summary-dot="${index}" aria-label="요약 ${index + 1}번째 장면으로 이동"></button>
         `).join('')}
       </div>
@@ -686,6 +712,7 @@ function renderSummary(report) {
 
   let wheelLocked = false;
   let wheelLockTimer = 0;
+  let currentSummarySceneIndex = -1;
 
   const syncSummarySceneState = () => {
     const viewportHeight = scrollerEl.clientHeight || 1;
@@ -699,6 +726,16 @@ function renderSummary(report) {
     dotEls.forEach((dotEl, index) => {
       dotEl.classList.toggle('is-current', index === activeIndex);
     });
+    if (activeIndex !== currentSummarySceneIndex) {
+      currentSummarySceneIndex = activeIndex;
+      if (activeIndex === 2) {
+        animateSummaryCounter(
+          sceneEls[activeIndex].querySelector('[data-summary-counter]'),
+          sceneEls[activeIndex].querySelector('[data-summary-counter-caption]'),
+          messageCount,
+        );
+      }
+    }
   };
 
   const scrollToSummaryScene = (index) => {

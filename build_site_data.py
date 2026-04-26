@@ -45,6 +45,7 @@ SUPPORTED_IMAGE_SUFFIXES = {".png", ".jpg", ".jpeg", ".webp", ".gif", ".svg"}
 SUPPORTED_VIDEO_SUFFIXES = {".mp4", ".webm", ".mov", ".m4v"}
 PUBLIC_GAME_MIN_COUNT = 120
 CHZZK_LOGO_PATH = IMG_DIR / "chzzk-logo.svg"
+SUMMARY_REFERENCE_START_DATE = "2026-03-27"
 SUMMARY_CALL_TERMS = ("곤듀", "재천")
 SUMMARY_ANONYMOUS_SUFFIX = "재첩"
 SUMMARY_ANON_ADJECTIVES = (
@@ -342,6 +343,7 @@ def build_summary_story(payload: dict, summary: dict, raw_search_items: list[dic
     top_chatter = top_chatters[0] if top_chatters and isinstance(top_chatters[0], dict) else {}
     top_nickname = normalize_text(top_chatter.get("token"), "재첩")
     seed = normalize_text(payload.get("generatedAt"), datetime.now().isoformat())
+    message_count = int(summary.get("messageCount") or 0)
     call_terms = [
         {
             "label": label,
@@ -351,15 +353,17 @@ def build_summary_story(payload: dict, summary: dict, raw_search_items: list[dic
     ]
     return {
         "issueLabel": format_issue_label(normalize_text(payload.get("label"))),
+        "referenceStartDate": SUMMARY_REFERENCE_START_DATE,
         "broadcastDayCount": len(broadcast_days),
         "broadcastDays": broadcast_days,
         "videoCount": int(summary.get("videoCount") or 0),
-        "messageCount": int(summary.get("messageCount") or 0),
+        "messageCount": message_count,
         "callTerms": call_terms,
         "topChatter": {
             "nickname": top_nickname,
             "anonymousAlias": build_story_anonymous_alias(top_nickname, seed),
             "count": int(top_chatter.get("count") or 0),
+            "ratio": ((int(top_chatter.get("count") or 0) / message_count) * 100.0) if message_count > 0 else 0.0,
         },
     }
 

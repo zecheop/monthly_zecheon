@@ -458,8 +458,8 @@ body.is-scrolled .site-nav-inner {
 .summary-logo-pill {
   display: inline-flex;
   align-items: center;
-  gap: 14px;
-  padding: 14px 22px;
+  gap: 0;
+  padding: 16px;
   border-radius: 999px;
   background: rgba(255, 255, 255, 0.06);
   border: 1px solid rgba(255, 255, 255, 0.12);
@@ -467,15 +467,9 @@ body.is-scrolled .site-nav-inner {
 }
 
 .summary-logo-pill img {
-  width: clamp(42px, 4vw, 62px);
-  height: clamp(42px, 4vw, 62px);
+  width: clamp(84px, 10vw, 148px);
+  height: clamp(36px, 5vw, 64px);
   object-fit: contain;
-}
-
-.summary-logo-pill span {
-  font-size: clamp(24px, 3vw, 42px);
-  font-weight: 900;
-  letter-spacing: -0.04em;
 }
 
 .summary-leading-text,
@@ -489,6 +483,45 @@ body.is-scrolled .site-nav-inner {
   font-size: 14px;
 }
 
+.summary-scroll-hint {
+  position: absolute;
+  left: 50%;
+  bottom: clamp(24px, 4vw, 46px);
+  z-index: 2;
+  display: grid;
+  gap: 10px;
+  justify-items: center;
+  transform: translateX(-50%);
+  color: rgba(244, 240, 234, 0.74);
+}
+
+.summary-scroll-hint p {
+  margin: 0;
+  font-size: 13px;
+  font-weight: 600;
+  letter-spacing: 0.02em;
+  white-space: nowrap;
+}
+
+.summary-scroll-mouse {
+  display: inline-flex;
+  width: 28px;
+  height: 46px;
+  border: 1px solid rgba(255, 255, 255, 0.36);
+  border-radius: 999px;
+  justify-content: center;
+  padding-top: 8px;
+}
+
+.summary-scroll-mouse span {
+  display: block;
+  width: 6px;
+  height: 10px;
+  border-radius: 999px;
+  background: rgba(139, 234, 245, 0.92);
+  animation: summaryScrollHint 1.6s ease-in-out infinite;
+}
+
 .summary-line,
 .summary-question {
   margin: 0;
@@ -500,6 +533,11 @@ body.is-scrolled .site-nav-inner {
 
 .summary-line-tail {
   color: rgba(244, 240, 234, 0.88);
+}
+
+.summary-inline-number {
+  color: #8beaf5;
+  text-shadow: 0 0 24px rgba(75, 189, 206, 0.18);
 }
 
 .summary-number-block {
@@ -528,6 +566,17 @@ body.is-scrolled .site-nav-inner {
   font-size: clamp(78px, 13vw, 194px);
 }
 
+.summary-counter-caption {
+  opacity: 0;
+  transform: translateY(16px);
+  transition: opacity 260ms ease, transform 260ms ease;
+}
+
+.summary-counter-caption.is-visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
 .summary-question {
   max-width: 980px;
 }
@@ -539,13 +588,6 @@ body.is-scrolled .site-nav-inner {
 .summary-emphasis.is-cyan {
   color: #8beaf5;
   text-shadow: 0 0 24px rgba(75, 189, 206, 0.24);
-}
-
-.summary-term-grid {
-  display: grid;
-  grid-template-columns: repeat(2, minmax(0, 1fr));
-  gap: 22px;
-  width: min(980px, 100%);
 }
 
 .summary-term-card,
@@ -560,6 +602,12 @@ body.is-scrolled .site-nav-inner {
 .summary-term-card {
   display: grid;
   gap: 8px;
+}
+
+.summary-term-card.is-single {
+  width: min(720px, 100%);
+  justify-items: center;
+  text-align: center;
 }
 
 .summary-term-name,
@@ -579,6 +627,13 @@ body.is-scrolled .site-nav-inner {
   line-height: 0.9;
 }
 
+.summary-term-note {
+  margin: 0;
+  color: rgba(244, 240, 234, 0.68);
+  font-size: 16px;
+  font-weight: 600;
+}
+
 .summary-top-chatter-card {
   width: min(760px, 100%);
   display: grid;
@@ -591,6 +646,24 @@ body.is-scrolled .site-nav-inner {
   background:
     radial-gradient(circle at 50% 0%, rgba(75, 189, 206, 0.14), transparent 36%),
     rgba(255, 255, 255, 0.05);
+}
+
+.summary-question-small {
+  font-size: clamp(26px, 3vw, 42px);
+}
+
+@keyframes summaryScrollHint {
+  0% {
+    transform: translateY(0);
+    opacity: 0.2;
+  }
+  24% {
+    opacity: 1;
+  }
+  100% {
+    transform: translateY(12px);
+    opacity: 0;
+  }
 }
 
 .report-intro,
