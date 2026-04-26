@@ -763,6 +763,7 @@ function renderSummary() {
   let wheelLockTimer = 0;
   let currentSummarySceneIndex = -1;
   let callSceneRevealed = false;
+  let callSceneGuardUntil = 0;
 
   const syncCallRevealState = () => {
     sceneEls[3]?.classList.toggle('is-revealed', callSceneRevealed);
@@ -792,9 +793,11 @@ function renderSummary() {
       }
       if (activeIndex === 3 && previousIndex !== 3) {
         callSceneRevealed = false;
+        callSceneGuardUntil = 0;
       }
       if (activeIndex !== 3) {
         callSceneRevealed = false;
+        callSceneGuardUntil = 0;
       }
       syncCallRevealState();
     }
@@ -851,13 +854,23 @@ function renderSummary() {
       if (direction > 0 && !callSceneRevealed) {
         lockSummaryWheel();
         callSceneRevealed = true;
+        callSceneGuardUntil = performance.now() + 900;
         syncCallRevealState();
+        return;
+      }
+      if (direction > 0 && callSceneRevealed && performance.now() < callSceneGuardUntil) {
+        lockSummaryWheel();
         return;
       }
       if (direction < 0 && callSceneRevealed) {
         lockSummaryWheel();
         callSceneRevealed = false;
+        callSceneGuardUntil = performance.now() + 900;
         syncCallRevealState();
+        return;
+      }
+      if (direction < 0 && !callSceneRevealed && performance.now() < callSceneGuardUntil) {
+        lockSummaryWheel();
         return;
       }
     }
