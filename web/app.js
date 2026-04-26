@@ -726,8 +726,10 @@ function renderSummary() {
           </div>
           <div class="summary-scene-inner summary-scene-inner-call">
             <div class="summary-term-card is-single is-call-focus">
-              <strong>${escapeHtml(formatNumber(combinedCalls))}</strong>
-              <span class="summary-term-unit">회</span>
+              <div class="summary-call-count-row">
+                <strong>${escapeHtml(formatNumber(combinedCalls))}</strong>
+                <span class="summary-term-unit">회</span>
+              </div>
               <p class="summary-term-note">재첩이가 곤듀를 부른 횟수</p>
               <p class="summary-term-note subdued">(곤듀+재천 등)</p>
             </div>
@@ -760,12 +762,10 @@ function renderSummary() {
   let wheelLocked = false;
   let wheelLockTimer = 0;
   let currentSummarySceneIndex = -1;
-  let callRevealTimer = 0;
+  let callSceneRevealed = false;
 
-  const clearCallReveal = () => {
-    window.clearTimeout(callRevealTimer);
-    callRevealTimer = 0;
-    sceneEls[3]?.classList.remove('is-revealed');
+  const syncCallRevealState = () => {
+    sceneEls[3]?.classList.toggle('is-revealed', callSceneRevealed);
   };
 
   const syncSummarySceneState = () => {
@@ -781,6 +781,7 @@ function renderSummary() {
       dotEl.classList.toggle('is-current', index === activeIndex);
     });
     if (activeIndex !== currentSummarySceneIndex) {
+      const previousIndex = currentSummarySceneIndex;
       currentSummarySceneIndex = activeIndex;
       if (activeIndex === 2) {
         animateSummaryCounter(
@@ -789,14 +790,13 @@ function renderSummary() {
           messageCount,
         );
       }
-      if (activeIndex === 3) {
-        clearCallReveal();
-        callRevealTimer = window.setTimeout(() => {
-          sceneEls[3]?.classList.add('is-revealed');
-        }, 2400);
-      } else {
-        clearCallReveal();
+      if (activeIndex === 3 && previousIndex !== 3) {
+        callSceneRevealed = false;
       }
+      if (activeIndex !== 3) {
+        callSceneRevealed = false;
+      }
+      syncCallRevealState();
     }
   };
 
@@ -846,6 +846,20 @@ function renderSummary() {
       event.preventDefault();
       document.getElementById('top')?.scrollIntoView({ behavior: 'smooth', block: 'start' });
       return;
+    }
+    if (currentIndex === 3) {
+      if (direction > 0 && !callSceneRevealed) {
+        lockSummaryWheel();
+        callSceneRevealed = true;
+        syncCallRevealState();
+        return;
+      }
+      if (direction < 0 && callSceneRevealed) {
+        lockSummaryWheel();
+        callSceneRevealed = false;
+        syncCallRevealState();
+        return;
+      }
     }
     const nextIndex = Math.max(0, Math.min(sceneEls.length - 1, currentIndex + direction));
     if (nextIndex === currentIndex) {

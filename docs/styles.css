@@ -789,6 +789,14 @@ body.is-scrolled .site-nav-inner {
   gap: 8px;
 }
 
+.summary-call-count-row {
+  display: inline-flex;
+  align-items: baseline;
+  justify-content: center;
+  gap: 10px;
+  line-height: 0.9;
+}
+
 .summary-term-card.is-single {
   width: min(720px, 100%);
   justify-items: center;
@@ -810,6 +818,10 @@ body.is-scrolled .site-nav-inner {
   font-weight: 900;
   letter-spacing: -0.08em;
   line-height: 0.9;
+}
+
+.summary-call-count-row .summary-term-unit {
+  font-size: clamp(30px, 3.4vw, 50px);
 }
 
 .summary-term-note {
