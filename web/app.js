@@ -914,13 +914,6 @@ function renderReport(report) {
       ${renderSignalSection('TOP20 이모티콘', report.topEmotes, 'emote', '상위 이모티콘 데이터가 아직 없습니다.')}
 
       <p class="public-filter-note">※ 일반어와 같은 표현을 일부 제외했습니다.</p>
-
-      <article class="panel-card">
-        <div class="section-head">
-          <h3>탑5 클립</h3>
-        </div>
-        ${renderTopMomentClips(report)}
-      </article>
     </div>
   `;
 }
