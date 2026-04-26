@@ -12,7 +12,8 @@
 <body>
   <header class="site-nav" id="site-nav">
     <div class="site-nav-inner">
-      <button class="nav-link active" id="nav-stats" type="button" data-view-tab="stats">통계</button>
+      <button class="nav-link active" id="nav-summary" type="button" data-view-tab="summary">요약</button>
+      <button class="nav-link" id="nav-stats" type="button" data-view-tab="stats">통계</button>
       <button class="nav-link" id="nav-game" type="button" data-view-tab="game">게임</button>
     </div>
   </header>
@@ -42,6 +43,7 @@
         <div class="error-panel hidden" id="error-panel"></div>
       </div>
 
+      <div class="summary-root hidden" id="summary-root"></div>
       <div class="report-root hidden" id="report-root"></div>
       <div class="game-root hidden" id="game-root"></div>
     </section>

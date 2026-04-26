@@ -2,7 +2,7 @@ const state = {
   reports: [],
   currentReportId: '',
   currentReport: null,
-  currentView: 'stats',
+  currentView: 'summary',
   reportPickerOpen: false,
   searchCache: new Map(),
   hasLoadedReport: false,
@@ -13,6 +13,7 @@ const state = {
   gameBestScore: 0,
   heroVideos: [],
   currentHeroVideo: '',
+  brandAssets: {},
   gameAudio: {},
   pendingRoundAudioToken: '',
   gameMediaMuted: true,
@@ -26,12 +27,14 @@ const reportPickerEl = document.getElementById('report-picker');
 const archiveListEl = document.getElementById('archive-list');
 const loadingPanelEl = document.getElementById('loading-panel');
 const errorPanelEl = document.getElementById('error-panel');
+const summaryRootEl = document.getElementById('summary-root');
 const reportRootEl = document.getElementById('report-root');
 const gameRootEl = document.getElementById('game-root');
 const navTabEls = Array.from(document.querySelectorAll('[data-view-tab]'));
 const heroVideoEl = document.getElementById('hero-video');
 const HERO_VIDEO_STORAGE_KEY = 'monthly-zecheon-last-hero-video';
 const REPORT_STORAGE_KEY = 'monthly-zecheon-last-report-id';
+const SUMMARY_SCROLL_LOCK_MS = 620;
 const GAME_VIDEO_AUDIBLE_VOLUME = 0.58;
 const GAME_VIDEO_FADE_IN_MS = 360;
 const GAME_VIDEO_FADE_OUT_MS = 220;
@@ -213,12 +216,17 @@ function setReportVisible(visible) {
   reportRootEl.classList.toggle('hidden', !visible);
 }
 
+function setSummaryVisible(visible) {
+  summaryRootEl.classList.toggle('hidden', !visible);
+}
+
 function setGameVisible(visible) {
   gameRootEl.classList.toggle('hidden', !visible);
 }
 
 function setReportUpdating(isUpdating) {
   reportRootEl.classList.toggle('is-updating', !!isUpdating);
+  summaryRootEl.classList.toggle('is-updating', !!isUpdating);
 }
 
 function updateScrollState() {
@@ -240,32 +248,40 @@ function formatIssueTag(sourceText) {
 function parseLocationState() {
   const rawHash = window.location.hash.replace(/^#/, '').trim();
   if (!rawHash) {
-    return { view: 'stats', reportId: readStoredReportId() };
+    return { view: 'summary', reportId: readStoredReportId() };
   }
   try {
     const decoded = decodeURIComponent(rawHash);
     if (decoded === 'game') {
       return { view: 'game', reportId: '' };
     }
+    if (decoded === 'summary') {
+      return { view: 'summary', reportId: readStoredReportId() };
+    }
     if (decoded === 'stat' || decoded === 'stats') {
       return { view: 'stats', reportId: readStoredReportId() };
     }
-    return { view: 'stats', reportId: decoded };
+    return { view: 'summary', reportId: readStoredReportId() };
   } catch {
     if (rawHash === 'game') {
       return { view: 'game', reportId: '' };
     }
+    if (rawHash === 'summary') {
+      return { view: 'summary', reportId: readStoredReportId() };
+    }
     if (rawHash === 'stat' || rawHash === 'stats') {
       return { view: 'stats', reportId: readStoredReportId() };
     }
-    return { view: 'stats', reportId: rawHash };
+    return { view: 'summary', reportId: readStoredReportId() };
   }
 }
 
 function syncLocationHash() {
   const nextHash = state.currentView === 'game'
     ? '#game'
-    : '#stat';
+    : state.currentView === 'stats'
+      ? '#stat'
+      : '#summary';
   if (window.location.hash !== nextHash) {
     history.replaceState(null, '', nextHash || window.location.pathname);
   }
@@ -298,7 +314,7 @@ function renderArchiveList() {
 }
 
 function renderReportPickerVisibility() {
-  reportPickerEl.classList.toggle('hidden', !(state.currentView === 'stats' && state.reportPickerOpen));
+  reportPickerEl.classList.toggle('hidden', !(state.currentView !== 'game' && state.reportPickerOpen));
 }
 
 function updateNavState() {
@@ -310,10 +326,15 @@ function updateNavState() {
 
 function setCurrentView(view, options = {}) {
   const { syncHash = true, scrollToContent = false } = options;
-  state.currentView = view === 'game' ? 'game' : 'stats';
+  state.currentView = view === 'game'
+    ? 'game'
+    : view === 'stats'
+      ? 'stats'
+      : 'summary';
   syncBodyViewState();
   updateNavState();
   renderReportPickerVisibility();
+  setSummaryVisible(state.currentView === 'summary' && !!state.currentReport);
   setReportVisible(state.currentView === 'stats' && !!state.currentReport);
   setGameVisible(state.currentView === 'game');
   updateHeroIssue();
@@ -330,7 +351,7 @@ function setCurrentView(view, options = {}) {
 
 function openReportPicker() {
   state.reportPickerOpen = true;
-  setCurrentView('stats', { syncHash: true });
+  setCurrentView('summary', { syncHash: true });
   renderReportPickerVisibility();
   requestAnimationFrame(() => {
     reportPickerEl.scrollIntoView({ behavior: 'smooth', block: 'start' });
@@ -528,6 +549,210 @@ function renderWordSearch(report) {
       <div id="word-search-result">${renderSearchResultEmpty('원하는 단어를 검색하면 등장 횟수와 월간 순위, 가장 많이 쓰였던 순간을 보여줍니다.')}</div>
     </div>
   `;
+}
+
+function getBrandAssetUrl(key) {
+  return String(state.brandAssets?.[key] || '').trim();
+}
+
+function getSummaryCallTerm(story, label) {
+  const rows = Array.isArray(story?.callTerms) ? story.callTerms : [];
+  return rows.find((row) => normalizeComparableText(row?.label) === normalizeComparableText(label)) || null;
+}
+
+function renderSummary(report) {
+  const story = report?.summaryStory || {};
+  const logoUrl = getBrandAssetUrl('chzzkLogo');
+  const callGondu = getSummaryCallTerm(story, '곤듀');
+  const callJaecheon = getSummaryCallTerm(story, '재천');
+  const issueLabel = String(story.issueLabel || report?.label || '').trim();
+  const topChatter = story.topChatter || {};
+  const broadcastDayCount = Number(story.broadcastDayCount || 0);
+  const videoCount = Number(story.videoCount || report?.overview?.videoCount || 0);
+  const messageCount = Number(story.messageCount || report?.overview?.messageCount || 0);
+  const topChatterAlias = String(topChatter.anonymousAlias || '반짝재첩').trim();
+  const topChatterCount = Number(topChatter.count || 0);
+
+  summaryRootEl.innerHTML = `
+    <div class="summary-wrap">
+      <div class="summary-scroller" data-summary-scroller>
+        <section class="summary-scene summary-scene-intro is-current" data-summary-scene>
+          <div class="summary-scene-inner">
+            <div class="summary-stage-meta">${escapeHtml(issueLabel)}</div>
+            <div class="summary-logo-story">
+              <span class="summary-leading-text">지금까지</span>
+              <span class="summary-logo-pill">
+                ${logoUrl ? `<img src="${escapeHtml(logoUrl)}" alt="치지직 로고">` : ''}
+                <span>치지직</span>
+              </span>
+              <span class="summary-trailing-text">에서...</span>
+            </div>
+            <p class="summary-scene-note">휠을 내려 이번 달의 재첩 기록을 넘겨보세요.</p>
+          </div>
+        </section>
+
+        <section class="summary-scene summary-scene-stat" data-summary-scene>
+          <div class="summary-scene-inner">
+            <p class="summary-line">곤듀는</p>
+            <div class="summary-number-block">
+              <strong>${escapeHtml(formatNumber(broadcastDayCount))}</strong>
+              <span>일</span>
+            </div>
+            <p class="summary-line summary-line-tail">동안 방송을 했고</p>
+          </div>
+        </section>
+
+        <section class="summary-scene summary-scene-stat" data-summary-scene>
+          <div class="summary-scene-inner">
+            <div class="summary-number-block">
+              <strong>${escapeHtml(formatNumber(videoCount))}</strong>
+              <span>개</span>
+            </div>
+            <p class="summary-line summary-line-tail">의 방송을 진행했습니다</p>
+          </div>
+        </section>
+
+        <section class="summary-scene summary-scene-stat" data-summary-scene>
+          <div class="summary-scene-inner">
+            <p class="summary-line">그동안</p>
+            <div class="summary-number-block is-wide">
+              <strong>${escapeHtml(formatNumber(messageCount))}</strong>
+              <span>개</span>
+            </div>
+            <p class="summary-line summary-line-tail">의 채팅이 있었네요!</p>
+          </div>
+        </section>
+
+        <section class="summary-scene summary-scene-question" data-summary-scene>
+          <div class="summary-scene-inner">
+            <p class="summary-question">
+              <span class="summary-emphasis">재첩이들</span>은 몇 번이나
+              <span class="summary-emphasis is-cyan">곤듀</span>를 불렀을까요?
+            </p>
+          </div>
+        </section>
+
+        <section class="summary-scene summary-scene-paired" data-summary-scene>
+          <div class="summary-scene-inner">
+            <div class="summary-term-grid">
+              <article class="summary-term-card">
+                <span class="summary-term-name">'곤듀'</span>
+                <strong>${escapeHtml(formatNumber(callGondu?.count || 0))}</strong>
+                <span class="summary-term-unit">회</span>
+              </article>
+              <article class="summary-term-card">
+                <span class="summary-term-name">'재천'</span>
+                <strong>${escapeHtml(formatNumber(callJaecheon?.count || 0))}</strong>
+                <span class="summary-term-unit">회</span>
+              </article>
+            </div>
+          </div>
+        </section>
+
+        <section class="summary-scene summary-scene-question" data-summary-scene>
+          <div class="summary-scene-inner">
+            <p class="summary-question">가장 채팅을 많이 친 재첩은...</p>
+            <div class="summary-top-chatter-card">
+              <span class="summary-top-chatter-label">익명화된 재첩</span>
+              <strong>${escapeHtml(topChatterAlias)}</strong>
+            </div>
+          </div>
+        </section>
+
+        <section class="summary-scene summary-scene-finale" data-summary-scene>
+          <div class="summary-scene-inner">
+            <div class="summary-top-chatter-card is-finale">
+              <span class="summary-top-chatter-label">혼자서 무려</span>
+              <strong>${escapeHtml(formatNumber(topChatterCount))}</strong>
+              <span class="summary-term-unit">개의 채팅을 보냈습니다</span>
+            </div>
+          </div>
+        </section>
+      </div>
+      <div class="summary-progress" data-summary-progress>
+        ${Array.from({ length: 8 }, (_, index) => `
+          <button class="summary-progress-dot ${index === 0 ? 'is-current' : ''}" type="button" data-summary-dot="${index}" aria-label="요약 ${index + 1}번째 장면으로 이동"></button>
+        `).join('')}
+      </div>
+    </div>
+  `;
+
+  const scrollerEl = summaryRootEl.querySelector('[data-summary-scroller]');
+  const sceneEls = Array.from(summaryRootEl.querySelectorAll('[data-summary-scene]'));
+  const dotEls = Array.from(summaryRootEl.querySelectorAll('[data-summary-dot]'));
+  if (!scrollerEl || !sceneEls.length) {
+    return;
+  }
+
+  let wheelLocked = false;
+  let wheelLockTimer = 0;
+
+  const syncSummarySceneState = () => {
+    const viewportHeight = scrollerEl.clientHeight || 1;
+    const rawIndex = Math.round(scrollerEl.scrollTop / viewportHeight);
+    const activeIndex = Math.max(0, Math.min(sceneEls.length - 1, rawIndex));
+    sceneEls.forEach((sceneEl, index) => {
+      sceneEl.classList.toggle('is-current', index === activeIndex);
+      sceneEl.classList.toggle('is-before', index < activeIndex);
+      sceneEl.classList.toggle('is-after', index > activeIndex);
+    });
+    dotEls.forEach((dotEl, index) => {
+      dotEl.classList.toggle('is-current', index === activeIndex);
+    });
+  };
+
+  const scrollToSummaryScene = (index) => {
+    const nextIndex = Math.max(0, Math.min(sceneEls.length - 1, index));
+    const nextSceneEl = sceneEls[nextIndex];
+    if (!nextSceneEl) {
+      return;
+    }
+    nextSceneEl.scrollIntoView({ behavior: 'smooth', block: 'start' });
+  };
+
+  const lockSummaryWheel = () => {
+    wheelLocked = true;
+    window.clearTimeout(wheelLockTimer);
+    wheelLockTimer = window.setTimeout(() => {
+      wheelLocked = false;
+    }, SUMMARY_SCROLL_LOCK_MS);
+  };
+
+  summaryRootEl.querySelectorAll('[data-summary-dot]').forEach((dotEl) => {
+    dotEl.addEventListener('click', () => {
+      const index = Number(dotEl.getAttribute('data-summary-dot') || 0);
+      scrollToSummaryScene(index);
+    });
+  });
+
+  scrollerEl.addEventListener('scroll', () => {
+    window.requestAnimationFrame(syncSummarySceneState);
+  }, { passive: true });
+
+  scrollerEl.addEventListener('wheel', (event) => {
+    if (window.innerWidth <= 900) {
+      return;
+    }
+    if (Math.abs(event.deltaY) < 18) {
+      return;
+    }
+    event.preventDefault();
+    if (wheelLocked) {
+      return;
+    }
+    const viewportHeight = scrollerEl.clientHeight || 1;
+    const currentIndex = Math.round(scrollerEl.scrollTop / viewportHeight);
+    const direction = event.deltaY > 0 ? 1 : -1;
+    const nextIndex = Math.max(0, Math.min(sceneEls.length - 1, currentIndex + direction));
+    if (nextIndex === currentIndex) {
+      return;
+    }
+    lockSummaryWheel();
+    scrollToSummaryScene(nextIndex);
+  }, { passive: false });
+
+  scrollerEl.scrollTo({ top: 0, behavior: 'auto' });
+  syncSummarySceneState();
 }
 
 function renderReport(report) {
@@ -1537,10 +1762,12 @@ async function loadReport(reportId, options = {}) {
   setError('');
   const isInitialLoad = !state.hasLoadedReport || !state.currentReport;
   if (isInitialLoad) {
+    setSummaryVisible(false);
     setReportVisible(false);
     setLoading(true, '월간 리포트를 불러오는 중입니다...');
   } else {
     setLoading(false);
+    setSummaryVisible(state.currentView === 'summary');
     setReportVisible(state.currentView === 'stats');
     setReportUpdating(true);
   }
@@ -1551,18 +1778,21 @@ async function loadReport(reportId, options = {}) {
       throw new Error('리포트 데이터가 비어 있습니다.');
     }
     state.currentReport = report;
+    renderSummary(report);
     renderReport(report);
     state.hasLoadedReport = true;
     setReportUpdating(false);
     setLoading(false);
+    setSummaryVisible(state.currentView === 'summary');
     setReportVisible(state.currentView === 'stats');
     updateHeroIssue();
-    if (syncHash && state.currentView === 'stats') {
+    if (syncHash && state.currentView !== 'game') {
       syncLocationHash();
     }
   } catch (error) {
     setReportUpdating(false);
     setLoading(false);
+    setSummaryVisible(Boolean(state.currentReport) && state.currentView === 'summary');
     setReportVisible(Boolean(state.currentReport) && state.currentView === 'stats');
     setError(error instanceof Error ? error.message : '리포트를 불러오지 못했습니다.');
   }
@@ -1622,6 +1852,7 @@ async function bootstrap() {
   try {
     const data = await fetchJson(`./data/reports.json?v=${Date.now()}`);
     state.reports = Array.isArray(data.reports) ? data.reports : [];
+    state.brandAssets = data.brandAssets && typeof data.brandAssets === 'object' ? data.brandAssets : {};
     state.gameAudio = data.gameAudio && typeof data.gameAudio === 'object' ? data.gameAudio : {};
     setHeroVideo(Array.isArray(data.heroVideos) ? data.heroVideos : []);
     renderArchiveList();
@@ -1647,7 +1878,7 @@ async function bootstrap() {
         renderGame({ forceMediaPlayback: true });
         return;
       }
-      setCurrentView('stats', { syncHash: false });
+      setCurrentView(nextLocation.view, { syncHash: false });
       if (nextLocation.reportId && nextLocation.reportId !== state.currentReportId) {
         void loadReport(nextLocation.reportId, { syncHash: false });
       } else {

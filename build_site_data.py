@@ -9,7 +9,7 @@ import shutil
 import unicodedata
 from datetime import datetime, timedelta
 from pathlib import Path
-from typing import Iterable, Optional
+from typing import Any, Iterable, Optional
 from urllib.parse import quote
 
 
@@ -44,6 +44,48 @@ SUPPORTED_SOUND_SUFFIXES = {".mp3", ".wav", ".ogg", ".m4a"}
 SUPPORTED_IMAGE_SUFFIXES = {".png", ".jpg", ".jpeg", ".webp", ".gif", ".svg"}
 SUPPORTED_VIDEO_SUFFIXES = {".mp4", ".webm", ".mov", ".m4v"}
 PUBLIC_GAME_MIN_COUNT = 120
+CHZZK_LOGO_PATH = IMG_DIR / "chzzk-logo.svg"
+SUMMARY_CALL_TERMS = ("곤듀", "재천")
+SUMMARY_ANONYMOUS_SUFFIX = "재첩"
+SUMMARY_ANON_ADJECTIVES = (
+    "반짝",
+    "고요한",
+    "달콤한",
+    "엉뚱한",
+    "느긋한",
+    "초롱한",
+    "든든한",
+    "말랑한",
+    "포근한",
+    "재빠른",
+    "용감한",
+    "맑은",
+    "수줍은",
+    "쫀득한",
+    "차분한",
+    "명랑한",
+    "푸른",
+    "은은한",
+)
+SUMMARY_ANON_NOUNS = (
+    "별빛",
+    "모래",
+    "파도",
+    "구름",
+    "바람",
+    "달무리",
+    "노을",
+    "소다",
+    "유자",
+    "호두",
+    "물결",
+    "산책",
+    "도토리",
+    "리본",
+    "비밀",
+    "씨앗",
+    "잔디",
+)
 
 
 def parse_datetime(value) -> Optional[datetime]:
@@ -254,6 +296,72 @@ def build_word_search_items(summary: dict, bucket_minutes: int) -> list[dict]:
         )
     )
     return [{**row, "rank": index} for index, row in enumerate(rows, start=1)]
+
+
+def build_story_anonymous_alias(nickname: str, seed: str, suffix: str = SUMMARY_ANONYMOUS_SUFFIX) -> str:
+    normalized_nickname = normalize_text(nickname, "재첩")
+    normalized_seed = normalize_text(seed, datetime.now().isoformat())
+    digest = hashlib.sha256(f"{normalized_seed}|{normalized_nickname}".encode("utf-8")).hexdigest()
+    adjective = SUMMARY_ANON_ADJECTIVES[int(digest[:8], 16) % len(SUMMARY_ANON_ADJECTIVES)]
+    noun = SUMMARY_ANON_NOUNS[int(digest[8:16], 16) % len(SUMMARY_ANON_NOUNS)]
+    return f"{adjective}{noun}{suffix}"
+
+
+def build_story_call_count(search_items: list[dict], target_label: str) -> int:
+    normalized_target = normalize_lookup_token(target_label)
+    if not normalized_target:
+        return 0
+    total = 0
+    for item in search_items:
+        if not isinstance(item, dict):
+            continue
+        aliases = {
+            normalize_lookup_token(item.get("displayToken")),
+            normalize_lookup_token(item.get("token")),
+        }
+        aliases.update(
+            normalize_lookup_token(alias)
+            for alias in split_token_aliases(item.get("token"), item.get("tokenTitle"))
+        )
+        aliases.discard("")
+        if normalized_target in aliases:
+            total += int(item.get("count") or 0)
+    return total
+
+
+def build_summary_story(payload: dict, summary: dict, raw_search_items: list[dict]) -> dict:
+    videos = list(summary.get("videos") or [])
+    broadcast_days = sorted(
+        {
+            normalize_text(video.get("publishDate"))[:10]
+            for video in videos
+            if normalize_text(video.get("publishDate"))[:10]
+        }
+    )
+    top_chatters = list(summary.get("topChatters") or [])
+    top_chatter = top_chatters[0] if top_chatters and isinstance(top_chatters[0], dict) else {}
+    top_nickname = normalize_text(top_chatter.get("token"), "재첩")
+    seed = normalize_text(payload.get("generatedAt"), datetime.now().isoformat())
+    call_terms = [
+        {
+            "label": label,
+            "count": build_story_call_count(raw_search_items, label),
+        }
+        for label in SUMMARY_CALL_TERMS
+    ]
+    return {
+        "issueLabel": format_issue_label(normalize_text(payload.get("label"))),
+        "broadcastDayCount": len(broadcast_days),
+        "broadcastDays": broadcast_days,
+        "videoCount": int(summary.get("videoCount") or 0),
+        "messageCount": int(summary.get("messageCount") or 0),
+        "callTerms": call_terms,
+        "topChatter": {
+            "nickname": top_nickname,
+            "anonymousAlias": build_story_anonymous_alias(top_nickname, seed),
+            "count": int(top_chatter.get("count") or 0),
+        },
+    }
 
 
 def parse_clip_titles() -> dict[int, str]:
@@ -905,8 +1013,8 @@ def build_public_report(
     highlights = advanced.get("streamerHighlights") if isinstance(advanced.get("streamerHighlights"), dict) else {}
     period = summary.get("analysisPeriod") if isinstance(summary.get("analysisPeriod"), dict) else {}
     bucket_minutes = int(advanced.get("bucketMinutes") or 2)
-    search_items = build_word_search_items(summary, bucket_minutes)
-    search_items = merge_public_search_items(search_items, parse_public_word_merges(), bucket_minutes)
+    raw_search_items = build_word_search_items(summary, bucket_minutes)
+    search_items = merge_public_search_items(raw_search_items, parse_public_word_merges(), bucket_minutes)
     top_words = build_public_top_words(search_items, parse_public_word_excludes(), limit=20)
     top_emotes = trim_ranked_rows(summary.get("topEmotes"), limit=20, token_type="emote")
     legend_rows = [
@@ -925,6 +1033,7 @@ def build_public_report(
             "videoCount": int(summary.get("videoCount") or 0),
             "messageCount": int(summary.get("messageCount") or 0),
         },
+        "summaryStory": build_summary_story(payload, summary, raw_search_items),
         "topWords": top_words,
         "topEmotes": top_emotes,
         "topMomentClips": build_top_moment_clips(legend_rows, bucket_minutes),
@@ -947,6 +1056,8 @@ def copy_static_assets() -> None:
     shutil.copy2(WEB_DIR / "styles.css", DOCS_DIR / "styles.css")
     shutil.copy2(WEB_DIR / "app.js", DOCS_DIR / "app.js")
     shutil.copy2(IMG_DIR / "sign.webp", DOCS_ASSET_DIR / "img" / "sign.webp")
+    if CHZZK_LOGO_PATH.exists():
+        shutil.copy2(CHZZK_LOGO_PATH, DOCS_ASSET_DIR / "img" / CHZZK_LOGO_PATH.name)
 
 
 def ensure_asset_dirs() -> None:
@@ -1010,6 +1121,9 @@ def build_site() -> None:
             "reports": reports_index,
             "gameFile": f"./data/{game_file}",
             "heroVideos": [f"./assets/video/{quote(path.name)}" for path in list_hero_video_paths()],
+            "brandAssets": {
+                "chzzkLogo": f"./assets/img/{quote(CHZZK_LOGO_PATH.name)}" if CHZZK_LOGO_PATH.exists() else "",
+            },
             "gameAudio": build_game_audio_manifest(),
         },
     )
