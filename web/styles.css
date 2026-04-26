@@ -491,11 +491,11 @@ body.is-scrolled .site-nav-inner {
   display: inline-flex;
   align-items: center;
   gap: 0;
-  padding: 16px;
-  border-radius: 999px;
-  background: rgba(255, 255, 255, 0.06);
-  border: 1px solid rgba(255, 255, 255, 0.12);
-  box-shadow: 0 18px 48px rgba(0, 0, 0, 0.22);
+  padding: 0;
+  border-radius: 0;
+  background: transparent;
+  border: 0;
+  box-shadow: none;
 }
 
 .summary-logo-pill img {
@@ -677,6 +677,9 @@ body.is-scrolled .site-nav-inner {
 
 .summary-chat-bubble {
   margin: 0;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
   width: fit-content;
   max-width: min(100%, 420px);
   padding: 12px 16px;
@@ -689,6 +692,14 @@ body.is-scrolled .site-nav-inner {
   box-shadow: 0 14px 32px rgba(0, 0, 0, 0.18);
   backdrop-filter: blur(10px);
   -webkit-backdrop-filter: blur(10px);
+}
+
+.summary-chat-emote {
+  width: 28px;
+  height: 28px;
+  object-fit: contain;
+  vertical-align: middle;
+  flex: 0 0 auto;
 }
 
 .summary-scene-inner-chat,
@@ -718,17 +729,17 @@ body.is-scrolled .site-nav-inner {
   position: absolute;
   inset: 0;
   display: grid;
-  grid-template-columns: repeat(4, minmax(0, 1fr));
-  gap: 22px 28px;
+  grid-template-columns: repeat(6, minmax(0, 1fr));
+  gap: 10px 14px;
   align-content: center;
   justify-items: center;
-  padding: clamp(48px, 6vw, 92px);
+  padding: clamp(28px, 4vw, 56px);
   opacity: 0.96;
   transition: filter 700ms ease, opacity 700ms ease, transform 700ms ease;
   z-index: 0;
 }
 
-.summary-scene-question.is-current .summary-variant-cloud {
+.summary-scene-question.is-revealed .summary-variant-cloud {
   filter: blur(12px);
   opacity: 0.24;
   transform: scale(1.06);
@@ -736,7 +747,7 @@ body.is-scrolled .site-nav-inner {
 
 .summary-variant-item {
   color: rgba(244, 240, 234, 0.9);
-  font-size: clamp(28px, 3.2vw, 56px);
+  font-size: clamp(20px, 2.4vw, 40px);
   font-weight: 900;
   letter-spacing: -0.06em;
   text-shadow: 0 12px 32px rgba(0, 0, 0, 0.22);
@@ -749,8 +760,19 @@ body.is-scrolled .site-nav-inner {
 
 .summary-variant-item.is-variant-3,
 .summary-variant-item.is-variant-6 {
-  font-size: clamp(22px, 2.5vw, 42px);
+  font-size: clamp(16px, 2vw, 28px);
   opacity: 0.72;
+}
+
+.summary-term-card.is-call-focus {
+  opacity: 0;
+  transform: translateY(26px) scale(0.96);
+  transition: opacity 420ms ease, transform 520ms cubic-bezier(0.2, 0.8, 0.2, 1);
+}
+
+.summary-scene-question.is-revealed .summary-term-card.is-call-focus {
+  opacity: 1;
+  transform: translateY(0) scale(1);
 }
 
 .summary-term-card,

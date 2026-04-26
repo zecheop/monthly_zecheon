@@ -9,8 +9,8 @@
       "generatedAt": "2026-04-26T15:35:19",
       "videoCount": 19,
       "messageCount": 89857,
-      "reportFile": "./data/reports/report-2026-04-20260426153519-ffe54469.json",
-      "wordSearchFile": "./data/word-search/search-2026-04-20260426153519-ffe54469.json"
+      "reportFile": "./data/reports/report-2026-04-20260426153519-945790bc.json",
+      "wordSearchFile": "./data/word-search/search-2026-04-20260426153519-945790bc.json"
     },
     {
       "id": "chzzk-merge-log-임재천-2026-03-20260424-035159.json",
@@ -21,11 +21,11 @@
       "generatedAt": "2026-04-24T03:51:59",
       "videoCount": 6,
       "messageCount": 73302,
-      "reportFile": "./data/reports/report-2026-03-20260424035159-ffe54469.json",
-      "wordSearchFile": "./data/word-search/search-2026-03-20260424035159-ffe54469.json"
+      "reportFile": "./data/reports/report-2026-03-20260424035159-945790bc.json",
+      "wordSearchFile": "./data/word-search/search-2026-03-20260424035159-945790bc.json"
     }
   ],
-  "gameFile": "./data/game-ffe54469.json",
+  "gameFile": "./data/game-945790bc.json",
   "heroVideos": [
     "./assets/video/video1.mp4",
     "./assets/video/video2.mp4",
@@ -36,48 +36,543 @@
     "videoCount": 25,
     "messageCount": 163159,
     "chatSamples": [
-      "쟈쟈",
-      "재하재하",
-      "{:d_54:}{:d_54:}",
-      "시청자는 6시야",
-      "재하",
-      "{:zcHi:}{:zcHi:}",
-      "{:zcCheer:}{:zcCheer:}{:zcCheer:}",
-      "오 구독티콘 업뎃됐다",
-      "{:zcPunch:}{:zcPunch:}{:zcPunch:}{:zcPunc…",
-      "{:zcOpen:}{:zcOpen:}{:zcOpen:}{:zcOpen:}{…",
-      "왔구나 내 도파민",
-      "왔다 내 놀림감",
-      "{:zcPunch:}{:zcPunch:}{:zcOpen:}{:zcPunch…",
-      "방제로 잘써먹네 ㅋㅋㅋ",
-      "난토!",
-      "{:zcHi:}{:zcHi:}{:zcHi:}",
-      "재천아 지금은 5시야..",
-      "아직 퇴근도 못했는데 6시라니 야다;;",
-      "재천아 정신차려 5시야",
-      "거꾸로서있네",
-      "지금 오후 6시임",
-      "??",
-      "{:d_120:}{:d_120:}{:d_120:}{:d_120:}{:d_1…",
-      "그럼 지각한거네?? 보상내놔",
-      "혹시 지금 중국에 계신가요",
-      "애가 자고일어난지 얼마 안됐나 정신을못차리네",
-      "이분 시계 볼줄 모르나요",
-      "쟈쟈쟈쟈",
-      "아니야 곤듀 우리도 5시야.. ㅠ.ㅠ",
-      "ㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋ",
-      "5랑 6을 구분하지 못하는거시냐!!!",
-      "뭐야 내 한시간 돌려줘요",
-      "아쟈쟈쟛",
-      "아아... 지금은 [5시]이다",
-      "지금 5신데??",
-      "아직 퇴근 전이야...",
-      "ㅋㅋㅋㅋㅋㅋㅋㅋ",
-      "오 구독 연동됐네",
-      "어제 애교너무해서 뇌녹았다 비상",
-      "{:chky_5:}{:chky_5:}",
-      "쟈쟈ㅑㅈ",
-      "ㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋ"
+      {
+        "segments": [
+          {
+            "type": "text",
+            "text": "쟈쟈"
+          }
+        ]
+      },
+      {
+        "segments": [
+          {
+            "type": "text",
+            "text": "재하재하"
+          }
+        ]
+      },
+      {
+        "segments": [
+          {
+            "type": "emote",
+            "code": "d_54",
+            "url": "https://ssl.pstatic.net/static/nng/glive/icon/b_14.gif"
+          },
+          {
+            "type": "emote",
+            "code": "d_54",
+            "url": "https://ssl.pstatic.net/static/nng/glive/icon/b_14.gif"
+          }
+        ]
+      },
+      {
+        "segments": [
+          {
+            "type": "text",
+            "text": "시청자는 6시야"
+          }
+        ]
+      },
+      {
+        "segments": [
+          {
+            "type": "text",
+            "text": "재하"
+          }
+        ]
+      },
+      {
+        "segments": [
+          {
+            "type": "emote",
+            "code": "zcHi",
+            "url": "https://nng-phinf.pstatic.net/glive/subscription/emoji/3a5c68e21e1de59efc438313f908dd6f/1/zcHi_1774901709581.png"
+          },
+          {
+            "type": "emote",
+            "code": "zcHi",
+            "url": "https://nng-phinf.pstatic.net/glive/subscription/emoji/3a5c68e21e1de59efc438313f908dd6f/1/zcHi_1774901709581.png"
+          }
+        ]
+      },
+      {
+        "segments": [
+          {
+            "type": "emote",
+            "code": "zcCheer",
+            "url": "https://nng-phinf.pstatic.net/glive/subscription/emoji/3a5c68e21e1de59efc438313f908dd6f/1/zcD_1774901826362.gif"
+          },
+          {
+            "type": "emote",
+            "code": "zcCheer",
+            "url": "https://nng-phinf.pstatic.net/glive/subscription/emoji/3a5c68e21e1de59efc438313f908dd6f/1/zcD_1774901826362.gif"
+          },
+          {
+            "type": "emote",
+            "code": "zcCheer",
+            "url": "https://nng-phinf.pstatic.net/glive/subscription/emoji/3a5c68e21e1de59efc438313f908dd6f/1/zcD_1774901826362.gif"
+          }
+        ]
+      },
+      {
+        "segments": [
+          {
+            "type": "text",
+            "text": "오 구독티콘 업뎃됐다"
+          }
+        ]
+      },
+      {
+        "segments": [
+          {
+            "type": "emote",
+            "code": "zcPunch",
+            "url": "https://nng-phinf.pstatic.net/glive/subscription/emoji/3a5c68e21e1de59efc438313f908dd6f/1/zcDd_1774901900099.gif"
+          },
+          {
+            "type": "emote",
+            "code": "zcPunch",
+            "url": "https://nng-phinf.pstatic.net/glive/subscription/emoji/3a5c68e21e1de59efc438313f908dd6f/1/zcDd_1774901900099.gif"
+          },
+          {
+            "type": "emote",
+            "code": "zcPunch",
+            "url": "https://nng-phinf.pstatic.net/glive/subscription/emoji/3a5c68e21e1de59efc438313f908dd6f/1/zcDd_1774901900099.gif"
+          },
+          {
+            "type": "emote",
+            "code": "zcPunch",
+            "url": "https://nng-phinf.pstatic.net/glive/subscription/emoji/3a5c68e21e1de59efc438313f908dd6f/1/zcDd_1774901900099.gif"
+          },
+          {
+            "type": "emote",
+            "code": "zcPunch",
+            "url": "https://nng-phinf.pstatic.net/glive/subscription/emoji/3a5c68e21e1de59efc438313f908dd6f/1/zcDd_1774901900099.gif"
+          },
+          {
+            "type": "emote",
+            "code": "zcPunch",
+            "url": "https://nng-phinf.pstatic.net/glive/subscription/emoji/3a5c68e21e1de59efc438313f908dd6f/1/zcDd_1774901900099.gif"
+          },
+          {
+            "type": "emote",
+            "code": "zcPunch",
+            "url": "https://nng-phinf.pstatic.net/glive/subscription/emoji/3a5c68e21e1de59efc438313f908dd6f/1/zcDd_1774901900099.gif"
+          }
+        ]
+      },
+      {
+        "segments": [
+          {
+            "type": "emote",
+            "code": "zcPunch",
+            "url": "https://nng-phinf.pstatic.net/glive/subscription/emoji/3a5c68e21e1de59efc438313f908dd6f/1/zcDd_1774901900099.gif"
+          },
+          {
+            "type": "emote",
+            "code": "zcPunch",
+            "url": "https://nng-phinf.pstatic.net/glive/subscription/emoji/3a5c68e21e1de59efc438313f908dd6f/1/zcDd_1774901900099.gif"
+          },
+          {
+            "type": "emote",
+            "code": "zcPunch",
+            "url": "https://nng-phinf.pstatic.net/glive/subscription/emoji/3a5c68e21e1de59efc438313f908dd6f/1/zcDd_1774901900099.gif"
+          },
+          {
+            "type": "emote",
+            "code": "zcPunch",
+            "url": "https://nng-phinf.pstatic.net/glive/subscription/emoji/3a5c68e21e1de59efc438313f908dd6f/1/zcDd_1774901900099.gif"
+          }
+        ]
+      },
+      {
+        "segments": [
+          {
+            "type": "emote",
+            "code": "zcOpen",
+            "url": "https://nng-phinf.pstatic.net/glive/subscription/emoji/3a5c68e21e1de59efc438313f908dd6f/1/zcZss_1774901864820.gif"
+          },
+          {
+            "type": "emote",
+            "code": "zcOpen",
+            "url": "https://nng-phinf.pstatic.net/glive/subscription/emoji/3a5c68e21e1de59efc438313f908dd6f/1/zcZss_1774901864820.gif"
+          },
+          {
+            "type": "emote",
+            "code": "zcOpen",
+            "url": "https://nng-phinf.pstatic.net/glive/subscription/emoji/3a5c68e21e1de59efc438313f908dd6f/1/zcZss_1774901864820.gif"
+          },
+          {
+            "type": "emote",
+            "code": "zcOpen",
+            "url": "https://nng-phinf.pstatic.net/glive/subscription/emoji/3a5c68e21e1de59efc438313f908dd6f/1/zcZss_1774901864820.gif"
+          },
+          {
+            "type": "emote",
+            "code": "zcOpen",
+            "url": "https://nng-phinf.pstatic.net/glive/subscription/emoji/3a5c68e21e1de59efc438313f908dd6f/1/zcZss_1774901864820.gif"
+          },
+          {
+            "type": "emote",
+            "code": "zcOpen",
+            "url": "https://nng-phinf.pstatic.net/glive/subscription/emoji/3a5c68e21e1de59efc438313f908dd6f/1/zcZss_1774901864820.gif"
+          }
+        ]
+      },
+      {
+        "segments": [
+          {
+            "type": "text",
+            "text": "왔구나 내 도파민"
+          }
+        ]
+      },
+      {
+        "segments": [
+          {
+            "type": "text",
+            "text": "왔다 내 놀림감"
+          }
+        ]
+      },
+      {
+        "segments": [
+          {
+            "type": "emote",
+            "code": "zcPunch",
+            "url": "https://nng-phinf.pstatic.net/glive/subscription/emoji/3a5c68e21e1de59efc438313f908dd6f/1/zcDd_1774901900099.gif"
+          },
+          {
+            "type": "emote",
+            "code": "zcPunch",
+            "url": "https://nng-phinf.pstatic.net/glive/subscription/emoji/3a5c68e21e1de59efc438313f908dd6f/1/zcDd_1774901900099.gif"
+          },
+          {
+            "type": "emote",
+            "code": "zcOpen",
+            "url": "https://nng-phinf.pstatic.net/glive/subscription/emoji/3a5c68e21e1de59efc438313f908dd6f/1/zcZss_1774901864820.gif"
+          },
+          {
+            "type": "emote",
+            "code": "zcPunch",
+            "url": "https://nng-phinf.pstatic.net/glive/subscription/emoji/3a5c68e21e1de59efc438313f908dd6f/1/zcDd_1774901900099.gif"
+          },
+          {
+            "type": "emote",
+            "code": "zcOpen",
+            "url": "https://nng-phinf.pstatic.net/glive/subscription/emoji/3a5c68e21e1de59efc438313f908dd6f/1/zcZss_1774901864820.gif"
+          },
+          {
+            "type": "emote",
+            "code": "zcPunch",
+            "url": "https://nng-phinf.pstatic.net/glive/subscription/emoji/3a5c68e21e1de59efc438313f908dd6f/1/zcDd_1774901900099.gif"
+          }
+        ]
+      },
+      {
+        "segments": [
+          {
+            "type": "emote",
+            "code": "zcPunch",
+            "url": "https://nng-phinf.pstatic.net/glive/subscription/emoji/3a5c68e21e1de59efc438313f908dd6f/1/zcDd_1774901900099.gif"
+          },
+          {
+            "type": "emote",
+            "code": "zcPunch",
+            "url": "https://nng-phinf.pstatic.net/glive/subscription/emoji/3a5c68e21e1de59efc438313f908dd6f/1/zcDd_1774901900099.gif"
+          },
+          {
+            "type": "emote",
+            "code": "zcPunch",
+            "url": "https://nng-phinf.pstatic.net/glive/subscription/emoji/3a5c68e21e1de59efc438313f908dd6f/1/zcDd_1774901900099.gif"
+          },
+          {
+            "type": "emote",
+            "code": "zcPunch",
+            "url": "https://nng-phinf.pstatic.net/glive/subscription/emoji/3a5c68e21e1de59efc438313f908dd6f/1/zcDd_1774901900099.gif"
+          },
+          {
+            "type": "emote",
+            "code": "zcPunch",
+            "url": "https://nng-phinf.pstatic.net/glive/subscription/emoji/3a5c68e21e1de59efc438313f908dd6f/1/zcDd_1774901900099.gif"
+          },
+          {
+            "type": "emote",
+            "code": "zcPunch",
+            "url": "https://nng-phinf.pstatic.net/glive/subscription/emoji/3a5c68e21e1de59efc438313f908dd6f/1/zcDd_1774901900099.gif"
+          }
+        ]
+      },
+      {
+        "segments": [
+          {
+            "type": "text",
+            "text": "방제로 잘써먹네 ㅋㅋㅋ"
+          }
+        ]
+      },
+      {
+        "segments": [
+          {
+            "type": "text",
+            "text": "난토!"
+          }
+        ]
+      },
+      {
+        "segments": [
+          {
+            "type": "emote",
+            "code": "zcPunch",
+            "url": "https://nng-phinf.pstatic.net/glive/subscription/emoji/3a5c68e21e1de59efc438313f908dd6f/1/zcDd_1774901900099.gif"
+          },
+          {
+            "type": "emote",
+            "code": "zcPunch",
+            "url": "https://nng-phinf.pstatic.net/glive/subscription/emoji/3a5c68e21e1de59efc438313f908dd6f/1/zcDd_1774901900099.gif"
+          },
+          {
+            "type": "emote",
+            "code": "zcPunch",
+            "url": "https://nng-phinf.pstatic.net/glive/subscription/emoji/3a5c68e21e1de59efc438313f908dd6f/1/zcDd_1774901900099.gif"
+          },
+          {
+            "type": "emote",
+            "code": "zcPunch",
+            "url": "https://nng-phinf.pstatic.net/glive/subscription/emoji/3a5c68e21e1de59efc438313f908dd6f/1/zcDd_1774901900099.gif"
+          },
+          {
+            "type": "emote",
+            "code": "zcPunch",
+            "url": "https://nng-phinf.pstatic.net/glive/subscription/emoji/3a5c68e21e1de59efc438313f908dd6f/1/zcDd_1774901900099.gif"
+          }
+        ]
+      },
+      {
+        "segments": [
+          {
+            "type": "emote",
+            "code": "zcHi",
+            "url": "https://nng-phinf.pstatic.net/glive/subscription/emoji/3a5c68e21e1de59efc438313f908dd6f/1/zcHi_1774901709581.png"
+          },
+          {
+            "type": "emote",
+            "code": "zcHi",
+            "url": "https://nng-phinf.pstatic.net/glive/subscription/emoji/3a5c68e21e1de59efc438313f908dd6f/1/zcHi_1774901709581.png"
+          },
+          {
+            "type": "emote",
+            "code": "zcHi",
+            "url": "https://nng-phinf.pstatic.net/glive/subscription/emoji/3a5c68e21e1de59efc438313f908dd6f/1/zcHi_1774901709581.png"
+          }
+        ]
+      },
+      {
+        "segments": [
+          {
+            "type": "text",
+            "text": "재천아 지금은 5시야.."
+          }
+        ]
+      },
+      {
+        "segments": [
+          {
+            "type": "text",
+            "text": "아직 퇴근도 못했는데 6시라니 야다;;"
+          }
+        ]
+      },
+      {
+        "segments": [
+          {
+            "type": "text",
+            "text": "재천아 정신차려 5시야"
+          }
+        ]
+      },
+      {
+        "segments": [
+          {
+            "type": "text",
+            "text": "거꾸로서있네"
+          }
+        ]
+      },
+      {
+        "segments": [
+          {
+            "type": "text",
+            "text": "지금 오후 6시임"
+          }
+        ]
+      },
+      {
+        "segments": [
+          {
+            "type": "text",
+            "text": "??"
+          }
+        ]
+      },
+      {
+        "segments": [
+          {
+            "type": "emote",
+            "code": "d_120",
+            "url": "https://ssl.pstatic.net/static/nng/glive/icon/c_48.png"
+          },
+          {
+            "type": "emote",
+            "code": "d_120",
+            "url": "https://ssl.pstatic.net/static/nng/glive/icon/c_48.png"
+          },
+          {
+            "type": "emote",
+            "code": "d_120",
+            "url": "https://ssl.pstatic.net/static/nng/glive/icon/c_48.png"
+          },
+          {
+            "type": "emote",
+            "code": "d_120",
+            "url": "https://ssl.pstatic.net/static/nng/glive/icon/c_48.png"
+          },
+          {
+            "type": "emote",
+            "code": "d_120",
+            "url": "https://ssl.pstatic.net/static/nng/glive/icon/c_48.png"
+          }
+        ]
+      },
+      {
+        "segments": [
+          {
+            "type": "text",
+            "text": "그럼 지각한거네?? 보상내놔"
+          }
+        ]
+      },
+      {
+        "segments": [
+          {
+            "type": "text",
+            "text": "혹시 지금 중국에 계신가요"
+          }
+        ]
+      },
+      {
+        "segments": [
+          {
+            "type": "text",
+            "text": "애가 자고일어난지 얼마 안됐나 정신을못차리네"
+          }
+        ]
+      },
+      {
+        "segments": [
+          {
+            "type": "text",
+            "text": "이분 시계 볼줄 모르나요"
+          }
+        ]
+      },
+      {
+        "segments": [
+          {
+            "type": "text",
+            "text": "쟈쟈쟈쟈"
+          }
+        ]
+      },
+      {
+        "segments": [
+          {
+            "type": "text",
+            "text": "아니야 곤듀 우리도 5시야.. ㅠ.ㅠ"
+          }
+        ]
+      },
+      {
+        "segments": [
+          {
+            "type": "text",
+            "text": "ㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋ"
+          }
+        ]
+      },
+      {
+        "segments": [
+          {
+            "type": "text",
+            "text": "5랑 6을 구분하지 못하는거시냐!!!"
+          }
+        ]
+      },
+      {
+        "segments": [
+          {
+            "type": "text",
+            "text": "뭐야 내 한시간 돌려줘요"
+          }
+        ]
+      },
+      {
+        "segments": [
+          {
+            "type": "text",
+            "text": "아쟈쟈쟛"
+          }
+        ]
+      },
+      {
+        "segments": [
+          {
+            "type": "text",
+            "text": "아아... 지금은 [5시]이다"
+          }
+        ]
+      },
+      {
+        "segments": [
+          {
+            "type": "text",
+            "text": "지금 5신데??"
+          }
+        ]
+      },
+      {
+        "segments": [
+          {
+            "type": "text",
+            "text": "아직 퇴근 전이야..."
+          }
+        ]
+      },
+      {
+        "segments": [
+          {
+            "type": "text",
+            "text": "ㅋㅋㅋㅋㅋㅋㅋㅋ"
+          }
+        ]
+      },
+      {
+        "segments": [
+          {
+            "type": "text",
+            "text": "오 구독 연동됐네"
+          }
+        ]
+      },
+      {
+        "segments": [
+          {
+            "type": "text",
+            "text": "어제 애교너무해서 뇌녹았다 비상"
+          }
+        ]
+      }
     ],
     "callVariants": [
       "곤듀",

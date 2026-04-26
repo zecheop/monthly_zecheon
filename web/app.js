@@ -357,7 +357,7 @@ function setCurrentView(view, options = {}) {
 
 function openReportPicker() {
   state.reportPickerOpen = true;
-  setCurrentView('summary', { syncHash: true });
+  setCurrentView('stats', { syncHash: true });
   renderReportPickerVisibility();
   requestAnimationFrame(() => {
     reportPickerEl.scrollIntoView({ behavior: 'smooth', block: 'start' });
@@ -633,6 +633,19 @@ function buildSummaryChatColumns(messages, columnCount = 3) {
   return columns.map((column) => column.concat(column));
 }
 
+function renderSummaryChatBubbleContent(sample) {
+  const segments = Array.isArray(sample?.segments) ? sample.segments : [];
+  if (!segments.length) {
+    return '';
+  }
+  return segments.map((segment) => {
+    if (segment?.type === 'emote' && segment.url) {
+      return `<img class="summary-chat-emote" src="${escapeHtml(segment.url)}" alt="${escapeHtml(segment.code || '이모티콘')}" loading="lazy">`;
+    }
+    return `<span>${escapeHtml(segment?.text || '')}</span>`;
+  }).join('');
+}
+
 function renderSummary() {
   const story = state.summaryOverview || {};
   const logoUrl = getBrandAssetUrl('chzzkLogo');
@@ -644,12 +657,16 @@ function renderSummary() {
   const messageCount = Number(story.messageCount || 0);
   const chatSamples = Array.isArray(story.chatSamples) && story.chatSamples.length
     ? story.chatSamples
-    : ['곤듀', '재하', '비난양파', '치즈', '와', 'ㅋㅋㅋㅋㅋㅋ'];
+    : [
+        { segments: [{ type: 'text', text: '곤듀' }] },
+        { segments: [{ type: 'text', text: '재하재하' }] },
+        { segments: [{ type: 'text', text: 'ㅋㅋㅋㅋㅋㅋ' }] },
+      ];
   const chatColumns = buildSummaryChatColumns(chatSamples, 3);
   const callVariants = Array.isArray(story.callVariants) && story.callVariants.length
     ? story.callVariants
     : ['곤듀', '곤듀님', '곤듀는', '재천', '임재천', '재천님', '재천아', '재천이'];
-  const repeatedCallVariants = Array.from({ length: 4 }, () => callVariants).flat();
+  const repeatedCallVariants = Array.from({ length: 7 }, () => callVariants).flat();
 
   summaryRootEl.innerHTML = `
     <div class="summary-wrap">
@@ -658,9 +675,7 @@ function renderSummary() {
           <div class="summary-scene-inner">
             <div class="summary-logo-story">
               <span class="summary-leading-text">지금까지</span>
-              <span class="summary-logo-pill">
-                ${logoUrl ? `<img src="${escapeHtml(logoUrl)}" alt="치지직 로고">` : ''}
-              </span>
+              ${logoUrl ? `<span class="summary-logo-pill"><img src="${escapeHtml(logoUrl)}" alt="치지직 로고"></span>` : ''}
               <span class="summary-trailing-text">에서...</span>
             </div>
           </div>
@@ -676,7 +691,7 @@ function renderSummary() {
             <p class="summary-line">곤듀는</p>
             <p class="summary-quoted-line">
               <strong>${escapeHtml(formatNumber(totalJourneyDays))}</strong>
-              <span>일동안</span>
+              <span>일 동안</span>
             </p>
             <p class="summary-line summary-line-tail">
               <span class="summary-inline-number summary-inline-number-large">${escapeHtml(formatNumber(videoCount))}</span>번의 방송을 진행했습니다
@@ -688,8 +703,8 @@ function renderSummary() {
           <div class="summary-chat-backdrop" aria-hidden="true">
             ${chatColumns.map((column, columnIndex) => `
               <div class="summary-chat-column is-column-${columnIndex + 1}">
-                ${column.map((message) => `
-                  <p class="summary-chat-bubble">${escapeHtml(message)}</p>
+                ${column.map((sample) => `
+                  <p class="summary-chat-bubble">${renderSummaryChatBubbleContent(sample)}</p>
                 `).join('')}
               </div>
             `).join('')}
@@ -745,6 +760,13 @@ function renderSummary() {
   let wheelLocked = false;
   let wheelLockTimer = 0;
   let currentSummarySceneIndex = -1;
+  let callRevealTimer = 0;
+
+  const clearCallReveal = () => {
+    window.clearTimeout(callRevealTimer);
+    callRevealTimer = 0;
+    sceneEls[3]?.classList.remove('is-revealed');
+  };
 
   const syncSummarySceneState = () => {
     const viewportHeight = scrollerEl.clientHeight || 1;
@@ -766,6 +788,14 @@ function renderSummary() {
           sceneEls[activeIndex].querySelector('[data-summary-counter-caption]'),
           messageCount,
         );
+      }
+      if (activeIndex === 3) {
+        clearCallReveal();
+        callRevealTimer = window.setTimeout(() => {
+          sceneEls[3]?.classList.add('is-revealed');
+        }, 2400);
+      } else {
+        clearCallReveal();
       }
     }
   };

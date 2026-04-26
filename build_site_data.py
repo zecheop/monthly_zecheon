@@ -48,6 +48,7 @@ PUBLIC_GAME_MIN_COUNT = 120
 CHZZK_LOGO_PATH = IMG_DIR / "chzzk-logo.svg"
 SUMMARY_REFERENCE_START_DATE = "2026-03-27"
 SUMMARY_CALL_TERMS = ("곤듀", "재천")
+SUMMARY_EMOTE_RE = re.compile(r"\{:(.+?):\}")
 SUMMARY_CALL_VARIANTS = (
     "곤듀",
     "곤듀님",
@@ -377,8 +378,35 @@ def clean_summary_chat_text(value: Any) -> str:
     return text
 
 
-def build_summary_chat_samples(report_paths: list[Path], limit: int = 42) -> list[str]:
-    samples: list[str] = []
+def build_summary_chat_segments(text: Any, emote_urls: Any) -> list[dict[str, str]]:
+    source = normalize_text(text)
+    if not source:
+        return []
+    emote_map = emote_urls if isinstance(emote_urls, dict) else {}
+    segments: list[dict[str, str]] = []
+    cursor = 0
+    for match in SUMMARY_EMOTE_RE.finditer(source):
+        start, end = match.span()
+        if start > cursor:
+            text_segment = clean_summary_chat_text(source[cursor:start])
+            if text_segment:
+                segments.append({"type": "text", "text": text_segment})
+        code = normalize_text(match.group(1))
+        emote_url = normalize_text(emote_map.get(code))
+        if code and emote_url:
+            segments.append({"type": "emote", "code": code, "url": emote_url})
+        elif code:
+            segments.append({"type": "text", "text": code})
+        cursor = end
+    if cursor < len(source):
+        tail_segment = clean_summary_chat_text(source[cursor:])
+        if tail_segment:
+            segments.append({"type": "text", "text": tail_segment})
+    return segments
+
+
+def build_summary_chat_samples(report_paths: list[Path], limit: int = 42) -> list[dict]:
+    samples: list[dict] = []
     seen: set[str] = set()
     for path in sorted(report_paths, key=lambda item: item.name):
         payload = load_payload(path)
@@ -394,14 +422,14 @@ def build_summary_chat_samples(report_paths: list[Path], limit: int = 42) -> lis
                     continue
                 if normalize_text(message.get("category")).lower() == "system":
                     continue
-                text = clean_summary_chat_text(message.get("text"))
-                if not text:
+                segments = build_summary_chat_segments(message.get("text"), message.get("emoteUrls"))
+                if not segments:
                     continue
-                lookup = normalize_lookup_token(text)
+                lookup = normalize_lookup_token(message.get("text"))
                 if not lookup or lookup in seen:
                     continue
                 seen.add(lookup)
-                samples.append(text)
+                samples.append({"segments": segments})
                 if len(samples) >= limit:
                     return samples
     return samples
