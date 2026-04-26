@@ -763,10 +763,47 @@ function renderSummary() {
   let wheelLockTimer = 0;
   let currentSummarySceneIndex = -1;
   let callSceneRevealed = false;
-  let callSceneGuardUntil = 0;
 
   const syncCallRevealState = () => {
     sceneEls[3]?.classList.toggle('is-revealed', callSceneRevealed);
+  };
+
+  const getCurrentSummaryStepIndex = () => {
+    if (currentSummarySceneIndex <= 2) {
+      return Math.max(0, currentSummarySceneIndex);
+    }
+    if (currentSummarySceneIndex === 3) {
+      return callSceneRevealed ? 4 : 3;
+    }
+    if (currentSummarySceneIndex === 4) {
+      return 5;
+    }
+    return 0;
+  };
+
+  const applySummaryStep = (stepIndex) => {
+    const nextStep = Math.max(0, Math.min(5, stepIndex));
+    if (nextStep <= 2) {
+      callSceneRevealed = false;
+      syncCallRevealState();
+      scrollToSummaryScene(nextStep);
+      return;
+    }
+    if (nextStep === 3) {
+      callSceneRevealed = false;
+      syncCallRevealState();
+      scrollToSummaryScene(3);
+      return;
+    }
+    if (nextStep === 4) {
+      callSceneRevealed = true;
+      syncCallRevealState();
+      scrollToSummaryScene(3);
+      return;
+    }
+    callSceneRevealed = false;
+    syncCallRevealState();
+    scrollToSummaryScene(4);
   };
 
   const syncSummarySceneState = () => {
@@ -791,13 +828,11 @@ function renderSummary() {
           messageCount,
         );
       }
-      if (activeIndex === 3 && previousIndex !== 3) {
+      if (activeIndex === 3 && previousIndex !== 3 && previousIndex !== 4) {
         callSceneRevealed = false;
-        callSceneGuardUntil = 0;
       }
       if (activeIndex !== 3) {
         callSceneRevealed = false;
-        callSceneGuardUntil = 0;
       }
       syncCallRevealState();
     }
@@ -850,36 +885,13 @@ function renderSummary() {
       document.getElementById('top')?.scrollIntoView({ behavior: 'smooth', block: 'start' });
       return;
     }
-    if (currentIndex === 3) {
-      if (direction > 0 && !callSceneRevealed) {
-        lockSummaryWheel();
-        callSceneRevealed = true;
-        callSceneGuardUntil = performance.now() + 900;
-        syncCallRevealState();
-        return;
-      }
-      if (direction > 0 && callSceneRevealed && performance.now() < callSceneGuardUntil) {
-        lockSummaryWheel();
-        return;
-      }
-      if (direction < 0 && callSceneRevealed) {
-        lockSummaryWheel();
-        callSceneRevealed = false;
-        callSceneGuardUntil = performance.now() + 900;
-        syncCallRevealState();
-        return;
-      }
-      if (direction < 0 && !callSceneRevealed && performance.now() < callSceneGuardUntil) {
-        lockSummaryWheel();
-        return;
-      }
-    }
-    const nextIndex = Math.max(0, Math.min(sceneEls.length - 1, currentIndex + direction));
-    if (nextIndex === currentIndex) {
+    const currentStep = getCurrentSummaryStepIndex();
+    const nextStep = Math.max(0, Math.min(5, currentStep + direction));
+    if (nextStep === currentStep) {
       return;
     }
     lockSummaryWheel();
-    scrollToSummaryScene(nextIndex);
+    applySummaryStep(nextStep);
   }, { passive: false });
 
   scrollerEl.scrollTo({ top: 0, behavior: 'auto' });
