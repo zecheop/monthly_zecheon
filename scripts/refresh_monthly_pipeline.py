@@ -88,6 +88,10 @@ def find_latest_month_log(month_label: str) -> Optional[Path]:
     return candidates[-1] if candidates else None
 
 
+def find_month_logs(month_label: str) -> list[Path]:
+    return sorted(ANALYSIS_LOG_DIR.glob(f"chzzk-merge-log-*-{month_label}-*.json"))
+
+
 def load_logged_video_numbers(log_path: Optional[Path]) -> set[int]:
     if not log_path or not log_path.exists():
         return set()
@@ -193,6 +197,17 @@ def build_current_month_log(metadata: dict, videos: list[dict]) -> Path:
     )
 
 
+def cleanup_superseded_month_logs(month_label: str, keep_path: Path, *, dry_run: bool = False) -> list[Path]:
+    removed: list[Path] = []
+    for path in find_month_logs(month_label):
+        if path == keep_path:
+            continue
+        removed.append(path)
+        if not dry_run:
+            path.unlink(missing_ok=True)
+    return removed
+
+
 def build_pages_site() -> None:
     run_command([sys.executable, "build_site_data.py"], cwd=BASE_DIR, capture_output=True)
 
@@ -233,6 +248,7 @@ def refresh_monthly_pipeline(*, force: bool = False, dry_run: bool = False, allo
         return RefreshResult(False, False, False, f"{month_label} 로그에 새 다시보기가 없어 건너뜁니다.")
 
     log_path = build_current_month_log(metadata, videos)
+    removed_logs = cleanup_superseded_month_logs(month_label, log_path, dry_run=dry_run)
     build_pages_site()
     live_changed = stage_commit_push_docs(month_label, dry_run=dry_run)
     if dry_run and live_changed:
@@ -240,7 +256,8 @@ def refresh_monthly_pipeline(*, force: bool = False, dry_run: bool = False, allo
             True,
             True,
             False,
-            f"{month_label} 로그를 갱신했고, 라이브 페이지에도 반영될 변경이 있습니다. (--dry-run)",
+            f"{month_label} 로그를 갱신했고, 라이브 페이지에도 반영될 변경이 있습니다. (--dry-run)"
+            + (f" 이전 로그 {len(removed_logs)}개 정리 예정." if removed_logs else ""),
             log_path=log_path,
         )
     if live_changed:
@@ -248,14 +265,16 @@ def refresh_monthly_pipeline(*, force: bool = False, dry_run: bool = False, allo
             True,
             True,
             True,
-            f"{month_label} 로그와 라이브 페이지를 새 다시보기 기준으로 갱신했습니다.",
+            f"{month_label} 로그와 라이브 페이지를 새 다시보기 기준으로 갱신했습니다."
+            + (f" 이전 로그 {len(removed_logs)}개를 정리했습니다." if removed_logs else ""),
             log_path=log_path,
         )
     return RefreshResult(
         True,
         True,
         False,
-        f"{month_label} 로그는 갱신했지만, 라이브 페이지에는 변경이 없어 푸시는 생략했습니다.",
+        f"{month_label} 로그는 갱신했지만, 라이브 페이지에는 변경이 없어 푸시는 생략했습니다."
+        + (f" 이전 로그 {len(removed_logs)}개를 정리했습니다." if removed_logs else ""),
         log_path=log_path,
     )
 
