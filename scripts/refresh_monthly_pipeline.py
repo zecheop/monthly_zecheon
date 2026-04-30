@@ -246,20 +246,19 @@ def refresh_monthly_pipeline(*, force: bool = False, dry_run: bool = False, allo
         return RefreshResult(False, False, False, f"{month_label}에는 아직 분석 가능한 다시보기가 없습니다.")
     if existing_video_numbers and not unseen_video_numbers and not force:
         return RefreshResult(False, False, False, f"{month_label} 로그에 새 다시보기가 없어 건너뜁니다.")
+    if dry_run:
+        preview_message = (
+            f"{month_label} 로그를 갱신해야 합니다. "
+            f"새 다시보기 {len(unseen_video_numbers)}개 감지"
+            if unseen_video_numbers
+            else f"{month_label} 로그 강제 재생성이 필요합니다."
+        )
+        return RefreshResult(True, False, False, preview_message + " (--dry-run)")
 
     log_path = build_current_month_log(metadata, videos)
-    removed_logs = cleanup_superseded_month_logs(month_label, log_path, dry_run=dry_run)
+    removed_logs = cleanup_superseded_month_logs(month_label, log_path, dry_run=False)
     build_pages_site()
-    live_changed = stage_commit_push_docs(month_label, dry_run=dry_run)
-    if dry_run and live_changed:
-        return RefreshResult(
-            True,
-            True,
-            False,
-            f"{month_label} 로그를 갱신했고, 라이브 페이지에도 반영될 변경이 있습니다. (--dry-run)"
-            + (f" 이전 로그 {len(removed_logs)}개 정리 예정." if removed_logs else ""),
-            log_path=log_path,
-        )
+    live_changed = stage_commit_push_docs(month_label, dry_run=False)
     if live_changed:
         return RefreshResult(
             True,
