@@ -1,6 +1,18 @@
 {
   "reports": [
     {
+      "id": "chzzk-merge-log-임재천-2026-06-20260604-091152.json",
+      "channelName": "임재천",
+      "label": "2026-06",
+      "title": "임재천 2026-06",
+      "subtitle": "2026-06-01 ~ 2026-06-04",
+      "generatedAt": "2026-06-04T09:11:52",
+      "videoCount": 2,
+      "messageCount": 7979,
+      "reportFile": "./data/reports/report-2026-06-20260604091152-6e8c79a3.json",
+      "wordSearchFile": "./data/word-search/search-2026-06-20260604091152-6e8c79a3.json"
+    },
+    {
       "id": "chzzk-merge-log-임재천-2026-05-20260521-013127.json",
       "channelName": "임재천",
       "label": "2026-05",
@@ -45,8 +57,8 @@
   ],
   "summaryOverview": {
     "referenceStartDate": "2026-03-27",
-    "videoCount": 43,
-    "messageCount": 272150,
+    "videoCount": 45,
+    "messageCount": 280129,
     "chatSamples": [
       {
         "segments": [
@@ -606,17 +618,17 @@
     "callTerms": [
       {
         "label": "곤듀",
-        "count": 5852
+        "count": 6071
       },
       {
         "label": "재천",
-        "count": 1743
+        "count": 1785
       }
     ],
     "topChatter": {
       "nickname": "왕뚤기",
-      "count": 10894,
-      "ratio": 4.002939555392246
+      "count": 11198,
+      "ratio": 3.997444034712579
     }
   },
   "brandAssets": {

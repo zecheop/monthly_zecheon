@@ -1,0 +1,422 @@
+{
+  "id": "chzzk-merge-log-임재천-2026-06-20260604-091152.json",
+  "label": "2026-06",
+  "title": "임재천 2026-06 채팅 리포트",
+  "subtitle": "2026-06-01 ~ 2026-06-04",
+  "bucketMinutes": 2,
+  "overview": {
+    "videoCount": 2,
+    "messageCount": 7979
+  },
+  "summaryStory": {
+    "issueLabel": "2026.06",
+    "referenceStartDate": "2026-03-27",
+    "broadcastDayCount": 2,
+    "broadcastDays": [
+      "2026-06-01",
+      "2026-06-04"
+    ],
+    "videoCount": 2,
+    "messageCount": 7979,
+    "callTerms": [
+      {
+        "label": "곤듀",
+        "count": 219
+      },
+      {
+        "label": "재천",
+        "count": 42
+      }
+    ],
+    "topChatter": {
+      "nickname": "만두덩이",
+      "anonymousAlias": "말랑한산책재첩",
+      "count": 691,
+      "ratio": 8.660233111918787
+    }
+  },
+  "topWords": [
+    {
+      "token": "곤듀+곤듀가 외 2개",
+      "displayToken": "곤듀",
+      "tokenTitle": "곤듀+곤듀가+곤듀를+곤듀님",
+      "count": 219,
+      "ratio": 1.8160709843270586,
+      "imageUrl": ""
+    },
+    {
+      "token": "재하+재하재하 외 3개",
+      "displayToken": "재하",
+      "tokenTitle": "재하+재하재하+쟈쟈+쟈쟈쟈+쟈쟈쟈쟈",
+      "count": 82,
+      "ratio": 0.6799900489261133,
+      "imageUrl": ""
+    },
+    {
+      "token": "피나",
+      "displayToken": "피나",
+      "tokenTitle": "피나",
+      "count": 43,
+      "ratio": 0.356580147607596,
+      "imageUrl": ""
+    },
+    {
+      "token": "임재천",
+      "displayToken": "임재천",
+      "tokenTitle": "임재천+임재천님+재천+재천님+재천이",
+      "count": 42,
+      "ratio": 0.34828758603532634,
+      "imageUrl": ""
+    },
+    {
+      "token": "도로시",
+      "displayToken": "도로시",
+      "tokenTitle": "도로시",
+      "count": 41,
+      "ratio": 0.3399950244630566,
+      "imageUrl": ""
+    },
+    {
+      "token": "ㅔㅔ",
+      "displayToken": "ㅔㅔ",
+      "tokenTitle": "ㅔㅔ",
+      "count": 34,
+      "ratio": 0.28194709345716895,
+      "imageUrl": ""
+    },
+    {
+      "token": "재첩",
+      "displayToken": "재첩",
+      "tokenTitle": "재첩+재첩이+재첩이들+재첩단+재첩국",
+      "count": 32,
+      "ratio": 0.26536197031262954,
+      "imageUrl": ""
+    },
+    {
+      "token": "단도",
+      "displayToken": "단도",
+      "tokenTitle": "단도",
+      "count": 29,
+      "ratio": 0.24048428559582052,
+      "imageUrl": ""
+    },
+    {
+      "token": "카드",
+      "displayToken": "카드",
+      "tokenTitle": "카드",
+      "count": 26,
+      "ratio": 0.2156066008790115,
+      "imageUrl": ""
+    },
+    {
+      "token": "디아",
+      "displayToken": "디아",
+      "tokenTitle": "디아",
+      "count": 24,
+      "ratio": 0.19902147773447218,
+      "imageUrl": ""
+    },
+    {
+      "token": "오버존",
+      "displayToken": "오버존",
+      "tokenTitle": "오버존",
+      "count": 24,
+      "ratio": 0.19902147773447218,
+      "imageUrl": ""
+    },
+    {
+      "token": "방주",
+      "displayToken": "방주",
+      "tokenTitle": "방주",
+      "count": 23,
+      "ratio": 0.1907289161622025,
+      "imageUrl": ""
+    },
+    {
+      "token": "니케",
+      "displayToken": "니케",
+      "tokenTitle": "니케",
+      "count": 21,
+      "ratio": 0.17414379301766317,
+      "imageUrl": ""
+    },
+    {
+      "token": "재바+재바재바",
+      "displayToken": "재바",
+      "tokenTitle": "재바+재바재바",
+      "count": 21,
+      "ratio": 0.17414379301766317,
+      "imageUrl": ""
+    },
+    {
+      "token": "민방위",
+      "displayToken": "민방위",
+      "tokenTitle": "민방위",
+      "count": 20,
+      "ratio": 0.1658512314453935,
+      "imageUrl": ""
+    },
+    {
+      "token": "마늘쫑",
+      "displayToken": "마늘쫑",
+      "tokenTitle": "마늘쫑",
+      "count": 19,
+      "ratio": 0.1575586698731238,
+      "imageUrl": ""
+    },
+    {
+      "token": "멤버",
+      "displayToken": "멤버",
+      "tokenTitle": "멤버",
+      "count": 18,
+      "ratio": 0.14926610830085413,
+      "imageUrl": ""
+    },
+    {
+      "token": "스토리",
+      "displayToken": "스토리",
+      "tokenTitle": "스토리",
+      "count": 18,
+      "ratio": 0.14926610830085413,
+      "imageUrl": ""
+    },
+    {
+      "token": "스화",
+      "displayToken": "스화",
+      "tokenTitle": "스화",
+      "count": 18,
+      "ratio": 0.14926610830085413,
+      "imageUrl": ""
+    },
+    {
+      "token": "정밀",
+      "displayToken": "정밀",
+      "tokenTitle": "정밀",
+      "count": 18,
+      "ratio": 0.14926610830085413,
+      "imageUrl": ""
+    }
+  ],
+  "topEmotes": [
+    {
+      "token": "zcClap",
+      "displayToken": "zcClap",
+      "tokenTitle": "zcClap",
+      "count": 1042,
+      "ratio": 24.18,
+      "imageUrl": "https://nng-phinf.pstatic.net/glive/subscription/emoji/3a5c68e21e1de59efc438313f908dd6f/1/zcClap_1775980555773.gif"
+    },
+    {
+      "token": "zcCheer",
+      "displayToken": "zcCheer",
+      "tokenTitle": "zcCheer",
+      "count": 596,
+      "ratio": 13.83,
+      "imageUrl": "https://nng-phinf.pstatic.net/glive/subscription/emoji/3a5c68e21e1de59efc438313f908dd6f/1/zcD_1774901826362.gif"
+    },
+    {
+      "token": "zcLol",
+      "displayToken": "zcLol",
+      "tokenTitle": "zcLol",
+      "count": 593,
+      "ratio": 13.76,
+      "imageUrl": "https://nng-phinf.pstatic.net/glive/subscription/emoji/3a5c68e21e1de59efc438313f908dd6f/1/zcLol_1776577642316.gif"
+    },
+    {
+      "token": "zcDance",
+      "displayToken": "zcDance",
+      "tokenTitle": "zcDance",
+      "count": 270,
+      "ratio": 6.27,
+      "imageUrl": "https://nng-phinf.pstatic.net/glive/subscription/emoji/3a5c68e21e1de59efc438313f908dd6f/1/zcDance_1776577675555.png"
+    },
+    {
+      "token": "zcHi",
+      "displayToken": "zcHi",
+      "tokenTitle": "zcHi",
+      "count": 182,
+      "ratio": 4.22,
+      "imageUrl": "https://nng-phinf.pstatic.net/glive/subscription/emoji/3a5c68e21e1de59efc438313f908dd6f/1/zcHi_1774901709581.png"
+    },
+    {
+      "token": "zcIz",
+      "displayToken": "zcIz",
+      "tokenTitle": "zcIz",
+      "count": 173,
+      "ratio": 4.01,
+      "imageUrl": "https://nng-phinf.pstatic.net/glive/subscription/emoji/3a5c68e21e1de59efc438313f908dd6f/1/zcIz_1776577662396.png"
+    },
+    {
+      "token": "zcBye",
+      "displayToken": "zcBye",
+      "tokenTitle": "zcBye",
+      "count": 151,
+      "ratio": 3.5,
+      "imageUrl": "https://nng-phinf.pstatic.net/glive/subscription/emoji/3a5c68e21e1de59efc438313f908dd6f/1/zcBye_1774901717683.png"
+    },
+    {
+      "token": "zcNa",
+      "displayToken": "zcNa",
+      "tokenTitle": "zcNa",
+      "count": 148,
+      "ratio": 3.43,
+      "imageUrl": "https://nng-phinf.pstatic.net/glive/subscription/emoji/3a5c68e21e1de59efc438313f908dd6f/1/zcNa_1776577669134.png"
+    },
+    {
+      "token": "zcPush",
+      "displayToken": "zcPush",
+      "tokenTitle": "zcPush",
+      "count": 127,
+      "ratio": 2.95,
+      "imageUrl": "https://nng-phinf.pstatic.net/glive/subscription/emoji/3a5c68e21e1de59efc438313f908dd6f/1/zcD_1774901910776.gif"
+    },
+    {
+      "token": "zcRock",
+      "displayToken": "zcRock",
+      "tokenTitle": "zcRock",
+      "count": 121,
+      "ratio": 2.81,
+      "imageUrl": "https://nng-phinf.pstatic.net/glive/subscription/emoji/3a5c68e21e1de59efc438313f908dd6f/1/zcRock_1775969167302.gif"
+    },
+    {
+      "token": "d_54",
+      "displayToken": "d_54",
+      "tokenTitle": "d_54",
+      "count": 85,
+      "ratio": 1.97,
+      "imageUrl": "https://ssl.pstatic.net/static/nng/glive/icon/b_14.gif"
+    },
+    {
+      "token": "zcHhh",
+      "displayToken": "zcHhh",
+      "tokenTitle": "zcHhh",
+      "count": 68,
+      "ratio": 1.58,
+      "imageUrl": "https://nng-phinf.pstatic.net/glive/subscription/emoji/3a5c68e21e1de59efc438313f908dd6f/1/zcHhh_1776577685697.png"
+    },
+    {
+      "token": "zcCry",
+      "displayToken": "zcCry",
+      "tokenTitle": "zcCry",
+      "count": 66,
+      "ratio": 1.53,
+      "imageUrl": "https://nng-phinf.pstatic.net/glive/subscription/emoji/3a5c68e21e1de59efc438313f908dd6f/1/zcCry_1774945922974.png"
+    },
+    {
+      "token": "d_45",
+      "displayToken": "d_45",
+      "tokenTitle": "d_45",
+      "count": 55,
+      "ratio": 1.28,
+      "imageUrl": "https://ssl.pstatic.net/static/nng/glive/icon/b_05.gif"
+    },
+    {
+      "token": "zcOpen",
+      "displayToken": "zcOpen",
+      "tokenTitle": "zcOpen",
+      "count": 53,
+      "ratio": 1.23,
+      "imageUrl": "https://nng-phinf.pstatic.net/glive/subscription/emoji/3a5c68e21e1de59efc438313f908dd6f/1/zcZss_1774901864820.gif"
+    },
+    {
+      "token": "zcIz2",
+      "displayToken": "zcIz2",
+      "tokenTitle": "zcIz2",
+      "count": 46,
+      "ratio": 1.07,
+      "imageUrl": "https://nng-phinf.pstatic.net/glive/subscription/emoji/3a5c68e21e1de59efc438313f908dd6f/2/zcIz2_1776577696384.png"
+    },
+    {
+      "token": "zcLoding",
+      "displayToken": "zcLoding",
+      "tokenTitle": "zcLoding",
+      "count": 44,
+      "ratio": 1.02,
+      "imageUrl": "https://nng-phinf.pstatic.net/glive/subscription/emoji/3a5c68e21e1de59efc438313f908dd6f/1/zcDd_1774901884591.gif"
+    },
+    {
+      "token": "zcNa2",
+      "displayToken": "zcNa2",
+      "tokenTitle": "zcNa2",
+      "count": 42,
+      "ratio": 0.97,
+      "imageUrl": "https://nng-phinf.pstatic.net/glive/subscription/emoji/3a5c68e21e1de59efc438313f908dd6f/2/zcNa2_1776577702237.png"
+    },
+    {
+      "token": "d_41",
+      "displayToken": "d_41",
+      "tokenTitle": "d_41",
+      "count": 35,
+      "ratio": 0.81,
+      "imageUrl": "https://ssl.pstatic.net/static/nng/glive/icon/b_01.gif"
+    },
+    {
+      "token": "zcPunch",
+      "displayToken": "zcPunch",
+      "tokenTitle": "zcPunch",
+      "count": 32,
+      "ratio": 0.74,
+      "imageUrl": "https://nng-phinf.pstatic.net/glive/subscription/emoji/3a5c68e21e1de59efc438313f908dd6f/1/zcDd_1774901900099.gif"
+    }
+  ],
+  "topMomentClips": [
+    {
+      "rank": 1,
+      "label": "1",
+      "title": "반?캠합니다",
+      "videoUrl": "./assets/video/top1.mp4",
+      "date": "2026-06-01",
+      "timeLabel": "22:34 - 22:36",
+      "liftVsAverage": 3.16,
+      "topWords": [
+        {
+          "token": "솔레",
+          "displayToken": "솔레",
+          "tokenTitle": "솔레",
+          "count": 4,
+          "ratio": 20.0,
+          "imageUrl": ""
+        },
+        {
+          "token": "상점",
+          "displayToken": "상점",
+          "tokenTitle": "상점",
+          "count": 3,
+          "ratio": 15.0,
+          "imageUrl": ""
+        },
+        {
+          "token": "아직",
+          "displayToken": "아직",
+          "tokenTitle": "아직",
+          "count": 3,
+          "ratio": 15.0,
+          "imageUrl": ""
+        }
+      ],
+      "topEmotes": [
+        {
+          "token": "d_68",
+          "displayToken": "d_68",
+          "tokenTitle": "d_68",
+          "count": 1,
+          "ratio": 100.0,
+          "imageUrl": "https://ssl.pstatic.net/static/nng/glive/icon/b_28.gif"
+        }
+      ]
+    }
+  ],
+  "wordSearchExamples": [
+    {
+      "label": "곤듀",
+      "query": "곤듀",
+      "audioUrl": ""
+    },
+    {
+      "label": "ㅇㅉㄴㅇ",
+      "query": "ㅇㅉㄴㅇ",
+      "audioUrl": ""
+    }
+  ],
+  "wordSearchFile": "./data/word-search/search-2026-06-20260604091152-6e8c79a3.json"
+}
