@@ -1,28 +1,28 @@
 {
   "reports": [
     {
-      "id": "chzzk-merge-log-임재천-2026-07-20260729-025001.json",
+      "id": "chzzk-merge-log-임재천-2026-07-20260729-030122.json",
       "channelName": "임재천",
       "label": "2026-07",
       "title": "임재천 2026-07",
       "subtitle": "2026-07-01 ~ 2026-07-29",
-      "generatedAt": "2026-07-29T02:50:01",
+      "generatedAt": "2026-07-29T03:01:22",
       "videoCount": 19,
       "messageCount": 85287,
-      "reportFile": "./data/reports/report-2026-07-20260729025001-6e8c79a3.json",
-      "wordSearchFile": "./data/word-search/search-2026-07-20260729025001-6e8c79a3.json"
+      "reportFile": "./data/reports/report-2026-07-20260729030122-6e8c79a3.json",
+      "wordSearchFile": "./data/word-search/search-2026-07-20260729030122-6e8c79a3.json"
     },
     {
-      "id": "chzzk-merge-log-임재천-2026-06-20260629-120407.json",
+      "id": "chzzk-merge-log-임재천-2026-06-20260729-030025.json",
       "channelName": "임재천",
       "label": "2026-06",
       "title": "임재천 2026-06",
-      "subtitle": "2026-06-01 ~ 2026-06-29",
-      "generatedAt": "2026-06-29T12:04:07",
-      "videoCount": 17,
-      "messageCount": 59472,
-      "reportFile": "./data/reports/report-2026-06-20260629120407-6e8c79a3.json",
-      "wordSearchFile": "./data/word-search/search-2026-06-20260629120407-6e8c79a3.json"
+      "subtitle": "2026-06-01 ~ 2026-06-30",
+      "generatedAt": "2026-07-29T03:00:25",
+      "videoCount": 18,
+      "messageCount": 65503,
+      "reportFile": "./data/reports/report-2026-06-20260729030025-6e8c79a3.json",
+      "wordSearchFile": "./data/word-search/search-2026-06-20260729030025-6e8c79a3.json"
     },
     {
       "id": "chzzk-merge-log-임재천-2026-05-20260521-013127.json",
@@ -69,8 +69,8 @@
   ],
   "summaryOverview": {
     "referenceStartDate": "2026-03-27",
-    "videoCount": 79,
-    "messageCount": 416909,
+    "videoCount": 80,
+    "messageCount": 422940,
     "chatSamples": [
       {
         "segments": [
@@ -630,17 +630,17 @@
     "callTerms": [
       {
         "label": "곤듀",
-        "count": 11443
+        "count": 11633
       },
       {
         "label": "재천",
-        "count": 2539
+        "count": 2565
       }
     ],
     "topChatter": {
       "nickname": "카노님",
-      "count": 18556,
-      "ratio": 4.45085138483458
+      "count": 18614,
+      "ratio": 4.401097082328462
     }
   },
   "brandAssets": {
