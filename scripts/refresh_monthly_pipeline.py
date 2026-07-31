@@ -110,6 +110,17 @@ def load_logged_video_numbers(log_path: Optional[Path]) -> set[int]:
     return video_numbers
 
 
+def load_logged_video_items(log_path: Optional[Path]) -> list[dict]:
+    if not log_path or not log_path.exists():
+        return []
+    try:
+        payload = json.loads(log_path.read_text(encoding="utf-8"))
+    except (OSError, ValueError, TypeError):
+        return []
+    videos = ((payload.get("summary") or {}).get("videos") or [])
+    return [dict(row) for row in videos if isinstance(row, dict) and row.get("videoNo")]
+
+
 def normalize_video_numbers(videos: Iterable[dict]) -> set[int]:
     numbers: set[int] = set()
     for row in videos:
@@ -119,6 +130,41 @@ def normalize_video_numbers(videos: Iterable[dict]) -> set[int]:
             continue
         numbers.add(value)
     return numbers
+
+
+def parse_video_sort_timestamp(video: dict) -> float:
+    raw_timestamp = video.get("publishDateAt")
+    try:
+        if raw_timestamp:
+            return float(raw_timestamp)
+    except (TypeError, ValueError):
+        pass
+    raw_date = str(video.get("publishDate") or "").strip()
+    if raw_date:
+        for fmt in ("%Y-%m-%d %H:%M:%S", "%Y-%m-%d %H:%M"):
+            try:
+                return datetime.strptime(raw_date, fmt).replace(tzinfo=KST).timestamp() * 1000
+            except ValueError:
+                continue
+    try:
+        return float(video.get("videoNo") or 0)
+    except (TypeError, ValueError):
+        return 0.0
+
+
+def merge_current_and_logged_videos(current_videos: list[dict], logged_videos: list[dict]) -> list[dict]:
+    merged_by_no: dict[int, dict] = {}
+    for source in (logged_videos, current_videos):
+        for video in source:
+            try:
+                video_no = int(video.get("videoNo"))
+            except (TypeError, ValueError, AttributeError):
+                continue
+            merged = dict(merged_by_no.get(video_no) or {})
+            merged.update(video)
+            merged["videoNo"] = video_no
+            merged_by_no[video_no] = merged
+    return sorted(merged_by_no.values(), key=parse_video_sort_timestamp, reverse=True)
 
 
 def detect_new_current_month_videos(*, force: bool = False) -> tuple[dict, list[dict], set[int], set[int]]:
@@ -137,8 +183,11 @@ def detect_new_current_month_videos(*, force: bool = False) -> tuple[dict, list[
     )
     latest_log = find_latest_month_log(month_label)
     existing_video_numbers = load_logged_video_numbers(latest_log)
+    logged_videos = load_logged_video_items(latest_log)
     current_video_numbers = normalize_video_numbers(videos)
     unseen_video_numbers = current_video_numbers - existing_video_numbers
+    retained_video_numbers = normalize_video_numbers(logged_videos) - current_video_numbers
+    merged_videos = merge_current_and_logged_videos(videos, logged_videos)
     metadata = {
         "monthLabel": month_label,
         "dateFrom": date_from,
@@ -147,8 +196,9 @@ def detect_new_current_month_videos(*, force: bool = False) -> tuple[dict, list[
         "timeout": timeout,
         "latestLog": latest_log,
         "force": force,
+        "retainedVideoNumbers": retained_video_numbers,
     }
-    return metadata, videos, existing_video_numbers, unseen_video_numbers
+    return metadata, merged_videos, existing_video_numbers, unseen_video_numbers
 
 
 def build_current_month_log(metadata: dict, videos: list[dict]) -> Path:
