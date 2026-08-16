@@ -1,16 +1,16 @@
 {
   "reports": [
     {
-      "id": "chzzk-merge-log-임재천-2026-08-20260814-032113.json",
+      "id": "chzzk-merge-log-임재천-2026-08-20260816-235239.json",
       "channelName": "임재천",
       "label": "2026-08",
       "title": "임재천 2026-08",
-      "subtitle": "2026-08-01 ~ 2026-08-14",
-      "generatedAt": "2026-08-14T03:21:13",
-      "videoCount": 8,
-      "messageCount": 37663,
-      "reportFile": "./data/reports/report-2026-08-20260814032113-6e8c79a3.json",
-      "wordSearchFile": "./data/word-search/search-2026-08-20260814032113-6e8c79a3.json"
+      "subtitle": "2026-08-01 ~ 2026-08-16",
+      "generatedAt": "2026-08-16T23:52:39",
+      "videoCount": 9,
+      "messageCount": 44952,
+      "reportFile": "./data/reports/report-2026-08-20260816235239-6e8c79a3.json",
+      "wordSearchFile": "./data/word-search/search-2026-08-20260816235239-6e8c79a3.json"
     },
     {
       "id": "chzzk-merge-log-임재천-2026-07-20260731-112609.json",
@@ -81,8 +81,8 @@
   ],
   "summaryOverview": {
     "referenceStartDate": "2026-03-27",
-    "videoCount": 89,
-    "messageCount": 476428,
+    "videoCount": 90,
+    "messageCount": 483717,
     "chatSamples": [
       {
         "segments": [
@@ -642,17 +642,17 @@
     "callTerms": [
       {
         "label": "곤듀",
-        "count": 13349
+        "count": 13595
       },
       {
         "label": "재천",
-        "count": 2729
+        "count": 2755
       }
     ],
     "topChatter": {
       "nickname": "카노님",
-      "count": 21679,
-      "ratio": 4.550320300234243
+      "count": 22060,
+      "ratio": 4.560517823438085
     }
   },
   "brandAssets": {
