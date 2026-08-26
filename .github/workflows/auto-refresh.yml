@@ -1,0 +1,55 @@
+name: Auto refresh monthly report
+
+on:
+  schedule:
+    - cron: '*/30 * * * *'
+  workflow_dispatch: {}
+
+permissions:
+  contents: write
+
+concurrency:
+  group: auto-refresh
+  cancel-in-progress: false
+
+jobs:
+  refresh:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout pages repo
+        uses: actions/checkout@v4
+        with:
+          path: chzzk-streamer-pages
+
+      - name: Checkout analyzer repo
+        uses: actions/checkout@v4
+        with:
+          repository: zecheop/chzzk-chat-analyzer
+          ssh-key: ${{ secrets.ANALYZER_DEPLOY_KEY }}
+          path: chzzk-chat-analyzer
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      - name: Install analyzer dependencies
+        run: pip install -r chzzk-chat-analyzer/requirements.txt
+
+      - name: Configure git identity
+        run: |
+          git config --global user.name "monthly-zecheon-bot"
+          git config --global user.email "actions@users.noreply.github.com"
+
+      - name: Run refresh pipeline
+        working-directory: chzzk-streamer-pages
+        run: python scripts/refresh_monthly_pipeline.py
+
+      - name: Push analyzer log changes
+        working-directory: chzzk-chat-analyzer
+        run: |
+          if [ -n "$(git status --porcelain analysis_logs)" ]; then
+            git add analysis_logs
+            git commit --amend --no-edit
+            git push --force origin HEAD:main
+          fi
