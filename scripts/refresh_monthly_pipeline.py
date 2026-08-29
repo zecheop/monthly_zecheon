@@ -357,9 +357,9 @@ def main() -> int:
         return 1
 
     print(f"[auto-refresh] {result.message}")
-        if result.log_path:
-            print(f"[auto-refresh] 로그 파일: {result.log_path}")
-        return 0
+    if result.log_path:
+        print(f"[auto-refresh] 로그 파일: {result.log_path}")
+    return 0
 
 
 if __name__ == "__main__":
