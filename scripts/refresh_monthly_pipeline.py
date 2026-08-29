@@ -345,13 +345,21 @@ def main() -> int:
             dry_run=bool(args.dry_run),
             allow_dirty=bool(args.allow_dirty),
         )
+    except subprocess.CalledProcessError as exc:
+        print(f"[auto-refresh] 실패: {exc}", file=sys.stderr)
+        if exc.stdout:
+            print(f"[auto-refresh] stdout: {exc.stdout}", file=sys.stderr)
+        if exc.stderr:
+            print(f"[auto-refresh] stderr: {exc.stderr}", file=sys.stderr)
+        return 1
     except Exception as exc:
         print(f"[auto-refresh] 실패: {exc}", file=sys.stderr)
         return 1
+
     print(f"[auto-refresh] {result.message}")
-    if result.log_path:
-        print(f"[auto-refresh] 로그 파일: {result.log_path}")
-    return 0
+        if result.log_path:
+            print(f"[auto-refresh] 로그 파일: {result.log_path}")
+        return 0
 
 
 if __name__ == "__main__":
