@@ -19,7 +19,6 @@ jobs:
       - name: Checkout pages repo
         uses: actions/checkout@v4
         with:
-          ssh-key: ${{ secrets.PAGES_DEPLOY_KEY }}
           path: chzzk-streamer-pages
 
       - name: Checkout analyzer repo
@@ -42,23 +41,32 @@ jobs:
           git config --global user.name "monthly-zecheon-bot"
           git config --global user.email "actions@users.noreply.github.com"
 
-      - name: Debug remote auth
-        working-directory: chzzk-streamer-pages
+      - name: Set up deploy keys for pushing
         run: |
-          echo "--- remote -v ---"
-          git remote -v
-          echo "--- git config (origin/sshCommand/extraheader) ---"
-          git config --get-all remote.origin.url || true
-          git config --get core.sshCommand || true
-          git config --get-all http.https://github.com/.extraheader || true
-          git config --get-regexp '^url\.' || true
+          mkdir -p ~/.ssh
+          echo "${{ secrets.PAGES_DEPLOY_KEY }}" > ~/.ssh/pages_deploy_key
+          echo "${{ secrets.ANALYZER_DEPLOY_KEY }}" > ~/.ssh/analyzer_deploy_key
+          chmod 600 ~/.ssh/pages_deploy_key ~/.ssh/analyzer_deploy_key
+          ssh-keyscan -t ed25519 github.com >> ~/.ssh/known_hosts 2>/dev/null
+
+          # actions/checkout persists an HTTPS+GITHUB_TOKEN credential by default even
+          # when ssh-key is given, which makes commits from this job invisible to other
+          # triggers (GITHUB_TOKEN pushes don't fire other workflows). Force both repo
+          # checkouts onto their deploy-key-authenticated SSH remotes explicitly so the
+          # later pushes are real, workflow-triggering pushes.
+          git -C chzzk-streamer-pages remote set-url origin git@github.com:zecheop/monthly_zecheon.git
+          git -C chzzk-chat-analyzer remote set-url origin git@github.com:zecheop/chzzk-chat-analyzer.git
 
       - name: Run refresh pipeline
         working-directory: chzzk-streamer-pages
+        env:
+          GIT_SSH_COMMAND: ssh -i /home/runner/.ssh/pages_deploy_key -o IdentitiesOnly=yes -o StrictHostKeyChecking=accept-new
         run: python scripts/refresh_monthly_pipeline.py
 
       - name: Push analyzer log changes
         working-directory: chzzk-chat-analyzer
+        env:
+          GIT_SSH_COMMAND: ssh -i /home/runner/.ssh/analyzer_deploy_key -o IdentitiesOnly=yes -o StrictHostKeyChecking=accept-new
         run: |
           if [ -n "$(git status --porcelain analysis_logs)" ]; then
             git add analysis_logs
