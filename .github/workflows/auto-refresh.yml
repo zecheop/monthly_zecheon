@@ -42,6 +42,17 @@ jobs:
           git config --global user.name "monthly-zecheon-bot"
           git config --global user.email "actions@users.noreply.github.com"
 
+      - name: Debug remote auth
+        working-directory: chzzk-streamer-pages
+        run: |
+          echo "--- remote -v ---"
+          git remote -v
+          echo "--- git config (origin/sshCommand/extraheader) ---"
+          git config --get-all remote.origin.url || true
+          git config --get core.sshCommand || true
+          git config --get-all http.https://github.com/.extraheader || true
+          git config --get-regexp '^url\.' || true
+
       - name: Run refresh pipeline
         working-directory: chzzk-streamer-pages
         run: python scripts/refresh_monthly_pipeline.py
