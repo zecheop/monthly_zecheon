@@ -3,7 +3,12 @@ name: Auto refresh monthly report
 on:
   schedule:
     - cron: '*/30 * * * *'
-  workflow_dispatch: {}
+  workflow_dispatch:
+    inputs:
+      force:
+        description: 'true면 새 다시보기가 없어도 강제로 다시 빌드'
+        type: boolean
+        default: false
 
 permissions:
   contents: write
@@ -61,7 +66,12 @@ jobs:
         working-directory: chzzk-streamer-pages
         env:
           GIT_SSH_COMMAND: ssh -i /home/runner/.ssh/pages_deploy_key -o IdentitiesOnly=yes -o StrictHostKeyChecking=accept-new
-        run: python scripts/refresh_monthly_pipeline.py
+      run: |
+        if [ "${{ github.event.inputs.force }}" = "true" ]; then
+          python scripts/refresh_monthly_pipeline.py --force
+        else
+          python scripts/refresh_monthly_pipeline.py
+        fi
 
       - name: Push analyzer log changes
         working-directory: chzzk-chat-analyzer
