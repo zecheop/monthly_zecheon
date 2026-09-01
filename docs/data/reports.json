@@ -1,16 +1,16 @@
 {
   "reports": [
     {
-      "id": "chzzk-merge-log-임재천-2026-09-20260901-150224.json",
+      "id": "chzzk-merge-log-임재천-2026-09-20260901-161638.json",
       "channelName": "임재천",
       "label": "2026-09",
       "title": "임재천 2026-09",
       "subtitle": "2026-09-01 ~ 2026-09-02",
-      "generatedAt": "2026-09-01T15:02:24",
+      "generatedAt": "2026-09-01T16:16:38",
       "videoCount": 1,
       "messageCount": 2825,
-      "reportFile": "./data/reports/report-2026-09-20260901150224-6e8c79a3.json",
-      "wordSearchFile": "./data/word-search/search-2026-09-20260901150224-6e8c79a3.json"
+      "reportFile": "./data/reports/report-2026-09-20260901161638-4a6aaef5.json",
+      "wordSearchFile": "./data/word-search/search-2026-09-20260901161638-4a6aaef5.json"
     },
     {
       "id": "chzzk-merge-log-임재천-2026-08-20260830-120817.json",
@@ -21,8 +21,8 @@
       "generatedAt": "2026-08-30T12:08:17",
       "videoCount": 19,
       "messageCount": 72633,
-      "reportFile": "./data/reports/report-2026-08-20260830120817-6e8c79a3.json",
-      "wordSearchFile": "./data/word-search/search-2026-08-20260830120817-6e8c79a3.json"
+      "reportFile": "./data/reports/report-2026-08-20260830120817-4a6aaef5.json",
+      "wordSearchFile": "./data/word-search/search-2026-08-20260830120817-4a6aaef5.json"
     },
     {
       "id": "chzzk-merge-log-임재천-2026-07-20260829-065217.json",
@@ -33,8 +33,8 @@
       "generatedAt": "2026-08-29T06:52:17",
       "videoCount": 20,
       "messageCount": 101112,
-      "reportFile": "./data/reports/report-2026-07-20260829065217-6e8c79a3.json",
-      "wordSearchFile": "./data/word-search/search-2026-07-20260829065217-6e8c79a3.json"
+      "reportFile": "./data/reports/report-2026-07-20260829065217-4a6aaef5.json",
+      "wordSearchFile": "./data/word-search/search-2026-07-20260829065217-4a6aaef5.json"
     },
     {
       "id": "chzzk-merge-log-임재천-2026-06-20260829-065101.json",
@@ -45,8 +45,8 @@
       "generatedAt": "2026-08-29T06:51:01",
       "videoCount": 18,
       "messageCount": 65503,
-      "reportFile": "./data/reports/report-2026-06-20260829065101-6e8c79a3.json",
-      "wordSearchFile": "./data/word-search/search-2026-06-20260829065101-6e8c79a3.json"
+      "reportFile": "./data/reports/report-2026-06-20260829065101-4a6aaef5.json",
+      "wordSearchFile": "./data/word-search/search-2026-06-20260829065101-4a6aaef5.json"
     },
     {
       "id": "chzzk-merge-log-임재천-2026-05-20260521-013127.json",
@@ -57,8 +57,8 @@
       "generatedAt": "2026-05-21T01:31:27",
       "videoCount": 15,
       "messageCount": 91358,
-      "reportFile": "./data/reports/report-2026-05-20260521013127-6e8c79a3.json",
-      "wordSearchFile": "./data/word-search/search-2026-05-20260521013127-6e8c79a3.json"
+      "reportFile": "./data/reports/report-2026-05-20260521013127-4a6aaef5.json",
+      "wordSearchFile": "./data/word-search/search-2026-05-20260521013127-4a6aaef5.json"
     },
     {
       "id": "chzzk-merge-log-임재천-2026-04-20260430-202610.json",
@@ -69,8 +69,8 @@
       "generatedAt": "2026-04-30T20:26:10",
       "videoCount": 22,
       "messageCount": 107490,
-      "reportFile": "./data/reports/report-2026-04-20260430202610-6e8c79a3.json",
-      "wordSearchFile": "./data/word-search/search-2026-04-20260430202610-6e8c79a3.json"
+      "reportFile": "./data/reports/report-2026-04-20260430202610-4a6aaef5.json",
+      "wordSearchFile": "./data/word-search/search-2026-04-20260430202610-4a6aaef5.json"
     },
     {
       "id": "chzzk-merge-log-임재천-2026-03-20260424-035159.json",
@@ -81,11 +81,11 @@
       "generatedAt": "2026-04-24T03:51:59",
       "videoCount": 6,
       "messageCount": 73302,
-      "reportFile": "./data/reports/report-2026-03-20260424035159-6e8c79a3.json",
-      "wordSearchFile": "./data/word-search/search-2026-03-20260424035159-6e8c79a3.json"
+      "reportFile": "./data/reports/report-2026-03-20260424035159-4a6aaef5.json",
+      "wordSearchFile": "./data/word-search/search-2026-03-20260424035159-4a6aaef5.json"
     }
   ],
-  "gameFile": "./data/game-6e8c79a3.json",
+  "gameFile": "./data/game-4a6aaef5.json",
   "heroVideos": [
     "./assets/video/video1.mp4",
     "./assets/video/video2.mp4",
