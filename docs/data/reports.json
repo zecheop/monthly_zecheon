@@ -1,16 +1,16 @@
 {
   "reports": [
     {
-      "id": "chzzk-merge-log-임재천-2026-09-20260901-161638.json",
+      "id": "chzzk-merge-log-임재천-2026-09-20260901-162523.json",
       "channelName": "임재천",
       "label": "2026-09",
       "title": "임재천 2026-09",
       "subtitle": "2026-09-01 ~ 2026-09-02",
-      "generatedAt": "2026-09-01T16:16:38",
+      "generatedAt": "2026-09-01T16:25:23",
       "videoCount": 1,
       "messageCount": 2825,
-      "reportFile": "./data/reports/report-2026-09-20260901161638-4a6aaef5.json",
-      "wordSearchFile": "./data/word-search/search-2026-09-20260901161638-4a6aaef5.json"
+      "reportFile": "./data/reports/report-2026-09-20260901162523-4a6aaef5.json",
+      "wordSearchFile": "./data/word-search/search-2026-09-20260901162523-4a6aaef5.json"
     },
     {
       "id": "chzzk-merge-log-임재천-2026-08-20260830-120817.json",

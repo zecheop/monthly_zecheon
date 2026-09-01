@@ -1,5 +1,5 @@
 {
-  "id": "chzzk-merge-log-임재천-2026-09-20260901-161638.json",
+  "id": "chzzk-merge-log-임재천-2026-09-20260901-162523.json",
   "label": "2026-09",
   "title": "임재천 2026-09 채팅 리포트",
   "subtitle": "2026-09-01 ~ 2026-09-02",
@@ -29,7 +29,7 @@
     ],
     "topChatter": {
       "nickname": "로이스 Reus",
-      "anonymousAlias": "말랑한별빛재첩",
+      "anonymousAlias": "은은한별빛재첩",
       "count": 171,
       "ratio": 6.053097345132744
     }
@@ -433,5 +433,5 @@
       "audioUrl": ""
     }
   ],
-  "wordSearchFile": "./data/word-search/search-2026-09-20260901161638-4a6aaef5.json"
+  "wordSearchFile": "./data/word-search/search-2026-09-20260901162523-4a6aaef5.json"
 }
