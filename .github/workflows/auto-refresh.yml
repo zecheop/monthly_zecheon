@@ -66,12 +66,12 @@ jobs:
         working-directory: chzzk-streamer-pages
         env:
           GIT_SSH_COMMAND: ssh -i /home/runner/.ssh/pages_deploy_key -o IdentitiesOnly=yes -o StrictHostKeyChecking=accept-new
-      run: |
-        if [ "${{ github.event.inputs.force }}" = "true" ]; then
-          python scripts/refresh_monthly_pipeline.py --force
-        else
-          python scripts/refresh_monthly_pipeline.py
-        fi
+              run: |
+          if [ "${{ github.event.inputs.force }}" = "true" ]; then
+            python scripts/refresh_monthly_pipeline.py --force
+          else
+            python scripts/refresh_monthly_pipeline.py
+          fi
 
       - name: Push analyzer log changes
         working-directory: chzzk-chat-analyzer
