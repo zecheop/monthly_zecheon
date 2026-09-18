@@ -465,7 +465,6 @@ def build_summary_story(payload: dict, summary: dict, raw_search_items: list[dic
         "messageCount": message_count,
         "callTerms": call_terms,
         "topChatter": {
-            "nickname": top_nickname,
             "anonymousAlias": build_story_anonymous_alias(top_nickname, seed),
             "count": int(top_chatter.get("count") or 0),
             "ratio": ((int(top_chatter.get("count") or 0) / message_count) * 100.0) if message_count > 0 else 0.0,
@@ -519,7 +518,7 @@ def build_global_summary_overview(report_paths: list[Path]) -> dict:
             for label in SUMMARY_CALL_TERMS
         ],
         "topChatter": {
-            "nickname": top_nickname,
+            "anonymousAlias": build_story_anonymous_alias(top_nickname, SUMMARY_REFERENCE_START_DATE),
             "count": top_count,
             "ratio": ((top_count / total_message_count) * 100.0) if total_message_count > 0 else 0.0,
         },
