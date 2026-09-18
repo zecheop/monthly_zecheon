@@ -38,7 +38,6 @@
       }
     ],
     "topChatter": {
-      "nickname": "왕뚤기",
       "anonymousAlias": "명랑한리본재첩",
       "count": 4784,
       "ratio": 5.23654195582215
@@ -443,5 +442,5 @@
       "audioUrl": ""
     }
   ],
-  "wordSearchFile": "./data/word-search/search-2026-05-20260521013127-4a6aaef5.json"
+  "wordSearchFile": "./data/word-search/search-2026-05-20260521013127-8897452d.json"
 }

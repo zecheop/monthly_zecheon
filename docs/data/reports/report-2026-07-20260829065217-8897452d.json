@@ -42,7 +42,6 @@
       }
     ],
     "topChatter": {
-      "nickname": "까마기한마리",
       "anonymousAlias": "쫀득한모래재첩",
       "count": 6504,
       "ratio": 6.432470923332542
@@ -422,5 +421,5 @@
       "audioUrl": ""
     }
   ],
-  "wordSearchFile": "./data/word-search/search-2026-07-20260829065217-4a6aaef5.json"
+  "wordSearchFile": "./data/word-search/search-2026-07-20260829065217-8897452d.json"
 }

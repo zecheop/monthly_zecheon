@@ -47,7 +47,6 @@
       }
     ],
     "topChatter": {
-      "nickname": "카노님",
       "anonymousAlias": "엉뚱한씨앗재첩",
       "count": 6265,
       "ratio": 5.828449158061215
@@ -452,5 +451,5 @@
       "audioUrl": ""
     }
   ],
-  "wordSearchFile": "./data/word-search/search-2026-04-20260430202610-4a6aaef5.json"
+  "wordSearchFile": "./data/word-search/search-2026-04-20260430202610-8897452d.json"
 }

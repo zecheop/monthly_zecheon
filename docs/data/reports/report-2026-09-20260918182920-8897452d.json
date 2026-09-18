@@ -1,8 +1,8 @@
 {
-  "id": "chzzk-merge-log-임재천-2026-09-20260917-164535.json",
+  "id": "chzzk-merge-log-임재천-2026-09-20260918-182920.json",
   "label": "2026-09",
   "title": "임재천 2026-09 채팅 리포트",
-  "subtitle": "2026-09-01 ~ 2026-09-18",
+  "subtitle": "2026-09-01 ~ 2026-09-19",
   "bucketMinutes": 2,
   "overview": {
     "videoCount": 10,
@@ -36,8 +36,7 @@
       }
     ],
     "topChatter": {
-      "nickname": "로이스 Reus",
-      "anonymousAlias": "포근한리본재첩",
+      "anonymousAlias": "엉뚱한산책재첩",
       "count": 2151,
       "ratio": 8.396767771401803
     }
@@ -416,5 +415,5 @@
       "audioUrl": ""
     }
   ],
-  "wordSearchFile": "./data/word-search/search-2026-09-20260917164535-4a6aaef5.json"
+  "wordSearchFile": "./data/word-search/search-2026-09-20260918182920-8897452d.json"
 }

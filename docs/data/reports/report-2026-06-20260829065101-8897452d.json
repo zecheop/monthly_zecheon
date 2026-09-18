@@ -44,7 +44,6 @@
       }
     ],
     "topChatter": {
-      "nickname": "카노님",
       "anonymousAlias": "달콤한노을재첩",
       "count": 4091,
       "ratio": 6.245515472573775
@@ -441,5 +440,5 @@
       "audioUrl": ""
     }
   ],
-  "wordSearchFile": "./data/word-search/search-2026-06-20260829065101-4a6aaef5.json"
+  "wordSearchFile": "./data/word-search/search-2026-06-20260829065101-8897452d.json"
 }

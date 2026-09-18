@@ -31,7 +31,6 @@
       }
     ],
     "topChatter": {
-      "nickname": "로이스 Reus",
       "anonymousAlias": "쫀득한별빛재첩",
       "count": 2158,
       "ratio": 2.94398515729448
@@ -436,5 +435,5 @@
       "audioUrl": ""
     }
   ],
-  "wordSearchFile": "./data/word-search/search-2026-03-20260424035159-4a6aaef5.json"
+  "wordSearchFile": "./data/word-search/search-2026-03-20260424035159-8897452d.json"
 }

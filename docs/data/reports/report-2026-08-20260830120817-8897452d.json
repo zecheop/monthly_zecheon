@@ -43,7 +43,6 @@
       }
     ],
     "topChatter": {
-      "nickname": "로이스 Reus",
       "anonymousAlias": "푸른소다재첩",
       "count": 5062,
       "ratio": 6.969283934299836
@@ -448,5 +447,5 @@
       "audioUrl": ""
     }
   ],
-  "wordSearchFile": "./data/word-search/search-2026-08-20260830120817-4a6aaef5.json"
+  "wordSearchFile": "./data/word-search/search-2026-08-20260830120817-8897452d.json"
 }
