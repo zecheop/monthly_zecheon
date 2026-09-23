@@ -1,17 +1,17 @@
 {
-  "id": "chzzk-merge-log-임재천-2026-09-20260921-181744.json",
+  "id": "chzzk-merge-log-임재천-2026-09-20260923-174421.json",
   "label": "2026-09",
   "title": "임재천 2026-09 채팅 리포트",
-  "subtitle": "2026-09-01 ~ 2026-09-22",
+  "subtitle": "2026-09-01 ~ 2026-09-24",
   "bucketMinutes": 2,
   "overview": {
-    "videoCount": 12,
-    "messageCount": 28280
+    "videoCount": 13,
+    "messageCount": 30067
   },
   "summaryStory": {
     "issueLabel": "2026.09",
     "referenceStartDate": "2026-03-27",
-    "broadcastDayCount": 11,
+    "broadcastDayCount": 12,
     "broadcastDays": [
       "2026-09-01",
       "2026-09-03",
@@ -23,14 +23,15 @@
       "2026-09-16",
       "2026-09-17",
       "2026-09-19",
-      "2026-09-21"
+      "2026-09-21",
+      "2026-09-23"
     ],
-    "videoCount": 12,
-    "messageCount": 28280,
+    "videoCount": 13,
+    "messageCount": 30067,
     "callTerms": [
       {
         "label": "곤듀",
-        "count": 1169
+        "count": 1199
       },
       {
         "label": "재천",
@@ -38,9 +39,9 @@
       }
     ],
     "topChatter": {
-      "anonymousAlias": "푸른리본재첩",
-      "count": 2191,
-      "ratio": 7.747524752475248
+      "anonymousAlias": "달콤한비밀재첩",
+      "count": 2542,
+      "ratio": 8.45445172448199
     }
   },
   "topWords": [
@@ -48,48 +49,56 @@
       "token": "곤듀",
       "displayToken": "곤듀",
       "tokenTitle": "곤듀",
-      "count": 1169,
-      "ratio": 2.910131939258153,
+      "count": 1199,
+      "ratio": 2.8884606119007468,
       "imageUrl": ""
     },
     {
       "token": "재하",
       "displayToken": "재하",
       "tokenTitle": "재하+재하재하+쟈쟈",
-      "count": 286,
-      "ratio": 0.7119741100323624,
+      "count": 298,
+      "ratio": 0.717899301373163,
       "imageUrl": ""
     },
     {
       "token": "공겜",
       "displayToken": "공겜",
       "tokenTitle": "공겜",
-      "count": 191,
-      "ratio": 0.475479213343291,
+      "count": 192,
+      "ratio": 0.46253914719344735,
       "imageUrl": ""
     },
     {
       "token": "재첩",
       "displayToken": "재첩",
       "tokenTitle": "재첩+재첩이+재첩이들+재첩단+재첩국",
-      "count": 182,
-      "ratio": 0.45307443365695793,
+      "count": 184,
+      "ratio": 0.4432666827270537,
       "imageUrl": ""
     },
     {
       "token": "임재천",
       "displayToken": "임재천",
       "tokenTitle": "임재천+임재천님+재천+재천님+재천이",
-      "count": 167,
-      "ratio": 0.4157331341797361,
+      "count": 179,
+      "ratio": 0.43122139243555774,
       "imageUrl": ""
     },
     {
       "token": "ㅔㅔ",
       "displayToken": "ㅔㅔ",
       "tokenTitle": "ㅔㅔ",
-      "count": 151,
-      "ratio": 0.3759024147373662,
+      "count": 165,
+      "ratio": 0.3974945796193688,
+      "imageUrl": ""
+    },
+    {
+      "token": "재바",
+      "displayToken": "재바",
+      "tokenTitle": "재바+재바재바",
+      "count": 97,
+      "ratio": 0.2336786316550229,
       "imageUrl": ""
     },
     {
@@ -97,7 +106,7 @@
       "displayToken": "다음달",
       "tokenTitle": "다음달",
       "count": 94,
-      "ratio": 0.23400547672392333,
+      "ratio": 0.22645145748012527,
       "imageUrl": ""
     },
     {
@@ -105,7 +114,7 @@
       "displayToken": "할로윈때",
       "tokenTitle": "할로윈때",
       "count": 89,
-      "ratio": 0.22155837689818272,
+      "ratio": 0.21440616718862923,
       "imageUrl": ""
     },
     {
@@ -113,63 +122,79 @@
       "displayToken": "할로윈인데",
       "tokenTitle": "할로윈인데",
       "count": 89,
-      "ratio": 0.22155837689818272,
-      "imageUrl": ""
-    },
-    {
-      "token": "재바",
-      "displayToken": "재바",
-      "tokenTitle": "재바+재바재바",
-      "count": 85,
-      "ratio": 0.2116006970375902,
-      "imageUrl": ""
-    },
-    {
-      "token": "노래",
-      "displayToken": "노래",
-      "tokenTitle": "노래",
-      "count": 73,
-      "ratio": 0.1817276574558128,
+      "ratio": 0.21440616718862923,
       "imageUrl": ""
     },
     {
       "token": "ㄱㅇㅇ",
       "displayToken": "ㄱㅇㅇ",
       "tokenTitle": "ㄱㅇㅇ",
-      "count": 62,
-      "ratio": 0.15434403783918346,
+      "count": 85,
+      "ratio": 0.20476993495543244,
+      "imageUrl": ""
+    },
+    {
+      "token": "노래",
+      "displayToken": "노래",
+      "tokenTitle": "노래",
+      "count": 77,
+      "ratio": 0.1854974704890388,
       "imageUrl": ""
     },
     {
       "token": "쟈쟈쟈",
       "displayToken": "쟈쟈쟈",
       "tokenTitle": "쟈쟈쟈",
-      "count": 54,
-      "ratio": 0.13442867811799852,
+      "count": 57,
+      "ratio": 0.1373163093230547,
       "imageUrl": ""
     },
     {
-      "token": "방송",
-      "displayToken": "방송",
-      "tokenTitle": "방송",
+      "token": "오오",
+      "displayToken": "오오",
+      "tokenTitle": "오오",
       "count": 51,
-      "ratio": 0.12696041822255413,
-      "imageUrl": ""
-    },
-    {
-      "token": "아무래도",
-      "displayToken": "아무래도",
-      "tokenTitle": "아무래도",
-      "count": 49,
-      "ratio": 0.12198157829225789,
+      "ratio": 0.12286196097325945,
       "imageUrl": ""
     },
     {
       "token": "요즘",
       "displayToken": "요즘",
       "tokenTitle": "요즘",
+      "count": 48,
+      "ratio": 0.11563478679836184,
+      "imageUrl": ""
+    },
+    {
+      "token": "좋다",
+      "displayToken": "좋다",
+      "tokenTitle": "좋다",
+      "count": 48,
+      "ratio": 0.11563478679836184,
+      "imageUrl": ""
+    },
+    {
+      "token": "방송",
+      "displayToken": "방송",
+      "tokenTitle": "방송",
       "count": 47,
-      "ratio": 0.11700273836196166,
+      "ratio": 0.11322572874006263,
+      "imageUrl": ""
+    },
+    {
+      "token": "아무래도",
+      "displayToken": "아무래도",
+      "tokenTitle": "아무래도",
+      "count": 47,
+      "ratio": 0.11322572874006263,
+      "imageUrl": ""
+    },
+    {
+      "token": "운동",
+      "displayToken": "운동",
+      "tokenTitle": "운동",
+      "count": 46,
+      "ratio": 0.11081667068176342,
       "imageUrl": ""
     },
     {
@@ -177,31 +202,7 @@
       "displayToken": "어흐",
       "tokenTitle": "어흐",
       "count": 45,
-      "ratio": 0.11202389843166542,
-      "imageUrl": ""
-    },
-    {
-      "token": "좋다",
-      "displayToken": "좋다",
-      "tokenTitle": "좋다",
-      "count": 45,
-      "ratio": 0.11202389843166542,
-      "imageUrl": ""
-    },
-    {
-      "token": "운동",
-      "displayToken": "운동",
-      "tokenTitle": "운동",
-      "count": 44,
-      "ratio": 0.10953447846651729,
-      "imageUrl": ""
-    },
-    {
-      "token": "오오",
-      "displayToken": "오오",
-      "tokenTitle": "오오",
-      "count": 43,
-      "ratio": 0.10704505850136917,
+      "ratio": 0.10840761262346424,
       "imageUrl": ""
     }
   ],
@@ -210,87 +211,87 @@
       "token": "zcZccheer2",
       "displayToken": "zcZccheer2",
       "tokenTitle": "zcZccheer2",
-      "count": 4858,
-      "ratio": 25.23,
+      "count": 5325,
+      "ratio": 24.84,
       "imageUrl": "https://nng-phinf.pstatic.net/glive/subscription/emoji/3a5c68e21e1de59efc438313f908dd6f/1/zcZccheer2_1786865847351.gif"
     },
     {
       "token": "zcCheer",
       "displayToken": "zcCheer",
       "tokenTitle": "zcCheer",
-      "count": 3631,
-      "ratio": 18.86,
-      "imageUrl": "https://nng-phinf.pstatic.net/glive/subscription/emoji/3a5c68e21e1de59efc438313f908dd6f/1/zcD_1774901826362.gif?type=f60_60"
+      "count": 3799,
+      "ratio": 17.72,
+      "imageUrl": "https://nng-phinf.pstatic.net/glive/subscription/emoji/3a5c68e21e1de59efc438313f908dd6f/1/zcD_1774901826362.gif"
     },
     {
       "token": "zcClap",
       "displayToken": "zcClap",
       "tokenTitle": "zcClap",
-      "count": 2539,
-      "ratio": 13.19,
-      "imageUrl": "https://nng-phinf.pstatic.net/glive/subscription/emoji/3a5c68e21e1de59efc438313f908dd6f/1/zcClap_1775980555773.gif?type=f60_60"
+      "count": 3125,
+      "ratio": 14.58,
+      "imageUrl": "https://nng-phinf.pstatic.net/glive/subscription/emoji/3a5c68e21e1de59efc438313f908dd6f/1/zcClap_1775980555773.gif"
     },
     {
       "token": "zcLol",
       "displayToken": "zcLol",
       "tokenTitle": "zcLol",
-      "count": 2217,
-      "ratio": 11.51,
+      "count": 2331,
+      "ratio": 10.87,
       "imageUrl": "https://nng-phinf.pstatic.net/glive/subscription/emoji/3a5c68e21e1de59efc438313f908dd6f/1/zcLol_1776577642316.gif"
-    },
-    {
-      "token": "zcHi",
-      "displayToken": "zcHi",
-      "tokenTitle": "zcHi",
-      "count": 788,
-      "ratio": 4.09,
-      "imageUrl": "https://nng-phinf.pstatic.net/glive/subscription/emoji/3a5c68e21e1de59efc438313f908dd6f/1/zcHi_1774901709581.png"
-    },
-    {
-      "token": "zcDance",
-      "displayToken": "zcDance",
-      "tokenTitle": "zcDance",
-      "count": 768,
-      "ratio": 3.99,
-      "imageUrl": "https://nng-phinf.pstatic.net/glive/subscription/emoji/3a5c68e21e1de59efc438313f908dd6f/1/zcDance_1776577675555.png?type=f60_60"
     },
     {
       "token": "zcPush",
       "displayToken": "zcPush",
       "tokenTitle": "zcPush",
-      "count": 701,
-      "ratio": 3.64,
+      "count": 820,
+      "ratio": 3.82,
       "imageUrl": "https://nng-phinf.pstatic.net/glive/subscription/emoji/3a5c68e21e1de59efc438313f908dd6f/1/zcD_1774901910776.gif"
+    },
+    {
+      "token": "zcDance",
+      "displayToken": "zcDance",
+      "tokenTitle": "zcDance",
+      "count": 794,
+      "ratio": 3.7,
+      "imageUrl": "https://nng-phinf.pstatic.net/glive/subscription/emoji/3a5c68e21e1de59efc438313f908dd6f/1/zcDance_1776577675555.png?type=f60_60"
+    },
+    {
+      "token": "zcHi",
+      "displayToken": "zcHi",
+      "tokenTitle": "zcHi",
+      "count": 769,
+      "ratio": 3.59,
+      "imageUrl": "https://nng-phinf.pstatic.net/glive/subscription/emoji/3a5c68e21e1de59efc438313f908dd6f/1/zcHi_1774901709581.png?type=f60_60"
     },
     {
       "token": "zcBye",
       "displayToken": "zcBye",
       "tokenTitle": "zcBye",
-      "count": 591,
-      "ratio": 3.07,
+      "count": 630,
+      "ratio": 2.94,
       "imageUrl": "https://nng-phinf.pstatic.net/glive/subscription/emoji/3a5c68e21e1de59efc438313f908dd6f/1/zcBye_1774901717683.png?type=f60_60"
     },
     {
       "token": "zcRock",
       "displayToken": "zcRock",
       "tokenTitle": "zcRock",
-      "count": 360,
-      "ratio": 1.87,
-      "imageUrl": "https://nng-phinf.pstatic.net/glive/subscription/emoji/3a5c68e21e1de59efc438313f908dd6f/1/zcRock_1775969167302.gif"
+      "count": 526,
+      "ratio": 2.45,
+      "imageUrl": "https://nng-phinf.pstatic.net/glive/subscription/emoji/3a5c68e21e1de59efc438313f908dd6f/1/zcRock_1775969167302.gif?type=f60_60"
     },
     {
       "token": "zcHhh",
       "displayToken": "zcHhh",
       "tokenTitle": "zcHhh",
-      "count": 287,
-      "ratio": 1.49,
+      "count": 293,
+      "ratio": 1.37,
       "imageUrl": "https://nng-phinf.pstatic.net/glive/subscription/emoji/3a5c68e21e1de59efc438313f908dd6f/1/zcHhh_1776577685697.png"
     },
     {
       "token": "d_42",
       "displayToken": "d_42",
       "tokenTitle": "d_42",
-      "count": 245,
+      "count": 273,
       "ratio": 1.27,
       "imageUrl": "https://ssl.pstatic.net/static/nng/glive/icon/b_02.gif"
     },
@@ -298,73 +299,73 @@
       "token": "d_54",
       "displayToken": "d_54",
       "tokenTitle": "d_54",
-      "count": 223,
-      "ratio": 1.16,
+      "count": 259,
+      "ratio": 1.21,
       "imageUrl": "https://ssl.pstatic.net/static/nng/glive/icon/b_14.gif"
     },
     {
       "token": "d_47",
       "displayToken": "d_47",
       "tokenTitle": "d_47",
-      "count": 195,
-      "ratio": 1.01,
+      "count": 206,
+      "ratio": 0.96,
       "imageUrl": "https://ssl.pstatic.net/static/nng/glive/icon/b_07.gif"
+    },
+    {
+      "token": "zcPunch",
+      "displayToken": "zcPunch",
+      "tokenTitle": "zcPunch",
+      "count": 183,
+      "ratio": 0.85,
+      "imageUrl": "https://nng-phinf.pstatic.net/glive/subscription/emoji/3a5c68e21e1de59efc438313f908dd6f/1/zcDd_1774901900099.gif"
     },
     {
       "token": "zcLoding",
       "displayToken": "zcLoding",
       "tokenTitle": "zcLoding",
-      "count": 150,
-      "ratio": 0.78,
-      "imageUrl": "https://nng-phinf.pstatic.net/glive/subscription/emoji/3a5c68e21e1de59efc438313f908dd6f/1/zcDd_1774901884591.gif"
+      "count": 149,
+      "ratio": 0.7,
+      "imageUrl": "https://nng-phinf.pstatic.net/glive/subscription/emoji/3a5c68e21e1de59efc438313f908dd6f/1/zcDd_1774901884591.gif?type=f60_60"
     },
     {
       "token": "zcIz",
       "displayToken": "zcIz",
       "tokenTitle": "zcIz",
-      "count": 131,
-      "ratio": 0.68,
+      "count": 144,
+      "ratio": 0.67,
       "imageUrl": "https://nng-phinf.pstatic.net/glive/subscription/emoji/3a5c68e21e1de59efc438313f908dd6f/1/zcIz_1776577662396.png?type=f60_60"
     },
     {
       "token": "zcNa",
       "displayToken": "zcNa",
       "tokenTitle": "zcNa",
-      "count": 131,
-      "ratio": 0.68,
+      "count": 144,
+      "ratio": 0.67,
       "imageUrl": "https://nng-phinf.pstatic.net/glive/subscription/emoji/3a5c68e21e1de59efc438313f908dd6f/1/zcNa_1776577669134.png?type=f60_60"
-    },
-    {
-      "token": "zcPunch",
-      "displayToken": "zcPunch",
-      "tokenTitle": "zcPunch",
-      "count": 121,
-      "ratio": 0.63,
-      "imageUrl": "https://nng-phinf.pstatic.net/glive/subscription/emoji/3a5c68e21e1de59efc438313f908dd6f/1/zcDd_1774901900099.gif?type=f60_60"
     },
     {
       "token": "d_43",
       "displayToken": "d_43",
       "tokenTitle": "d_43",
-      "count": 111,
-      "ratio": 0.58,
+      "count": 132,
+      "ratio": 0.62,
       "imageUrl": "https://ssl.pstatic.net/static/nng/glive/icon/b_03.gif"
-    },
-    {
-      "token": "d_41",
-      "displayToken": "d_41",
-      "tokenTitle": "d_41",
-      "count": 84,
-      "ratio": 0.44,
-      "imageUrl": "https://ssl.pstatic.net/static/nng/glive/icon/b_01.gif"
     },
     {
       "token": "d_59",
       "displayToken": "d_59",
       "tokenTitle": "d_59",
-      "count": 83,
-      "ratio": 0.43,
+      "count": 131,
+      "ratio": 0.61,
       "imageUrl": "https://ssl.pstatic.net/static/nng/glive/icon/b_19.gif"
+    },
+    {
+      "token": "d_60",
+      "displayToken": "d_60",
+      "tokenTitle": "d_60",
+      "count": 95,
+      "ratio": 0.44,
+      "imageUrl": "https://ssl.pstatic.net/static/nng/glive/icon/b_20.gif"
     }
   ],
   "topMomentClips": [
@@ -409,7 +410,7 @@
           "tokenTitle": "zcClap",
           "count": 16,
           "ratio": 57.14,
-          "imageUrl": "https://nng-phinf.pstatic.net/glive/subscription/emoji/3a5c68e21e1de59efc438313f908dd6f/1/zcClap_1775980555773.gif?type=f60_60"
+          "imageUrl": "https://nng-phinf.pstatic.net/glive/subscription/emoji/3a5c68e21e1de59efc438313f908dd6f/1/zcClap_1775980555773.gif"
         },
         {
           "token": "zcPush",
@@ -425,7 +426,7 @@
           "tokenTitle": "zcLoding",
           "count": 1,
           "ratio": 3.57,
-          "imageUrl": "https://nng-phinf.pstatic.net/glive/subscription/emoji/3a5c68e21e1de59efc438313f908dd6f/1/zcDd_1774901884591.gif"
+          "imageUrl": "https://nng-phinf.pstatic.net/glive/subscription/emoji/3a5c68e21e1de59efc438313f908dd6f/1/zcDd_1774901884591.gif?type=f60_60"
         }
       ]
     }
@@ -442,5 +443,5 @@
       "audioUrl": ""
     }
   ],
-  "wordSearchFile": "./data/word-search/search-2026-09-20260921181744-8897452d.json"
+  "wordSearchFile": "./data/word-search/search-2026-09-20260923174421-8897452d.json"
 }
