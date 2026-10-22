@@ -1,16 +1,16 @@
 {
   "reports": [
     {
-      "id": "chzzk-merge-log-임재천-2026-10-20261022-142301.json",
+      "id": "chzzk-merge-log-임재천-2026-10-20261022-184401.json",
       "channelName": "임재천",
       "label": "2026-10",
       "title": "임재천 2026-10",
-      "subtitle": "2026-10-01 ~ 2026-10-22",
-      "generatedAt": "2026-10-22T14:23:01",
-      "videoCount": 13,
-      "messageCount": 33874,
-      "reportFile": "./data/reports/report-2026-10-20261022142301-8897452d.json",
-      "wordSearchFile": "./data/word-search/search-2026-10-20261022142301-8897452d.json"
+      "subtitle": "2026-10-01 ~ 2026-10-23",
+      "generatedAt": "2026-10-22T18:44:01",
+      "videoCount": 14,
+      "messageCount": 35052,
+      "reportFile": "./data/reports/report-2026-10-20261022184401-8897452d.json",
+      "wordSearchFile": "./data/word-search/search-2026-10-20261022184401-8897452d.json"
     },
     {
       "id": "chzzk-merge-log-임재천-2026-09-20260928-165520.json",
@@ -105,14 +105,14 @@
   ],
   "summaryOverview": {
     "referenceStartDate": "2026-03-27",
-    "videoCount": 133,
-    "messageCount": 589038,
+    "videoCount": 134,
+    "messageCount": 590216,
     "chatSamples": [
       {
         "segments": [
           {
             "type": "text",
-            "text": "쟈쟈쟈"
+            "text": "와따"
           }
         ]
       },
@@ -120,7 +120,7 @@
         "segments": [
           {
             "type": "text",
-            "text": "지각이야"
+            "text": "하이하이"
           }
         ]
       },
@@ -128,7 +128,7 @@
         "segments": [
           {
             "type": "text",
-            "text": "어디갔어 얘들아ㅏㅏ"
+            "text": "돌아왔구나"
           }
         ]
       },
@@ -136,7 +136,7 @@
         "segments": [
           {
             "type": "text",
-            "text": "지각"
+            "text": "다행이다"
           }
         ]
       },
@@ -144,7 +144,7 @@
         "segments": [
           {
             "type": "text",
-            "text": "해 명 해"
+            "text": "갑자기?"
           }
         ]
       },
@@ -152,7 +152,7 @@
         "segments": [
           {
             "type": "text",
-            "text": "곤듀 지각이야"
+            "text": "지각이야 지각~"
           }
         ]
       },
@@ -160,7 +160,7 @@
         "segments": [
           {
             "type": "text",
-            "text": "임하"
+            "text": "곤듀 동굴에 있어?"
           }
         ]
       },
@@ -169,12 +169,17 @@
           {
             "type": "emote",
             "code": "zcHi",
-            "url": "https://nng-phinf.pstatic.net/glive/subscription/emoji/3a5c68e21e1de59efc438313f908dd6f/1/zcHi_1774901709581.png"
+            "url": "https://nng-phinf.pstatic.net/glive/subscription/emoji/3a5c68e21e1de59efc438313f908dd6f/1/zcHi_1774901709581.png?type=f60_60"
           },
           {
             "type": "emote",
             "code": "zcHi",
-            "url": "https://nng-phinf.pstatic.net/glive/subscription/emoji/3a5c68e21e1de59efc438313f908dd6f/1/zcHi_1774901709581.png"
+            "url": "https://nng-phinf.pstatic.net/glive/subscription/emoji/3a5c68e21e1de59efc438313f908dd6f/1/zcHi_1774901709581.png?type=f60_60"
+          },
+          {
+            "type": "emote",
+            "code": "zcHi",
+            "url": "https://nng-phinf.pstatic.net/glive/subscription/emoji/3a5c68e21e1de59efc438313f908dd6f/1/zcHi_1774901709581.png?type=f60_60"
           }
         ]
       },
@@ -182,7 +187,7 @@
         "segments": [
           {
             "type": "text",
-            "text": "20분지각"
+            "text": "우왕"
           }
         ]
       },
@@ -190,7 +195,7 @@
         "segments": [
           {
             "type": "text",
-            "text": "ㅋㅋ"
+            "text": "재천이즈백"
           }
         ]
       },
@@ -198,7 +203,23 @@
         "segments": [
           {
             "type": "text",
-            "text": "아 이거"
+            "text": "에코가?"
+          }
+        ]
+      },
+      {
+        "segments": [
+          {
+            "type": "text",
+            "text": "우우지각"
+          }
+        ]
+      },
+      {
+        "segments": [
+          {
+            "type": "text",
+            "text": "깜짝놀랐네"
           }
         ]
       },
@@ -207,22 +228,22 @@
           {
             "type": "emote",
             "code": "zcHi",
-            "url": "https://nng-phinf.pstatic.net/glive/subscription/emoji/3a5c68e21e1de59efc438313f908dd6f/1/zcHi_1774901709581.png"
+            "url": "https://nng-phinf.pstatic.net/glive/subscription/emoji/3a5c68e21e1de59efc438313f908dd6f/1/zcHi_1774901709581.png?type=f60_60"
           },
           {
             "type": "emote",
             "code": "zcHi",
-            "url": "https://nng-phinf.pstatic.net/glive/subscription/emoji/3a5c68e21e1de59efc438313f908dd6f/1/zcHi_1774901709581.png"
+            "url": "https://nng-phinf.pstatic.net/glive/subscription/emoji/3a5c68e21e1de59efc438313f908dd6f/1/zcHi_1774901709581.png?type=f60_60"
           },
           {
             "type": "emote",
             "code": "zcHi",
-            "url": "https://nng-phinf.pstatic.net/glive/subscription/emoji/3a5c68e21e1de59efc438313f908dd6f/1/zcHi_1774901709581.png"
+            "url": "https://nng-phinf.pstatic.net/glive/subscription/emoji/3a5c68e21e1de59efc438313f908dd6f/1/zcHi_1774901709581.png?type=f60_60"
           },
           {
             "type": "emote",
             "code": "zcHi",
-            "url": "https://nng-phinf.pstatic.net/glive/subscription/emoji/3a5c68e21e1de59efc438313f908dd6f/1/zcHi_1774901709581.png"
+            "url": "https://nng-phinf.pstatic.net/glive/subscription/emoji/3a5c68e21e1de59efc438313f908dd6f/1/zcHi_1774901709581.png?type=f60_60"
           }
         ]
       },
@@ -230,7 +251,7 @@
         "segments": [
           {
             "type": "text",
-            "text": "네온 이거 ㅋㅋ"
+            "text": "ㅔㅔ"
           }
         ]
       },
@@ -238,7 +259,7 @@
         "segments": [
           {
             "type": "text",
-            "text": "아아 이거"
+            "text": "재쟈쟈???"
           }
         ]
       },
@@ -246,7 +267,7 @@
         "segments": [
           {
             "type": "text",
-            "text": "이게머여 오자마자 ㄷ"
+            "text": "쟈쟈"
           }
         ]
       },
@@ -254,51 +275,111 @@
         "segments": [
           {
             "type": "text",
-            "text": "?ㅋㅋㅋㅋ"
+            "text": "왕지각"
           }
         ]
       },
       {
         "segments": [
           {
-            "type": "emote",
-            "code": "zcLol",
-            "url": "https://nng-phinf.pstatic.net/glive/subscription/emoji/3a5c68e21e1de59efc438313f908dd6f/1/zcLol_1776577642316.gif"
-          },
+            "type": "text",
+            "text": "히유키가 송출컴 터트렸다"
+          }
+        ]
+      },
+      {
+        "segments": [
           {
-            "type": "emote",
-            "code": "zcLol",
-            "url": "https://nng-phinf.pstatic.net/glive/subscription/emoji/3a5c68e21e1de59efc438313f908dd6f/1/zcLol_1776577642316.gif"
-          },
+            "type": "text",
+            "text": "곤듀도 모르고 우리도 모르고"
+          }
+        ]
+      },
+      {
+        "segments": [
           {
-            "type": "emote",
-            "code": "zcLol",
-            "url": "https://nng-phinf.pstatic.net/glive/subscription/emoji/3a5c68e21e1de59efc438313f908dd6f/1/zcLol_1776577642316.gif"
-          },
+            "type": "text",
+            "text": "ㅔㅔ 가끔 뻑날수도있져"
+          }
+        ]
+      },
+      {
+        "segments": [
           {
-            "type": "emote",
-            "code": "zcLol",
-            "url": "https://nng-phinf.pstatic.net/glive/subscription/emoji/3a5c68e21e1de59efc438313f908dd6f/1/zcLol_1776577642316.gif"
-          },
+            "type": "text",
+            "text": "그림 곤듀라도"
+          }
+        ]
+      },
+      {
+        "segments": [
           {
-            "type": "emote",
-            "code": "zcLol",
-            "url": "https://nng-phinf.pstatic.net/glive/subscription/emoji/3a5c68e21e1de59efc438313f908dd6f/1/zcLol_1776577642316.gif"
-          },
+            "type": "text",
+            "text": "곤듀 아바타가 사라졌어"
+          }
+        ]
+      },
+      {
+        "segments": [
           {
-            "type": "emote",
-            "code": "zcLol",
-            "url": "https://nng-phinf.pstatic.net/glive/subscription/emoji/3a5c68e21e1de59efc438313f908dd6f/1/zcLol_1776577642316.gif"
-          },
+            "type": "text",
+            "text": "띄울까"
+          }
+        ]
+      },
+      {
+        "segments": [
           {
-            "type": "emote",
-            "code": "zcLol",
-            "url": "https://nng-phinf.pstatic.net/glive/subscription/emoji/3a5c68e21e1de59efc438313f908dd6f/1/zcLol_1776577642316.gif"
-          },
+            "type": "text",
+            "text": "재쟈쟈"
+          }
+        ]
+      },
+      {
+        "segments": [
           {
-            "type": "emote",
-            "code": "zcLol",
-            "url": "https://nng-phinf.pstatic.net/glive/subscription/emoji/3a5c68e21e1de59efc438313f908dd6f/1/zcLol_1776577642316.gif"
+            "type": "text",
+            "text": "캠켜줘"
+          }
+        ]
+      },
+      {
+        "segments": [
+          {
+            "type": "text",
+            "text": "곤듀? 어디갔어?"
+          }
+        ]
+      },
+      {
+        "segments": [
+          {
+            "type": "text",
+            "text": "캠말고 그림이라두"
+          }
+        ]
+      },
+      {
+        "segments": [
+          {
+            "type": "text",
+            "text": "집톡 이미지 라도 띠워죠"
+          }
+        ]
+      },
+      {
+        "segments": [
+          {
+            "type": "text",
+            "text": "음.."
+          }
+        ]
+      },
+      {
+        "segments": [
+          {
+            "type": "text",
+            "text": "그림판 곤듀 등장"
           }
         ]
       },
@@ -314,7 +395,7 @@
         "segments": [
           {
             "type": "text",
-            "text": "ㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋ"
+            "text": "그림판 곤듀 나와주세요~"
           }
         ]
       },
@@ -322,7 +403,7 @@
         "segments": [
           {
             "type": "text",
-            "text": "ㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋ"
+            "text": "재하"
           }
         ]
       },
@@ -330,7 +411,7 @@
         "segments": [
           {
             "type": "text",
-            "text": "개열받네"
+            "text": "얘도 이쁨"
           }
         ]
       },
@@ -338,7 +419,7 @@
         "segments": [
           {
             "type": "text",
-            "text": "ㅋㅋㅋㅋㅋㅋㅋㅋㅋ"
+            "text": "ㄱㅇㅇ"
           }
         ]
       },
@@ -346,7 +427,7 @@
         "segments": [
           {
             "type": "text",
-            "text": "재하재하"
+            "text": "북소리"
           }
         ]
       },
@@ -354,119 +435,7 @@
         "segments": [
           {
             "type": "text",
-            "text": "근데 저 노래 계속 들으니깐 미안해 미안으로 들리던데"
-          }
-        ]
-      },
-      {
-        "segments": [
-          {
-            "type": "text",
-            "text": "이혼엔 비혼 ㅋㅋㅋㅋㅋㅋ"
-          }
-        ]
-      },
-      {
-        "segments": [
-          {
-            "type": "text",
-            "text": "ㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋ"
-          }
-        ]
-      },
-      {
-        "segments": [
-          {
-            "type": "text",
-            "text": "ㄹㅇㅋㅋ"
-          }
-        ]
-      },
-      {
-        "segments": [
-          {
-            "type": "text",
-            "text": "차라리 대놓고 ai라고 티를 내는건 걍 웃긴데"
-          }
-        ]
-      },
-      {
-        "segments": [
-          {
-            "type": "text",
-            "text": "갑자기 납치됐네"
-          }
-        ]
-      },
-      {
-        "segments": [
-          {
-            "type": "text",
-            "text": "ㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋ"
-          }
-        ]
-      },
-      {
-        "segments": [
-          {
-            "type": "text",
-            "text": "이건 또 머야"
-          }
-        ]
-      },
-      {
-        "segments": [
-          {
-            "type": "text",
-            "text": "먼작귀 혼잣말?"
-          }
-        ]
-      },
-      {
-        "segments": [
-          {
-            "type": "text",
-            "text": "ㅋㅋㅋㅋㅋㅋㅋㅋ"
-          }
-        ]
-      },
-      {
-        "segments": [
-          {
-            "type": "text",
-            "text": "ㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋ"
-          }
-        ]
-      },
-      {
-        "segments": [
-          {
-            "type": "text",
-            "text": "왤케 감미로워 ㅋㅋㅋㅋㅋㅋㅋㅋ"
-          }
-        ]
-      },
-      {
-        "segments": [
-          {
-            "type": "text",
-            "text": "아 이거 애들이 학교에서 틀던건데 뭔가 했네 ㅋㅋㅋ"
-          }
-        ]
-      },
-      {
-        "segments": [
-          {
-            "type": "text",
-            "text": "부어부어"
-          }
-        ]
-      },
-      {
-        "segments": [
-          {
-            "type": "text",
-            "text": "저거 어디서 들어본거같은데"
+            "text": "오늘 방송 날린거야??"
           }
         ]
       },
@@ -474,38 +443,8 @@
         "segments": [
           {
             "type": "emote",
-            "code": "zcLol",
-            "url": "https://nng-phinf.pstatic.net/glive/subscription/emoji/3a5c68e21e1de59efc438313f908dd6f/1/zcLol_1776577642316.gif"
-          },
-          {
-            "type": "emote",
-            "code": "zcLol",
-            "url": "https://nng-phinf.pstatic.net/glive/subscription/emoji/3a5c68e21e1de59efc438313f908dd6f/1/zcLol_1776577642316.gif"
-          },
-          {
-            "type": "emote",
-            "code": "zcLol",
-            "url": "https://nng-phinf.pstatic.net/glive/subscription/emoji/3a5c68e21e1de59efc438313f908dd6f/1/zcLol_1776577642316.gif"
-          },
-          {
-            "type": "emote",
-            "code": "zcLol",
-            "url": "https://nng-phinf.pstatic.net/glive/subscription/emoji/3a5c68e21e1de59efc438313f908dd6f/1/zcLol_1776577642316.gif"
-          },
-          {
-            "type": "emote",
-            "code": "zcLol",
-            "url": "https://nng-phinf.pstatic.net/glive/subscription/emoji/3a5c68e21e1de59efc438313f908dd6f/1/zcLol_1776577642316.gif"
-          },
-          {
-            "type": "emote",
-            "code": "zcLol",
-            "url": "https://nng-phinf.pstatic.net/glive/subscription/emoji/3a5c68e21e1de59efc438313f908dd6f/1/zcLol_1776577642316.gif"
-          },
-          {
-            "type": "emote",
-            "code": "zcLol",
-            "url": "https://nng-phinf.pstatic.net/glive/subscription/emoji/3a5c68e21e1de59efc438313f908dd6f/1/zcLol_1776577642316.gif"
+            "code": "zcLoding",
+            "url": "https://nng-phinf.pstatic.net/glive/subscription/emoji/3a5c68e21e1de59efc438313f908dd6f/1/zcDd_1774901884591.gif"
           }
         ]
       },
@@ -513,7 +452,7 @@
         "segments": [
           {
             "type": "text",
-            "text": "ㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋ"
+            "text": "???"
           }
         ]
       },
@@ -521,7 +460,7 @@
         "segments": [
           {
             "type": "text",
-            "text": "요새 먼작귀가 대세긴하지.."
+            "text": "무친"
           }
         ]
       },
@@ -529,7 +468,7 @@
         "segments": [
           {
             "type": "text",
-            "text": "아니왜 감미로워 ㅋㅋㅋㅋ"
+            "text": "헉스"
           }
         ]
       }
@@ -554,7 +493,7 @@
     "callTerms": [
       {
         "label": "곤듀",
-        "count": 17291
+        "count": 17328
       },
       {
         "label": "재천",
@@ -563,8 +502,8 @@
     ],
     "topChatter": {
       "anonymousAlias": "재빠른파도재첩",
-      "count": 28481,
-      "ratio": 4.835171924391974
+      "count": 28570,
+      "ratio": 4.840600729224555
     }
   },
   "brandAssets": {
