@@ -17,8 +17,8 @@
       "id": "곤듀",
       "displayToken": "곤듀",
       "tokenTitle": "곤듀+곤듀가+곤듀를+곤듀님",
-      "count": 17845,
-      "ratio": 2.2860210039789193,
+      "count": 18007,
+      "ratio": 2.2979543395311444,
       "monthBreakdown": [
         {
           "label": "2026.03",
@@ -50,7 +50,7 @@
         },
         {
           "label": "2026.10",
-          "count": 1441
+          "count": 1603
         }
       ],
       "mediaUrl": "./assets/game/token-eed069b36fb6.png",
@@ -61,8 +61,8 @@
       "id": "임재천",
       "displayToken": "임재천",
       "tokenTitle": "임재천+임재천님+재천+재천님+재천이",
-      "count": 3256,
-      "ratio": 0.4171075589215669,
+      "count": 3261,
+      "ratio": 0.4161508913872973,
       "monthBreakdown": [
         {
           "label": "2026.03",
@@ -94,7 +94,7 @@
         },
         {
           "label": "2026.10",
-          "count": 189
+          "count": 194
         }
       ],
       "mediaUrl": "./assets/game/token-78691ba309ff.jpg",
@@ -105,8 +105,8 @@
       "id": "재하",
       "displayToken": "재하",
       "tokenTitle": "재하+재하재하+쟈쟈",
-      "count": 4386,
-      "ratio": 0.5618654033875897,
+      "count": 4429,
+      "ratio": 0.5652046298541367,
       "monthBreakdown": [
         {
           "label": "2026.03",
@@ -138,7 +138,7 @@
         },
         {
           "label": "2026.10",
-          "count": 438
+          "count": 481
         }
       ],
       "mediaUrl": "./assets/game/token-ff4f49796202.mp4",
@@ -149,8 +149,8 @@
       "id": "ㅔㅔ",
       "displayToken": "ㅔㅔ",
       "tokenTitle": "ㅔㅔ",
-      "count": 3171,
-      "ratio": 0.40621869451483067,
+      "count": 3183,
+      "ratio": 0.4061969602225597,
       "monthBreakdown": [
         {
           "label": "2026.03",
@@ -182,7 +182,7 @@
         },
         {
           "label": "2026.10",
-          "count": 248
+          "count": 260
         }
       ],
       "mediaUrl": "./assets/game/token-7f787d863c18.png",
@@ -193,8 +193,8 @@
       "id": "재바",
       "displayToken": "재바",
       "tokenTitle": "재바+재바재바",
-      "count": 1770,
-      "ratio": 0.22674458823438984,
+      "count": 1793,
+      "ratio": 0.22881280228685186,
       "monthBreakdown": [
         {
           "label": "2026.03",
@@ -226,7 +226,7 @@
         },
         {
           "label": "2026.10",
-          "count": 141
+          "count": 164
         }
       ],
       "mediaUrl": "./assets/game/token-90bf7388f5e3.mp4",
@@ -238,7 +238,7 @@
       "displayToken": "ㅇㅉㄴㅇ",
       "tokenTitle": "ㅇㅉㄴㅇ+이짜나요",
       "count": 826,
-      "ratio": 0.1058141411760486,
+      "ratio": 0.10540957874452853,
       "monthBreakdown": [
         {
           "label": "2026.03",
@@ -281,8 +281,8 @@
       "id": "재첩",
       "displayToken": "재첩",
       "tokenTitle": "재첩+재첩이+재첩이들+재첩단+재첩국",
-      "count": 2942,
-      "ratio": 0.37688281276021185,
+      "count": 2946,
+      "ratio": 0.37595232322201094,
       "monthBreakdown": [
         {
           "label": "2026.03",
@@ -314,7 +314,7 @@
         },
         {
           "label": "2026.10",
-          "count": 134
+          "count": 138
         }
       ],
       "mediaUrl": "./assets/game/token-2175f7c8be53.jpg",
@@ -325,8 +325,8 @@
       "id": "구독",
       "displayToken": "구독",
       "tokenTitle": "구독+구독권",
-      "count": 777,
-      "ratio": 0.099537031106283,
+      "count": 779,
+      "ratio": 0.0994116971452636,
       "monthBreakdown": [
         {
           "label": "2026.03",
@@ -358,19 +358,19 @@
         },
         {
           "label": "2026.10",
-          "count": 13
+          "count": 15
         }
       ],
       "mediaUrl": "./assets/game/token-7cb695259795.png",
       "mediaKind": "image",
-      "rank": 17
+      "rank": 16
     },
     {
       "id": "155",
       "displayToken": "155",
       "tokenTitle": "155+155cm",
-      "count": 580,
-      "ratio": 0.07430048654008255,
+      "count": 582,
+      "ratio": 0.07427164022919565,
       "monthBreakdown": [
         {
           "label": "2026.03",
@@ -402,7 +402,7 @@
         },
         {
           "label": "2026.10",
-          "count": 23
+          "count": 25
         }
       ],
       "mediaUrl": "./assets/game/token-6c12e5bd6145.png",
@@ -414,7 +414,7 @@
       "displayToken": "나한테 미안하다",
       "tokenTitle": "나한테 미안하다+나한테+미안하다",
       "count": 520,
-      "ratio": 0.06661422931179815,
+      "ratio": 0.0663595410982504,
       "monthBreakdown": [
         {
           "label": "2026.03",
@@ -458,7 +458,7 @@
       "displayToken": "재천냥이",
       "tokenTitle": "재천냥이+재천냥",
       "count": 733,
-      "ratio": 0.09390044247220777,
+      "ratio": 0.09354143004811066,
       "monthBreakdown": [
         {
           "label": "2026.03",
@@ -501,8 +501,8 @@
       "id": "ㄱㅇㅇ",
       "displayToken": "ㄱㅇㅇ",
       "tokenTitle": "ㄱㅇㅇ",
-      "count": 1007,
-      "ratio": 0.12900101714803988,
+      "count": 1010,
+      "ratio": 0.12889064713314022,
       "monthBreakdown": [
         {
           "label": "2026.03",
@@ -534,7 +534,7 @@
         },
         {
           "label": "2026.10",
-          "count": 135
+          "count": 138
         }
       ],
       "mediaUrl": "./assets/game/token-c34c631de006.gif",
@@ -546,7 +546,7 @@
       "displayToken": "습박",
       "tokenTitle": "습박",
       "count": 362,
-      "ratio": 0.04637375194398256,
+      "ratio": 0.04619644976455124,
       "monthBreakdown": [
         {
           "label": "2026.03",
@@ -590,7 +590,7 @@
       "displayToken": "ㄹㅇㅋㅋ",
       "tokenTitle": "ㄹㅇㅋㅋ",
       "count": 801,
-      "ratio": 0.10261153399759677,
+      "ratio": 0.10221921619172802,
       "monthBreakdown": [
         {
           "label": "2026.03",
@@ -633,8 +633,8 @@
       "id": "리액션",
       "displayToken": "리액션",
       "tokenTitle": "리액션",
-      "count": 332,
-      "ratio": 0.04253062332984036,
+      "count": 333,
+      "ratio": 0.042495629203302666,
       "monthBreakdown": [
         {
           "label": "2026.03",
@@ -666,7 +666,7 @@
         },
         {
           "label": "2026.10",
-          "count": 3
+          "count": 4
         }
       ],
       "mediaUrl": "./assets/game/token-42f905366f5c.png",
@@ -677,8 +677,8 @@
       "id": "스트리머",
       "displayToken": "스트리머",
       "tokenTitle": "스트리머",
-      "count": 333,
-      "ratio": 0.04265872761697843,
+      "count": 334,
+      "ratio": 0.04262324370541468,
       "monthBreakdown": [
         {
           "label": "2026.03",
@@ -710,19 +710,19 @@
         },
         {
           "label": "2026.10",
-          "count": 12
+          "count": 13
         }
       ],
       "mediaUrl": "./assets/game/token-b0c611d1dbc0.png",
       "mediaKind": "image",
-      "rank": 104
+      "rank": 103
     },
     {
       "id": "치즈",
       "displayToken": "치즈",
       "tokenTitle": "치즈",
       "count": 423,
-      "ratio": 0.05418811345940503,
+      "ratio": 0.053980934393384465,
       "monthBreakdown": [
         {
           "label": "2026.03",
@@ -766,7 +766,7 @@
       "displayToken": "디진다",
       "tokenTitle": "디진다",
       "count": 162,
-      "ratio": 0.020752894516367887,
+      "ratio": 0.020673549342147244,
       "monthBreakdown": [
         {
           "label": "2026.03",
@@ -791,14 +791,14 @@
       ],
       "mediaUrl": "./assets/game/token-4293063cc6bc.png",
       "mediaKind": "image",
-      "rank": 355
+      "rank": 357
     },
     {
       "id": "ㄹㅇ이가",
       "displayToken": "ㄹㅇ이가",
       "tokenTitle": "ㄹㅇ이가",
       "count": 189,
-      "ratio": 0.024211710269095865,
+      "ratio": 0.024119140899171783,
       "monthBreakdown": [
         {
           "label": "2026.03",
@@ -835,14 +835,14 @@
       ],
       "mediaUrl": "./assets/game/token-cc886012f52f.png",
       "mediaKind": "image",
-      "rank": 280
+      "rank": 282
     },
     {
       "id": "방종뽀뽀",
       "displayToken": "방종뽀뽀",
       "tokenTitle": "방종뽀뽀",
       "count": 209,
-      "ratio": 0.026773796011857334,
+      "ratio": 0.02667143094141218,
       "monthBreakdown": [
         {
           "label": "2026.03",
@@ -879,14 +879,14 @@
       ],
       "mediaUrl": "./assets/game/token-1143f4e4c378.mp4",
       "mediaKind": "video",
-      "rank": 238
+      "rank": 240
     },
     {
       "id": "촉슈",
       "displayToken": "촉슈",
       "tokenTitle": "촉슈+촉각슈트",
       "count": 481,
-      "ratio": 0.06161816211341329,
+      "ratio": 0.061382575515881624,
       "monthBreakdown": [
         {
           "label": "2026.03",
@@ -930,7 +930,7 @@
       "displayToken": "명조",
       "tokenTitle": "명조+띵조",
       "count": 468,
-      "ratio": 0.05995280638061833,
+      "ratio": 0.05972358698842536,
       "monthBreakdown": [
         {
           "label": "2026.03",
@@ -974,7 +974,7 @@
       "displayToken": "붕스",
       "tokenTitle": "붕스+붕괴",
       "count": 264,
-      "ratio": 0.033819531804451367,
+      "ratio": 0.03369022855757328,
       "monthBreakdown": [
         {
           "label": "2026.03",
@@ -1017,8 +1017,8 @@
       "id": "어흐",
       "displayToken": "어흐",
       "tokenTitle": "어흐+어흐어흐",
-      "count": 1110,
-      "ratio": 0.14219575872326143,
+      "count": 1111,
+      "ratio": 0.14177971184645424,
       "monthBreakdown": [
         {
           "label": "2026.03",
@@ -1050,7 +1050,7 @@
         },
         {
           "label": "2026.10",
-          "count": 149
+          "count": 150
         }
       ],
       "mediaUrl": "./assets/game/token-eca056f3defc.png",
@@ -1062,7 +1062,7 @@
       "displayToken": "노래",
       "tokenTitle": "노래",
       "count": 939,
-      "ratio": 0.12028992562265088,
+      "ratio": 0.1198300174831868,
       "monthBreakdown": [
         {
           "label": "2026.03",
@@ -1105,8 +1105,8 @@
       "id": "치지직",
       "displayToken": "치지직",
       "tokenTitle": "치지직",
-      "count": 666,
-      "ratio": 0.08531745523395685,
+      "count": 667,
+      "ratio": 0.08511887290871735,
       "monthBreakdown": [
         {
           "label": "2026.03",
@@ -1138,7 +1138,7 @@
         },
         {
           "label": "2026.10",
-          "count": 31
+          "count": 32
         }
       ],
       "mediaUrl": "./assets/game/token-9fac75db830c.png",
@@ -1150,7 +1150,7 @@
       "displayToken": "영도",
       "tokenTitle": "영도",
       "count": 248,
-      "ratio": 0.031769863210242194,
+      "ratio": 0.03164839652378096,
       "monthBreakdown": [
         {
           "label": "2026.03",
@@ -1187,14 +1187,14 @@
       ],
       "mediaUrl": "./assets/game/token-d666fba29e98.png",
       "mediaKind": "image",
-      "rank": 169
+      "rank": 170
     },
     {
       "id": "카페",
       "displayToken": "카페",
       "tokenTitle": "카페",
-      "count": 387,
-      "ratio": 0.04957635912243439,
+      "count": 388,
+      "ratio": 0.04951442681946376,
       "monthBreakdown": [
         {
           "label": "2026.03",
@@ -1226,7 +1226,7 @@
         },
         {
           "label": "2026.10",
-          "count": 31
+          "count": 32
         }
       ],
       "mediaUrl": "./assets/game/token-a7e2a6e998f2.png",
@@ -1238,7 +1238,7 @@
       "displayToken": "애교",
       "tokenTitle": "애교",
       "count": 399,
-      "ratio": 0.05111361056809127,
+      "ratio": 0.05091818634269599,
       "monthBreakdown": [
         {
           "label": "2026.03",
@@ -1275,14 +1275,14 @@
       ],
       "mediaUrl": "./assets/game/token-8e1ab108100f.mp4",
       "mediaKind": "video",
-      "rank": 69
+      "rank": 71
     },
     {
       "id": "분내",
       "displayToken": "분내",
       "tokenTitle": "분내",
       "count": 151,
-      "ratio": 0.019343747357849078,
+      "ratio": 0.01926978981891502,
       "monthBreakdown": [
         {
           "label": "2026.03",
@@ -1315,14 +1315,14 @@
       ],
       "mediaUrl": "./assets/game/token-87fb62229005.png",
       "mediaKind": "image",
-      "rank": 411
+      "rank": 413
     },
     {
       "id": "도파민",
       "displayToken": "도파민",
       "tokenTitle": "도파민",
-      "count": 381,
-      "ratio": 0.04880773339960595,
+      "count": 383,
+      "ratio": 0.04887635430890366,
       "monthBreakdown": [
         {
           "label": "2026.03",
@@ -1354,7 +1354,7 @@
         },
         {
           "label": "2026.10",
-          "count": 20
+          "count": 22
         }
       ],
       "mediaUrl": "./assets/game/token-5e1597416bb4.png",
@@ -1366,7 +1366,7 @@
       "displayToken": "굿즈",
       "tokenTitle": "굿즈",
       "count": 188,
-      "ratio": 0.02408360598195779,
+      "ratio": 0.023991526397059763,
       "monthBreakdown": [
         {
           "label": "2026.03",
@@ -1403,14 +1403,14 @@
       ],
       "mediaUrl": "./assets/game/token-6736012a849c.png",
       "mediaKind": "image",
-      "rank": 282
+      "rank": 284
     },
     {
       "id": "뚱녀",
       "displayToken": "뚱녀",
       "tokenTitle": "뚱녀",
-      "count": 272,
-      "ratio": 0.03484436610155595,
+      "count": 273,
+      "ratio": 0.03483875907658146,
       "monthBreakdown": [
         {
           "label": "2026.03",
@@ -1442,7 +1442,7 @@
         },
         {
           "label": "2026.10",
-          "count": 20
+          "count": 21
         }
       ],
       "mediaUrl": "./assets/game/token-ca3c5a6ae3e3.png",
@@ -1454,7 +1454,7 @@
       "displayToken": "매도",
       "tokenTitle": "매도",
       "count": 118,
-      "ratio": 0.015116305882292657,
+      "ratio": 0.01505851124921836,
       "monthBreakdown": [
         {
           "label": "2026.03",
@@ -1491,14 +1491,14 @@
       ],
       "mediaUrl": "./assets/game/token-6938b3cc6798.mp4",
       "mediaKind": "video",
-      "rank": 570
+      "rank": 573
     },
     {
       "id": "드가자",
       "displayToken": "드가자",
       "tokenTitle": "드가자",
       "count": 229,
-      "ratio": 0.0293358817546188,
+      "ratio": 0.02922372098365258,
       "monthBreakdown": [
         {
           "label": "2026.03",
@@ -1535,14 +1535,14 @@
       ],
       "mediaUrl": "./assets/game/token-f62ba17d74bd.gif",
       "mediaKind": "image",
-      "rank": 191
+      "rank": 192
     },
     {
       "id": "퍼리",
       "displayToken": "퍼리",
       "tokenTitle": "퍼리",
       "count": 224,
-      "ratio": 0.028695360318928432,
+      "ratio": 0.02858564847309248,
       "monthBreakdown": [
         {
           "label": "2026.03",
@@ -1586,7 +1586,7 @@
       "displayToken": "비키니",
       "tokenTitle": "비키니",
       "count": 233,
-      "ratio": 0.029848298903171096,
+      "ratio": 0.02973417899210066,
       "monthBreakdown": [
         {
           "label": "2026.03",
@@ -1619,14 +1619,14 @@
       ],
       "mediaUrl": "./assets/game/token-848e797df076.jpg",
       "mediaKind": "image",
-      "rank": 188
+      "rank": 189
     },
     {
       "id": "쇼츠",
       "displayToken": "쇼츠",
       "tokenTitle": "쇼츠+숏츠",
-      "count": 158,
-      "ratio": 0.02024047736781559,
+      "count": 159,
+      "ratio": 0.020290705835811183,
       "monthBreakdown": [
         {
           "label": "2026.03",
@@ -1658,19 +1658,19 @@
         },
         {
           "label": "2026.10",
-          "count": 15
+          "count": 16
         }
       ],
       "mediaUrl": "./assets/game/token-7846459667a7.png",
       "mediaKind": "image",
-      "rank": 381
+      "rank": 380
     },
     {
       "id": "풀돌",
       "displayToken": "풀돌",
       "tokenTitle": "풀돌",
       "count": 105,
-      "ratio": 0.013450950149497702,
+      "ratio": 0.0133995227217621,
       "monthBreakdown": [
         {
           "label": "2026.03",
@@ -1703,14 +1703,14 @@
       ],
       "mediaUrl": "./assets/game/token-f0dd2134c477.png",
       "mediaKind": "image",
-      "rank": 675
+      "rank": 676
     },
     {
       "id": "마크",
       "displayToken": "마크",
       "tokenTitle": "마크",
       "count": 142,
-      "ratio": 0.018190808773606418,
+      "ratio": 0.018121259299906843,
       "monthBreakdown": [
         {
           "label": "2026.03",
@@ -1747,14 +1747,14 @@
       ],
       "mediaUrl": "./assets/game/token-820ac81e616a.png",
       "mediaKind": "image",
-      "rank": 438
+      "rank": 442
     },
     {
       "id": "사투리",
       "displayToken": "사투리",
       "tokenTitle": "사투리",
       "count": 456,
-      "ratio": 0.05841555493496146,
+      "ratio": 0.05819221296308112,
       "monthBreakdown": [
         {
           "label": "2026.03",
@@ -1791,14 +1791,14 @@
       ],
       "mediaUrl": "./assets/game/token-e6d61d76badd.webp",
       "mediaKind": "image",
-      "rank": 46
+      "rank": 48
     },
     {
       "id": "부산",
       "displayToken": "부산",
       "tokenTitle": "부산",
-      "count": 420,
-      "ratio": 0.05380380059799081,
+      "count": 421,
+      "ratio": 0.053725705389160425,
       "monthBreakdown": [
         {
           "label": "2026.03",
@@ -1830,12 +1830,12 @@
         },
         {
           "label": "2026.10",
-          "count": 10
+          "count": 11
         }
       ],
       "mediaUrl": "./assets/game/token-d95a34cac990.jpg",
       "mediaKind": "image",
-      "rank": 61
+      "rank": 60
     }
   ]
 }
