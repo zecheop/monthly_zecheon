@@ -90,6 +90,18 @@ def patch_profiles(up, vup, sign, video_no):
         cur['dates'] = add_counter(cur.get('dates'), vp.get('dates'), sign)
         if vp.get('userIds') or 'userIds' in cur:
             cur['userIds'] = add_counter(cur.get('userIds'), vp.get('userIds'), sign)
+        if vp.get('hours') or 'hours' in cur:
+            cur['hours'] = add_counter(cur.get('hours'), vp.get('hours'), sign)
+        if vp.get('tenMinSlots') or 'tenMinSlots' in cur:
+            cur['tenMinSlots'] = max(int(cur.get('tenMinSlots') or 0) + sign * int(vp.get('tenMinSlots') or 0), 0)
+        if vp.get('videoStats') or 'videoStats' in cur:
+            stats = dict(cur.get('videoStats') or {})
+            if sign > 0:
+                stats.update(vp.get('videoStats') or {})
+            else:
+                for key in (vp.get('videoStats') or {}):
+                    stats.pop(key, None)
+            cur['videoStats'] = stats
         nos = set(cur.get('videoNos') or [])
         if sign > 0:
             nos.add(video_no)
@@ -98,6 +110,37 @@ def patch_profiles(up, vup, sign, video_no):
         cur['videoNos'] = sorted(nos)
         if cur['messageCount'] <= 0:
             del out[nick]
+    return out
+
+
+def patch_identities(ids, vids, sign):
+    """ID별 닉네임 이력. 더할 때는 처음/마지막 날짜를 넓히고, 뺄 때는 횟수만 줄인다."""
+    out = copy.deepcopy(ids or {})
+    for user_id, vi in (vids or {}).items():
+        cur = out.get(user_id)
+        if cur is None:
+            if sign < 0:
+                continue
+            cur = {'nicknames': {}, 'messageCount': 0}
+            out[user_id] = cur
+        cur['messageCount'] = int(cur.get('messageCount') or 0) + sign * int(vi.get('messageCount') or 0)
+        for nick, row in (vi.get('nicknames') or {}).items():
+            n = cur['nicknames'].get(nick)
+            if n is None:
+                if sign < 0:
+                    continue
+                n = {'count': 0, 'first': row.get('first'), 'last': row.get('last')}
+                cur['nicknames'][nick] = n
+            n['count'] = int(n.get('count') or 0) + sign * int(row.get('count') or 0)
+            if sign > 0:
+                if row.get('first'):
+                    n['first'] = min(n.get('first') or row['first'], row['first'])
+                if row.get('last'):
+                    n['last'] = max(n.get('last') or row['last'], row['last'])
+            if n['count'] <= 0:
+                del cur['nicknames'][nick]
+        if cur['messageCount'] <= 0 or not cur['nicknames']:
+            del out[user_id]
     return out
 
 
@@ -169,6 +212,8 @@ def patch_summary(summary, vsum, sign, video_entry=None):
     adv['tokenRelations'] = patch_token_relations(adv.get('tokenRelations'), vadv.get('tokenRelations'), sign)
     adv['dailyMessageBuckets'] = add_nested(adv.get('dailyMessageBuckets'), vadv.get('dailyMessageBuckets'), sign)
     adv['userProfiles'] = patch_profiles(adv.get('userProfiles') or {}, vadv.get('userProfiles') or {}, sign, vno)
+    if adv.get('userIdentities') or vadv.get('userIdentities'):
+        adv['userIdentities'] = patch_identities(adv.get('userIdentities'), vadv.get('userIdentities'), sign)
     vbuckets = {b for d in (vadv.get('dailyMessageBuckets') or {}).values() for b in d}
     rows = [r for r in (adv.get('bucketHighlights') or []) if r.get('bucketKey') not in vbuckets]
     if sign > 0:
