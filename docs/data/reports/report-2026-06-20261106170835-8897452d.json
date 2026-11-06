@@ -1,5 +1,5 @@
 {
-  "id": "chzzk-merge-log-임재천-2026-06-20260829-065101.json",
+  "id": "chzzk-merge-log-임재천-2026-06-20261106-170835.json",
   "label": "2026-06",
   "title": "임재천 2026-06 채팅 리포트",
   "subtitle": "2026-06-01 ~ 2026-06-30",
@@ -44,7 +44,7 @@
       }
     ],
     "topChatter": {
-      "anonymousAlias": "달콤한노을재첩",
+      "anonymousAlias": "초롱한씨앗재첩",
       "count": 4091,
       "ratio": 6.245515472573775
     }
@@ -440,5 +440,5 @@
       "audioUrl": ""
     }
   ],
-  "wordSearchFile": "./data/word-search/search-2026-06-20260829065101-8897452d.json"
+  "wordSearchFile": "./data/word-search/search-2026-06-20261106170835-8897452d.json"
 }
