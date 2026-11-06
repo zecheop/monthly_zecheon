@@ -7,7 +7,7 @@ import os
 import subprocess
 import sys
 from dataclasses import dataclass
-from datetime import datetime
+from datetime import datetime, timedelta
 from pathlib import Path
 from typing import Iterable, Optional
 from zoneinfo import ZoneInfo
@@ -34,6 +34,11 @@ from analyze_chzzk_vod_chat import (  # type: ignore
     save_mergeable_log,
 )
 from web_app import load_web_ui_preferences, resolve_python_session  # type: ignore
+
+if str(Path(__file__).resolve().parent) not in sys.path:
+    sys.path.insert(0, str(Path(__file__).resolve().parent))
+
+import month_patch  # type: ignore  # noqa: E402
 
 
 @dataclass
@@ -258,6 +263,70 @@ def cleanup_superseded_month_logs(month_label: str, keep_path: Path, *, dry_run:
     return removed
 
 
+def merge_late_videos_into_previous_month(*, dry_run: bool = False) -> Optional[str]:
+    """월말에 시작해 자정을 넘긴 방송은 다시보기가 다음 달에 올라온다.
+
+    월 구분은 방송 시작 시각 기준이므로, 새 달 초에 지난달 범위를 다시 조회해서
+    지난달 로그에 없는 방송이 있으면 그 로그에 더해 넣는다. (지난달 로그를 통째로 다시 만들면
+    이미 삭제된 다시보기의 채팅이 사라지기 때문에 로그에 방송만 더하는 방식을 쓴다.)
+    """
+    now = datetime.now(KST)
+    if now.day > 7:
+        return None
+    previous_day = now.replace(day=1) - timedelta(days=1)
+    previous_label = month_label_from(previous_day)
+    previous_log = find_latest_month_log(previous_label)
+    if previous_log is None:
+        return None
+
+    channel_id, stopwords, timeout = resolve_python_session()
+    session = build_session(os.getenv("USER_AGENT", DEFAULT_USER_AGENT))
+    videos = fetch_videos_in_date_range(
+        session=session,
+        channel_id=channel_id,
+        date_from=previous_day.strftime("%Y-%m-01"),
+        date_to=previous_day.strftime("%Y-%m-%d"),
+        max_videos=200,
+        timeout=timeout,
+    )
+    logged_numbers = load_logged_video_numbers(previous_log)
+    late_videos = sorted(
+        (video for video in videos if int(video.get("videoNo") or 0) not in logged_numbers),
+        key=parse_video_sort_timestamp,
+    )
+    if not late_videos:
+        return None
+    if dry_run:
+        return f"{previous_label} 로그에 늦게 올라온 방송 {len(late_videos)}개를 더해야 합니다. (--dry-run)"
+
+    payload = json.loads(previous_log.read_text(encoding="utf-8"))
+    summary = payload["summary"]
+    custom_word_groups = load_web_ui_preferences().get("customWordGroups") or ""
+    for video in late_videos:
+        video_summary = month_patch.analyze_video_for_month(
+            session,
+            video,
+            summary,
+            timeout=timeout,
+            stopwords=stopwords,
+            custom_word_groups=custom_word_groups,
+        )
+        summary = month_patch.patch_summary(summary, video_summary, +1, video_entry=video_summary["videos"][0])
+    summary = apply_previous_period_comparisons(summary, load_all_mergeable_log_payloads(str(ANALYZER_ROOT)))
+    new_path = save_mergeable_log(
+        summary,
+        str(ANALYZER_ROOT),
+        channel_id=channel_id,
+        channel_name=payload.get("channelName"),
+        label=previous_label,
+        date_from=payload["dateFrom"],
+        date_to=payload["dateTo"],
+        saved_result_anonymized_top_chatters=False,
+    )
+    cleanup_superseded_month_logs(previous_label, new_path, dry_run=False)
+    return f"{previous_label} 로그에 늦게 올라온 방송 {len(late_videos)}개를 더했습니다."
+
+
 def build_pages_site() -> None:
     run_command([sys.executable, "build_site_data.py"], cwd=BASE_DIR, capture_output=True)
 
@@ -290,8 +359,14 @@ def stage_commit_push_docs(month_label: str, *, dry_run: bool = False) -> bool:
 def refresh_monthly_pipeline(*, force: bool = False, dry_run: bool = False, allow_dirty: bool = False) -> RefreshResult:
     if not allow_dirty:
         ensure_pages_repo_clean()
+    late_message = merge_late_videos_into_previous_month(dry_run=dry_run)
     metadata, videos, existing_video_numbers, unseen_video_numbers = detect_new_current_month_videos(force=force)
     month_label = metadata["monthLabel"]
+    if late_message and not dry_run and (not videos or (existing_video_numbers and not unseen_video_numbers and not force)):
+        # 이번 달 로그는 그대로지만 지난달 로그가 바뀌었으니 사이트만 다시 만든다.
+        build_pages_site()
+        live_changed = stage_commit_push_docs(month_label, dry_run=False)
+        return RefreshResult(True, True, live_changed, late_message + (" 라이브 페이지를 갱신했습니다." if live_changed else ""))
     if not videos:
         return RefreshResult(False, False, False, f"{month_label}에는 아직 분석 가능한 다시보기가 없습니다.")
     if existing_video_numbers and not unseen_video_numbers and not force:
