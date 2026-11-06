@@ -1,12 +1,12 @@
 {
-  "id": "chzzk-merge-log-임재천-2026-11-20261106-081739.json",
+  "id": "chzzk-merge-log-임재천-2026-11-20261106-085842.json",
   "label": "2026-11",
   "title": "임재천 2026-11 채팅 리포트",
   "subtitle": "2026-11-01 ~ 2026-11-06",
   "bucketMinutes": 2,
   "overview": {
     "videoCount": 1,
-    "messageCount": 2488
+    "messageCount": 2486
   },
   "summaryStory": {
     "issueLabel": "2026.11",
@@ -16,7 +16,7 @@
       "2026-11-04"
     ],
     "videoCount": 1,
-    "messageCount": 2488,
+    "messageCount": 2486,
     "callTerms": [
       {
         "label": "곤듀",
@@ -28,9 +28,9 @@
       }
     ],
     "topChatter": {
-      "anonymousAlias": "엉뚱한잔디재첩",
+      "anonymousAlias": "용감한유자재첩",
       "count": 421,
-      "ratio": 16.921221864951768
+      "ratio": 16.934835076427998
     }
   },
   "topWords": [
@@ -39,7 +39,7 @@
       "displayToken": "곤듀",
       "tokenTitle": "곤듀",
       "count": 105,
-      "ratio": 3.272047366780929,
+      "ratio": 3.2771535580524342,
       "imageUrl": ""
     },
     {
@@ -47,7 +47,7 @@
       "displayToken": "재하",
       "tokenTitle": "재하+재하재하+쟈쟈",
       "count": 32,
-      "ratio": 0.9971953879713307,
+      "ratio": 0.9987515605493134,
       "imageUrl": ""
     },
     {
@@ -55,7 +55,7 @@
       "displayToken": "노래",
       "tokenTitle": "노래",
       "count": 14,
-      "ratio": 0.43627298223745714,
+      "ratio": 0.4369538077403246,
       "imageUrl": ""
     },
     {
@@ -63,7 +63,7 @@
       "displayToken": "성심당",
       "tokenTitle": "성심당",
       "count": 10,
-      "ratio": 0.3116235587410408,
+      "ratio": 0.3121098626716604,
       "imageUrl": ""
     },
     {
@@ -71,7 +71,7 @@
       "displayToken": "만점",
       "tokenTitle": "만점",
       "count": 9,
-      "ratio": 0.28046120286693677,
+      "ratio": 0.2808988764044944,
       "imageUrl": ""
     },
     {
@@ -79,7 +79,7 @@
       "displayToken": "오오",
       "tokenTitle": "오오",
       "count": 9,
-      "ratio": 0.28046120286693677,
+      "ratio": 0.2808988764044944,
       "imageUrl": ""
     },
     {
@@ -87,7 +87,7 @@
       "displayToken": "점수",
       "tokenTitle": "점수",
       "count": 9,
-      "ratio": 0.28046120286693677,
+      "ratio": 0.2808988764044944,
       "imageUrl": ""
     },
     {
@@ -95,7 +95,7 @@
       "displayToken": "ㅔㅔ",
       "tokenTitle": "ㅔㅔ",
       "count": 8,
-      "ratio": 0.24929884699283264,
+      "ratio": 0.24968789013732834,
       "imageUrl": ""
     },
     {
@@ -103,7 +103,7 @@
       "displayToken": "그치",
       "tokenTitle": "그치",
       "count": 8,
-      "ratio": 0.24929884699283264,
+      "ratio": 0.24968789013732834,
       "imageUrl": ""
     },
     {
@@ -111,7 +111,7 @@
       "displayToken": "임재천",
       "tokenTitle": "임재천+재천+재천이",
       "count": 8,
-      "ratio": 0.24929884699283264,
+      "ratio": 0.24968789013732834,
       "imageUrl": ""
     },
     {
@@ -119,7 +119,7 @@
       "displayToken": "모야",
       "tokenTitle": "모야",
       "count": 7,
-      "ratio": 0.21813649111872857,
+      "ratio": 0.2184769038701623,
       "imageUrl": ""
     },
     {
@@ -127,7 +127,7 @@
       "displayToken": "재미",
       "tokenTitle": "재미",
       "count": 7,
-      "ratio": 0.21813649111872857,
+      "ratio": 0.2184769038701623,
       "imageUrl": ""
     },
     {
@@ -135,7 +135,7 @@
       "displayToken": "재첩",
       "tokenTitle": "재첩+재첩이+재첩이들",
       "count": 7,
-      "ratio": 0.21813649111872857,
+      "ratio": 0.2184769038701623,
       "imageUrl": ""
     },
     {
@@ -143,7 +143,7 @@
       "displayToken": "항상",
       "tokenTitle": "항상",
       "count": 7,
-      "ratio": 0.21813649111872857,
+      "ratio": 0.2184769038701623,
       "imageUrl": ""
     },
     {
@@ -151,7 +151,7 @@
       "displayToken": "ㄱㅇㅇ",
       "tokenTitle": "ㄱㅇㅇ",
       "count": 6,
-      "ratio": 0.1869741352446245,
+      "ratio": 0.18726591760299627,
       "imageUrl": ""
     },
     {
@@ -159,7 +159,7 @@
       "displayToken": "네네",
       "tokenTitle": "네네",
       "count": 6,
-      "ratio": 0.1869741352446245,
+      "ratio": 0.18726591760299627,
       "imageUrl": ""
     },
     {
@@ -167,7 +167,7 @@
       "displayToken": "눈물",
       "tokenTitle": "눈물",
       "count": 6,
-      "ratio": 0.1869741352446245,
+      "ratio": 0.18726591760299627,
       "imageUrl": ""
     },
     {
@@ -175,7 +175,7 @@
       "displayToken": "느낌",
       "tokenTitle": "느낌",
       "count": 6,
-      "ratio": 0.1869741352446245,
+      "ratio": 0.18726591760299627,
       "imageUrl": ""
     },
     {
@@ -183,7 +183,7 @@
       "displayToken": "와우",
       "tokenTitle": "와우",
       "count": 6,
-      "ratio": 0.1869741352446245,
+      "ratio": 0.18726591760299627,
       "imageUrl": ""
     },
     {
@@ -191,7 +191,7 @@
       "displayToken": "우나",
       "tokenTitle": "우나",
       "count": 6,
-      "ratio": 0.1869741352446245,
+      "ratio": 0.18726591760299627,
       "imageUrl": ""
     }
   ],
@@ -365,7 +365,7 @@
       "videoUrl": "./assets/video/top1.mp4",
       "date": "2026-11-03",
       "timeLabel": "22:32 - 22:34",
-      "liftVsAverage": 3.88,
+      "liftVsAverage": 3.89,
       "topWords": [
         {
           "token": "점수",
@@ -416,5 +416,5 @@
       "audioUrl": ""
     }
   ],
-  "wordSearchFile": "./data/word-search/search-2026-11-20261106081739-8897452d.json"
+  "wordSearchFile": "./data/word-search/search-2026-11-20261106085842-8897452d.json"
 }
