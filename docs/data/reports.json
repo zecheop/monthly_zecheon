@@ -1,6 +1,18 @@
 {
   "reports": [
     {
+      "id": "chzzk-merge-log-임재천-2026-11-20261107-164552.json",
+      "channelName": "임재천",
+      "label": "2026-11",
+      "title": "임재천 2026-11",
+      "subtitle": "2026-11-01 ~ 2026-11-08",
+      "generatedAt": "2026-11-07T16:45:52",
+      "videoCount": 2,
+      "messageCount": 10450,
+      "reportFile": "./data/reports/report-2026-11-20261107164552-8897452d.json",
+      "wordSearchFile": "./data/word-search/search-2026-11-20261107164552-8897452d.json"
+    },
+    {
       "id": "chzzk-merge-log-임재천-2026-10-20261106-170840.json",
       "channelName": "임재천",
       "label": "2026-10",
@@ -85,18 +97,6 @@
       "wordSearchFile": "./data/word-search/search-2026-04-20261106170832-8897452d.json"
     },
     {
-      "id": "chzzk-merge-log-임재천-2026-11-20261106-085842.json",
-      "channelName": "임재천",
-      "label": "2026-11",
-      "title": "임재천 2026-11",
-      "subtitle": "2026-11-01 ~ 2026-11-06",
-      "generatedAt": "2026-11-06T08:58:42",
-      "videoCount": 1,
-      "messageCount": 2486,
-      "reportFile": "./data/reports/report-2026-11-20261106085842-8897452d.json",
-      "wordSearchFile": "./data/word-search/search-2026-11-20261106085842-8897452d.json"
-    },
-    {
       "id": "chzzk-merge-log-임재천-2026-03-20260424-035159.json",
       "channelName": "임재천",
       "label": "2026-03",
@@ -117,9 +117,462 @@
   ],
   "summaryOverview": {
     "referenceStartDate": "2026-03-27",
-    "videoCount": 143,
-    "messageCount": 613284,
-    "chatSamples": [],
+    "videoCount": 144,
+    "messageCount": 621248,
+    "chatSamples": [
+      {
+        "segments": [
+          {
+            "type": "emote",
+            "code": "zcHi",
+            "url": "https://nng-phinf.pstatic.net/glive/subscription/emoji/3a5c68e21e1de59efc438313f908dd6f/1/zcHi_1774901709581.png"
+          },
+          {
+            "type": "emote",
+            "code": "zcHi",
+            "url": "https://nng-phinf.pstatic.net/glive/subscription/emoji/3a5c68e21e1de59efc438313f908dd6f/1/zcHi_1774901709581.png"
+          },
+          {
+            "type": "emote",
+            "code": "zcHi",
+            "url": "https://nng-phinf.pstatic.net/glive/subscription/emoji/3a5c68e21e1de59efc438313f908dd6f/1/zcHi_1774901709581.png"
+          },
+          {
+            "type": "emote",
+            "code": "zcHi",
+            "url": "https://nng-phinf.pstatic.net/glive/subscription/emoji/3a5c68e21e1de59efc438313f908dd6f/1/zcHi_1774901709581.png"
+          },
+          {
+            "type": "emote",
+            "code": "zcHi",
+            "url": "https://nng-phinf.pstatic.net/glive/subscription/emoji/3a5c68e21e1de59efc438313f908dd6f/1/zcHi_1774901709581.png"
+          }
+        ]
+      },
+      {
+        "segments": [
+          {
+            "type": "text",
+            "text": "[방송확인] 방송 인식이 되었습니다. 📣"
+          }
+        ]
+      },
+      {
+        "segments": [
+          {
+            "type": "text",
+            "text": "재하"
+          }
+        ]
+      },
+      {
+        "segments": [
+          {
+            "type": "text",
+            "text": "쟈쟈쟈ㅑ"
+          }
+        ]
+      },
+      {
+        "segments": [
+          {
+            "type": "emote",
+            "code": "d_11",
+            "url": "https://ssl.pstatic.net/static/nng/glive/icon/txt01.png"
+          },
+          {
+            "type": "emote",
+            "code": "d_11",
+            "url": "https://ssl.pstatic.net/static/nng/glive/icon/txt01.png"
+          }
+        ]
+      },
+      {
+        "segments": [
+          {
+            "type": "emote",
+            "code": "zcHi",
+            "url": "https://nng-phinf.pstatic.net/glive/subscription/emoji/3a5c68e21e1de59efc438313f908dd6f/1/zcHi_1774901709581.png"
+          },
+          {
+            "type": "emote",
+            "code": "zcHi",
+            "url": "https://nng-phinf.pstatic.net/glive/subscription/emoji/3a5c68e21e1de59efc438313f908dd6f/1/zcHi_1774901709581.png"
+          }
+        ]
+      },
+      {
+        "segments": [
+          {
+            "type": "emote",
+            "code": "zcHi",
+            "url": "https://nng-phinf.pstatic.net/glive/subscription/emoji/3a5c68e21e1de59efc438313f908dd6f/1/zcHi_1774901709581.png?type=f60_60"
+          },
+          {
+            "type": "emote",
+            "code": "zcHi",
+            "url": "https://nng-phinf.pstatic.net/glive/subscription/emoji/3a5c68e21e1de59efc438313f908dd6f/1/zcHi_1774901709581.png?type=f60_60"
+          },
+          {
+            "type": "emote",
+            "code": "zcHi",
+            "url": "https://nng-phinf.pstatic.net/glive/subscription/emoji/3a5c68e21e1de59efc438313f908dd6f/1/zcHi_1774901709581.png?type=f60_60"
+          }
+        ]
+      },
+      {
+        "segments": [
+          {
+            "type": "text",
+            "text": "쟈쟈"
+          }
+        ]
+      },
+      {
+        "segments": [
+          {
+            "type": "emote",
+            "code": "zcHi",
+            "url": "https://nng-phinf.pstatic.net/glive/subscription/emoji/3a5c68e21e1de59efc438313f908dd6f/1/zcHi_1774901709581.png?type=f60_60"
+          }
+        ]
+      },
+      {
+        "segments": [
+          {
+            "type": "emote",
+            "code": "zcHi",
+            "url": "https://nng-phinf.pstatic.net/glive/subscription/emoji/3a5c68e21e1de59efc438313f908dd6f/1/zcHi_1774901709581.png?type=f60_60"
+          },
+          {
+            "type": "emote",
+            "code": "zcHi",
+            "url": "https://nng-phinf.pstatic.net/glive/subscription/emoji/3a5c68e21e1de59efc438313f908dd6f/1/zcHi_1774901709581.png?type=f60_60"
+          },
+          {
+            "type": "emote",
+            "code": "zcHi",
+            "url": "https://nng-phinf.pstatic.net/glive/subscription/emoji/3a5c68e21e1de59efc438313f908dd6f/1/zcHi_1774901709581.png?type=f60_60"
+          },
+          {
+            "type": "emote",
+            "code": "zcHi",
+            "url": "https://nng-phinf.pstatic.net/glive/subscription/emoji/3a5c68e21e1de59efc438313f908dd6f/1/zcHi_1774901709581.png?type=f60_60"
+          }
+        ]
+      },
+      {
+        "segments": [
+          {
+            "type": "text",
+            "text": "가을???한국에 가을이라는게 있던가요???"
+          }
+        ]
+      },
+      {
+        "segments": [
+          {
+            "type": "text",
+            "text": "내 가을을 돌리도"
+          }
+        ]
+      },
+      {
+        "segments": [
+          {
+            "type": "text",
+            "text": "오늘은 입동이다"
+          }
+        ]
+      },
+      {
+        "segments": [
+          {
+            "type": "text",
+            "text": "그래서 내일보다 개춥지!"
+          }
+        ]
+      },
+      {
+        "segments": [
+          {
+            "type": "emote",
+            "code": "d_41",
+            "url": "https://ssl.pstatic.net/static/nng/glive/icon/b_01.gif"
+          },
+          {
+            "type": "emote",
+            "code": "d_41",
+            "url": "https://ssl.pstatic.net/static/nng/glive/icon/b_01.gif"
+          },
+          {
+            "type": "emote",
+            "code": "d_41",
+            "url": "https://ssl.pstatic.net/static/nng/glive/icon/b_01.gif"
+          },
+          {
+            "type": "emote",
+            "code": "d_41",
+            "url": "https://ssl.pstatic.net/static/nng/glive/icon/b_01.gif"
+          },
+          {
+            "type": "emote",
+            "code": "d_41",
+            "url": "https://ssl.pstatic.net/static/nng/glive/icon/b_01.gif"
+          },
+          {
+            "type": "emote",
+            "code": "d_41",
+            "url": "https://ssl.pstatic.net/static/nng/glive/icon/b_01.gif"
+          }
+        ]
+      },
+      {
+        "segments": [
+          {
+            "type": "emote",
+            "code": "d_41",
+            "url": "https://ssl.pstatic.net/static/nng/glive/icon/b_01.gif"
+          }
+        ]
+      },
+      {
+        "segments": [
+          {
+            "type": "text",
+            "text": "아니 진짜 오늘 영하6도 내일 영하1도 뭔데"
+          }
+        ]
+      },
+      {
+        "segments": [
+          {
+            "type": "text",
+            "text": "쟈쟈쟈"
+          }
+        ]
+      },
+      {
+        "segments": [
+          {
+            "type": "text",
+            "text": "가을? 어디갔지?"
+          }
+        ]
+      },
+      {
+        "segments": [
+          {
+            "type": "text",
+            "text": "재하재하"
+          }
+        ]
+      },
+      {
+        "segments": [
+          {
+            "type": "emote",
+            "code": "d_60",
+            "url": "https://ssl.pstatic.net/static/nng/glive/icon/b_20.gif"
+          },
+          {
+            "type": "emote",
+            "code": "d_60",
+            "url": "https://ssl.pstatic.net/static/nng/glive/icon/b_20.gif"
+          },
+          {
+            "type": "emote",
+            "code": "d_60",
+            "url": "https://ssl.pstatic.net/static/nng/glive/icon/b_20.gif"
+          }
+        ]
+      },
+      {
+        "segments": [
+          {
+            "type": "emote",
+            "code": "d_41",
+            "url": "https://ssl.pstatic.net/static/nng/glive/icon/b_01.gif"
+          },
+          {
+            "type": "emote",
+            "code": "d_41",
+            "url": "https://ssl.pstatic.net/static/nng/glive/icon/b_01.gif"
+          },
+          {
+            "type": "emote",
+            "code": "d_41",
+            "url": "https://ssl.pstatic.net/static/nng/glive/icon/b_01.gif"
+          },
+          {
+            "type": "emote",
+            "code": "d_41",
+            "url": "https://ssl.pstatic.net/static/nng/glive/icon/b_01.gif"
+          }
+        ]
+      },
+      {
+        "segments": [
+          {
+            "type": "text",
+            "text": "쟈쟈쟈쟈"
+          }
+        ]
+      },
+      {
+        "segments": [
+          {
+            "type": "text",
+            "text": "여어~"
+          }
+        ]
+      },
+      {
+        "segments": [
+          {
+            "type": "text",
+            "text": "쟈쟈ㅑ쟈"
+          }
+        ]
+      },
+      {
+        "segments": [
+          {
+            "type": "text",
+            "text": "귀여워"
+          }
+        ]
+      },
+      {
+        "segments": [
+          {
+            "type": "text",
+            "text": "하잇"
+          }
+        ]
+      },
+      {
+        "segments": [
+          {
+            "type": "text",
+            "text": "오랜만?이예요"
+          }
+        ]
+      },
+      {
+        "segments": [
+          {
+            "type": "text",
+            "text": "히사시부리~~~"
+          }
+        ]
+      },
+      {
+        "segments": [
+          {
+            "type": "text",
+            "text": "와 오랜만~"
+          }
+        ]
+      },
+      {
+        "segments": [
+          {
+            "type": "text",
+            "text": "하지만 팩트죠"
+          }
+        ]
+      },
+      {
+        "segments": [
+          {
+            "type": "text",
+            "text": "어제 너무잘봤어요 지리던데"
+          }
+        ]
+      },
+      {
+        "segments": [
+          {
+            "type": "text",
+            "text": "재첩국은 4일만이라는 것이지"
+          }
+        ]
+      },
+      {
+        "segments": [
+          {
+            "type": "text",
+            "text": "어제 했던가???ㅋㅋ"
+          }
+        ]
+      },
+      {
+        "segments": [
+          {
+            "type": "text",
+            "text": "쩔수긴했지"
+          }
+        ]
+      },
+      {
+        "segments": [
+          {
+            "type": "text",
+            "text": "ㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋ"
+          }
+        ]
+      },
+      {
+        "segments": [
+          {
+            "type": "text",
+            "text": "ㅋㅋㅋㅋㅋㅋㅋㅋㅋ"
+          }
+        ]
+      },
+      {
+        "segments": [
+          {
+            "type": "emote",
+            "code": "d_15",
+            "url": "https://ssl.pstatic.net/static/nng/glive/icon/txt05.png"
+          }
+        ]
+      },
+      {
+        "segments": [
+          {
+            "type": "text",
+            "text": "ㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋ"
+          }
+        ]
+      },
+      {
+        "segments": [
+          {
+            "type": "text",
+            "text": "ㅋㅋㅋㅋㅋ"
+          }
+        ]
+      },
+      {
+        "segments": [
+          {
+            "type": "text",
+            "text": "처음 받아본 대본의 상태가?"
+          }
+        ]
+      },
+      {
+        "segments": [
+          {
+            "type": "text",
+            "text": "나레이션은 어느틈에 섭외했대"
+          }
+        ]
+      }
+    ],
     "callVariants": [
       "곤듀",
       "곤듀님",
@@ -140,17 +593,17 @@
     "callTerms": [
       {
         "label": "곤듀",
-        "count": 18380
+        "count": 18739
       },
       {
         "label": "재천",
-        "count": 2094
+        "count": 2103
       }
     ],
     "topChatter": {
       "anonymousAlias": "재빠른파도재첩",
-      "count": 29693,
-      "ratio": 4.841639436215521
+      "count": 30045,
+      "ratio": 4.8362328731843
     }
   },
   "brandAssets": {
